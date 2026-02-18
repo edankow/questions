@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSA Questions Study Tool</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        .profile-section { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 30px; background: #ebf0f1; padding: 15px; border-radius: 8px; }
+        .input-group { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #7f8c8d; font-size: 0.9em; }
+        input[type="text"], select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+        button { cursor: pointer; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 600; transition: opacity 0.2s; }
+        .btn-primary { background-color: #3498db; color: white; }
+        .btn-success { background-color: #27ae60; color: white; }
+        .btn-warning { background-color: #d35400; color: white; }
+        .btn-outline { background: transparent; border: 1px solid #3498db; color: #3498db; }
+        .hidden { display: none; }
+        .creativity-box { border-left: 4px solid #3498db; padding-left: 20px; }
+        .question-text { font-size: 1.2em; font-weight: 500; margin: 20px 0; padding: 15px; background: #fffbe6; border-radius: 8px; }
+        .stats { font-size: 0.8em; color: #95a5a6; margin-top: 10px; }
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    border-radius: 8px;
+    padding: 10px 0;
+}
+
+.show-menu {
+    display: block !important;
+}
+
+.dropdown-content button {
+    color: #333;
+    padding: 10px 16px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content button:hover {
+    background-color: #f1f1f1;
+}
+
+#reviewPhase {
+    position: relative;
+}
+
+.source-link {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    text-decoration: none;
+    font-size: 48px; /* Increased size */
+    color: #3498db;
+    transition: transform 0.2s, color 0.2s;
+    line-height: 1;
+}
+
+.source-link:hover {
+    color: #2980b9;
+    transform: scale(1.2); /* Subtle grow effect on hover */
+}
+
+    </style>
+
+<script src="questions.js"></script>
+
+
+</head>
+<body>
+
+    <h1>KSA Study Tool</h1>
+
+<div class="profile-section">
+    <div>
+        <select id="profileSelect"></select>
+    </div>
+
+    <div class="dropdown">
+        <button class="btn-outline" onclick="toggleMenu(event)">Edit Profiles ▾</button>
+        <div id="profileMenu" class="dropdown-content">
+            <button onclick="createNewProfile()">New Profile</button>
+            <button onclick="exportProfile()">Export Profile</button>
+            <button onclick="document.getElementById('importInput').click()">Load Profile</button>
+            <hr>
+            <button class="btn-delete" onclick="deleteCurrentProfile()">Delete Profile</button>
+        </div>
+    </div>
+    <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
+</div>
+
+    <div id="setupPhase" class="card hidden">
+        <div class="creativity-box">
+            <h3>Fill in the blanks:</h3>
+            <div id="inputContainer"></div>
+            <button class="btn-primary" style="margin-top: 20px;" onclick="generateQuestion()">Generate Question</button>
+        </div>
+    </div>
+
+    <div id="reviewPhase" class="card hidden">
+        <h3>Evaluate the question:</h3>
+        <div id="finalQuestion" class="question-text"></div>
+        <div class="actions">
+            <button class="btn-success" onclick="handleResponse('confident')">Answered Confidently</button>
+            <button class="btn-warning" onclick="handleResponse('review')">Could Use More Review</button>
+        </div>
+    </div>
+
+    <div id="completionState" class="card hidden">
+        <h3>All caught up!</h3>
+        <p>You've reviewed all the questions currently available.</p>
+	<button class="btn-outline" style="border-color: #27ae60; color: #27ae60;" onclick="clearReviewQueue()">Reset Review Timer</button><br><br>
+        <button class="btn-primary" onclick="resetProgress()">Restart Questions</button>
+    </div>
+
+
+    <script>
+
+
+
+        // State variables
+let questions = [];
+// Change: Initialize as an empty object instead of a hardcoded "Default User"
+let profiles = JSON.parse(localStorage.getItem('ksa_profiles')) || {}; 
+let currentProfile = localStorage.getItem('ksa_current_profile');
+let activeQuestion = null;
+let sessionMemory = {};
+
+// Initialize App
+function init() {
+    questions = parseCSV(rawCsvData);
+
+    // Check if any profiles exist
+    const profileNames = Object.keys(profiles);
+
+    if (profileNames.length === 0) {
+        // First time load: Force user to create a profile
+        let name = "";
+        while (!name || name.trim() === "") {
+            name = prompt("Welcome! Please enter a user name to begin:");
+        }
+        name = name.trim();
+        profiles[name] = {};
+        currentProfile = name;
+        saveToStorage();
+        localStorage.setItem('ksa_current_profile', name);
+    } else if (!currentProfile || !profiles[currentProfile]) {
+        // If a profile exists but currentProfile is lost, default to the first one
+        currentProfile = profileNames[0];
+        localStorage.setItem('ksa_current_profile', currentProfile);
+    }
+
+    updateProfileDropdown();
+    loadNextQuestion();
+}
+
+        // Modified CSV Parser to use the ID from the dataset
+        function parseCSV(str) {
+            const rows = str.trim().split('\n').slice(1);
+            return rows.map((row) => {
+                const matches = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+                // ID is index 0, Question text is index 1
+                const qId = matches[0].trim();
+                const qText = matches[1].replace(/^"|"$/g, '').trim();
+                return {
+                    id: qId, // This now uses the ID from the CSV (e.g., "1.1.1")
+                    text: qText,
+                    chapter: matches[2],
+                    paragraph: matches[3]
+                };
+            });
+        }
+
+function updateProfileDropdown() {
+    const select = document.getElementById('profileSelect');
+    select.innerHTML = '';
+    Object.keys(profiles).forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.innerText = name;
+        if(name === currentProfile) opt.selected = true;
+        select.appendChild(opt);
+    });
+
+    // When the user picks a different name:
+    select.onchange = (e) => {
+        currentProfile = e.target.value;
+        localStorage.setItem('ksa_current_profile', currentProfile); // Persist the switch
+        
+        // REINITIALIZE:
+        // This clears any old inputs and checks the 24-hour lockout for the new profile
+        loadNextQuestion();
+    };
+}
+
+        function createNewProfile() {
+            const name = prompt("Enter profile name:");
+            if (name && !profiles[name]) {
+                profiles[name] = {};
+                saveToStorage();
+                currentProfile = name;
+                updateProfileDropdown();
+                loadNextQuestion();
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('ksa_profiles', JSON.stringify(profiles));
+        }
+
+        function loadNextQuestion() {
+            const now = Date.now();
+            const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+
+            const remaining = questions.filter(q => {
+                const data = profiles[currentProfile][q.id];
+                
+                // 1. If never answered, it stays in the pool
+                if (!data) return true;
+
+                // 2. If confident, it stays out of the pool
+                if (data.status === 'confident') return false;
+
+                // 3. If "review", only include if 24 hours have passed
+                if (data.status === 'review') {
+                    const timeElapsed = now - data.timestamp;
+                    return timeElapsed > TWENTY_FOUR_HOURS;
+                }
+
+                return true;
+            });
+
+            if (remaining.length === 0) {
+                showPhase('completionState');
+                return;
+            }
+
+            activeQuestion = remaining[Math.floor(Math.random() * remaining.length)];
+            setupCreativity(activeQuestion.text);
+        }
+
+        function setupCreativity(text) {
+            showPhase('setupPhase');
+            const container = document.getElementById('inputContainer');
+            container.innerHTML = '';
+            
+            const matches = [...new Set(text.match(/\[(.*?)\]/g))];
+            
+            if (!matches || matches.length === 0) {
+                generateQuestion();
+                return;
+            }
+
+            matches.forEach((match, index) => {
+                const labelText = match.replace('[', '').replace(']', '');
+                const group = document.createElement('div');
+                group.className = 'input-group';
+                
+		// Check if we have seen this specific placeholder (e.g., "[person1]") before
+        	const rememberedValue = sessionMemory[match] || '';
+
+                // Key logic: if not the last input, focus the next one. 
+                // If it is the last input, generate the question.
+                const isLast = index === matches.length - 1;
+                const action = isLast 
+                    ? "generateQuestion()" 
+                    : `document.querySelectorAll('#inputContainer input')[${index + 1}].focus()`;
+
+                group.innerHTML = `
+                    <label>${labelText}</label>
+                    <input type="text" 
+                           placeholder="Enter ${labelText}..." 
+                           data-placeholder="${match}"
+			   value="${rememberedValue}"
+                           onkeyup="if(event.key === 'Enter') { ${action} }">
+                `;
+                container.appendChild(group);
+                
+                // Auto-focus the first field
+                if (index === 0) {
+                    setTimeout(() => {
+             	    const allInputs = container.querySelectorAll('input');
+              	    const firstEmpty = Array.from(allInputs).find(input => !input.value) || allInputs[0];
+              	    firstEmpty.focus();
+          	    }, 10);
+                }
+            });
+        }
+
+        function generateQuestion() {
+            let finalText = activeQuestion.text;
+            const inputs = document.querySelectorAll('#inputContainer input');
+            
+            inputs.forEach(input => {
+                const val = input.value || `(${input.getAttribute('data-placeholder')})`;
+                const placeholder = input.getAttribute('data-placeholder');
+		// Save the value to memory for next time this placeholder appears
+        	if (val) {
+            		sessionMemory[placeholder] = val;
+        	}
+
+        	const displayVal = val || `(${placeholder})`;
+                finalText = finalText.split(placeholder).join(`<strong>${val}</strong>`);
+            });
+
+            // Construct the Sefaria URL
+            const sefariaUrl = `https://www.sefaria.org/Kitzur_Shulchan_Arukh.${activeQuestion.chapter}.${activeQuestion.paragraph}`;
+            
+            // Generate the link HTML
+            const linkHtml = `
+                <a href="${sefariaUrl}" target="_blank" class="source-link" title="View Source on Sefaria">
+                    ⓘ
+                </a>
+            `;
+
+            // Set the question text and append the icon
+            document.getElementById('finalQuestion').innerHTML = finalText + linkHtml;
+            showPhase('reviewPhase');
+        }
+
+        function handleResponse(status) {
+            // Save both the status and the current timestamp
+            profiles[currentProfile][activeQuestion.id] = {
+                status: status,
+                timestamp: Date.now()
+            };
+            saveToStorage();
+            loadNextQuestion();
+        }
+
+        function resetProgress() {
+            if(confirm("Are you sure you want to clear your progress for this profile?")) {
+                profiles[currentProfile] = {};
+                saveToStorage();
+                loadNextQuestion();
+            }
+        }
+
+        function exportProfile() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(profiles[currentProfile]));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `${currentProfile}_ksa_progress.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function showPhase(phaseId) {
+            ['setupPhase', 'reviewPhase', 'completionState'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(phaseId).classList.remove('hidden');
+        }
+
+window.onload = init;
+
+
+function deleteCurrentProfile() {
+    if (confirm(`Are you sure you want to permanently delete "${currentProfile}" and all its progress?`)) {
+        // Remove the profile from our object
+        delete profiles[currentProfile];
+        
+        const profileNames = Object.keys(profiles);
+
+        if (profileNames.length === 0) {
+            // If NO profiles are left, clear storage and restart the init process
+            localStorage.removeItem('ksa_profiles');
+            localStorage.removeItem('ksa_current_profile');
+            alert("Last profile deleted. The app will now restart.");
+            init(); // This re-triggers the name prompt logic
+        } else {
+            // If other profiles still exist, switch to the first available one
+            saveToStorage();
+            currentProfile = profileNames[0];
+            localStorage.setItem('ksa_current_profile', currentProfile);
+            
+            // Refresh the UI
+            updateProfileDropdown();
+            loadNextQuestion();
+        }
+    }
+}
+
+function clearReviewQueue() {
+    const profileData = profiles[currentProfile];
+    let count = 0;
+
+    // Iterate through all answered questions in the current profile
+    Object.keys(profileData).forEach(qId => {
+        // Only remove if the status is 'review'
+        if (profileData[qId].status === 'review') {
+            delete profileData[qId];
+            count++;
+        }
+    });
+
+    if (count > 0) {
+        saveToStorage(); // Persist the changes to localStorage
+        alert(`Cleared ${count} questions from the review queue. They are now available to study again.`);
+        loadNextQuestion(); // Refresh the view to show newly available questions
+    } else {
+        alert("No questions are currently in the 24-hour review lockout.");
+    }
+}
+
+function importProfile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            // Use the filename (minus extension) as the profile name
+            const profileName = file.name.replace('_ksa_progress.json', '').replace('.json', '');
+            
+            if (confirm(`Import data for profile "${profileName}"? This will overwrite existing progress for this name.`)) {
+                profiles[profileName] = importedData;
+                currentProfile = profileName;
+                
+                saveToStorage(); // Save the newly imported data to localStorage
+                localStorage.setItem('ksa_current_profile', currentProfile); // Update current session
+                
+                updateProfileDropdown(); // Refresh the UI dropdown
+                loadNextQuestion(); // Jump straight into the questions
+                alert("Profile loaded successfully!");
+            }
+        } catch (err) {
+            alert("Error: Invalid profile file.");
+            console.error(err);
+        }
+        // Clear the input so the same file can be uploaded again if needed
+        event.target.value = '';
+    };
+    reader.readAsText(file);
+}
+
+function toggleMenu(event) {
+    event.stopPropagation(); // Prevents the click from immediately closing the menu
+    document.getElementById("profileMenu").classList.toggle("show-menu");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.btn-outline')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show-menu')) {
+                openDropdown.classList.remove('show-menu');
+            }
+        }
+    }
+}
+
+    </script>
+</body>
+</html>
