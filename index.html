@@ -142,6 +142,8 @@ let profiles = JSON.parse(localStorage.getItem('ksa_profiles')) || {};
 let currentProfile = localStorage.getItem('ksa_current_profile');
 let activeQuestion = null;
 let sessionMemory = {};
+let consecutiveCount = 0;
+let lastUsedIndex = -1;
 
 // Initialize App
 function init() {
@@ -229,7 +231,7 @@ function updateProfileDropdown() {
             const now = Date.now();
             const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
-            const remaining = questions.filter(q => {
+            const availablePool = questions.filter(q => {
                 const data = profiles[currentProfile][q.id];
                 
                 // 1. If never answered, it stays in the pool
@@ -247,13 +249,38 @@ function updateProfileDropdown() {
                 return true;
             });
 
-            if (remaining.length === 0) {
+            if (availablePool.length === 0) {
                 showPhase('completionState');
                 return;
             }
 
-            activeQuestion = remaining[Math.floor(Math.random() * remaining.length)];
-            setupCreativity(activeQuestion.text);
+            // 2. Logic to determine the NEXT question
+	    let nextIndex;
+	
+	    // Jump to a random spot if we've done 5 in a row or if it's the very first question
+	    if (consecutiveCount >= 5 || lastUsedIndex === -1) {
+	        nextIndex = Math.floor(Math.random() * availablePool.length);
+	        consecutiveCount = 1; // Reset count (this first one counts as 1)
+	    } else {
+	        // Try to find the "next" one in the available pool relative to the last ID used
+	        // Since the 'questions' array is naturally ordered, we find the first available
+	        // question whose index in the master list is greater than our last index.
+	        const nextAvailable = availablePool.find(q => questions.indexOf(q) > lastUsedIndex);
+	
+	        if (nextAvailable) {
+	            nextIndex = availablePool.indexOf(nextAvailable);
+	            consecutiveCount++;
+	        } else {
+	            // If no "next" questions exist further down the list, loop back or jump
+	            nextIndex = 0; 
+	            consecutiveCount = 1;
+	        }
+	    }
+	
+	    activeQuestion = availablePool[nextIndex];
+	    lastUsedIndex = questions.indexOf(activeQuestion); // Track position in master list
+	    
+	    setupCreativity(activeQuestion.text);
         }
 
         function setupCreativity(text) {
