@@ -139,15 +139,12 @@ const rawCsvData = `ID,Question,Chapter,Paragraph
 260217233536, "[person2] has a [type of container2] made of [pottery or wood] and designated for putting [excrement or urine]. The [type of container2] is clean and doesn’t have a bad smell. Is this [type of container2] considered halachically the same as an outhouse?", 5, 13
 260217233537, "[person2] is hired to help wash a pig named [name for a farm animal]. When the pig is clean, can [person2] sing [a Jewish song]?", 5, 13
 260217233538, "Can [person] say [a common Jewish greeting] to [person1] in a dirty [kind of place]?", 5, 14
-260217233539, "KSA 5:14 Can [person] greet their friend with ‘Shalom’ in [a place where[people bathe or there is excrement or urine]?", 5, 14
-260217233540, "KSA 5:14 Can [person] say [a davar kedusha] in a room where people bathe?", 5, 14
-260217233541, "KSA 5:14 Can [person] say [a name used specifically just for HKBH in any language] in a place with [people bathing or excrement or urine]?", 5, 14
-260217233542, "KSA 5:14 Can [person] think about [a davar kedusha] in a room where people bathe?", 5, 14
+260217233542, "Can [person] think about [a davar kedusha] in a room where people bathe?", 5, 14
 260217233543, "Can [person] say [a davar shebikedusha] while wearing a [a kind of garment] and nothing else?", 5, 15
 260217233544, "Can [person] say [a davar shebikedusha] while young [person1] is bathing nearby?", 5, 15
 260217233545, "Can [person1] say [a davar shebikedusha1] while facing [a kind of erva] if [person1] closes their eyes?", 5, 15
 260217233546, "Does [man] have to look away from baby [man2] while making the berachas of milah?", 5, 15
-260217233547, "KSA 5:15 Can [person] say [a davar Torah] in front of [person2], who is wearing a [kind of garment] and nothing else?", 5, 15
+260217233547, "Can [person] say [a davar Torah] in front of [person2], who is wearing a [kind of garment] and nothing else?", 5, 15
 260217233548, "[man] cannot say [a davar shebikedusha] in front of [woman] because [woman]’s [body part normally covered] is exposed. Does [woman]’s husband [man2] also have to wait to cover this to say [a davar shebikedusha]?", 5, 16
 260217233549, "[man] hears [woman1] singing. [man] is learning [a davar Torah]. If he cannot make [woman1] stop singing and cannot go anywhere else, is he allowed to learn [a davar Torah] where he can hear [woman1] singing?", 5, 16
 260217233550, "[man1] hears [woman] singing. [man1] has to say Shema. If he cannot make [woman] stop singing and cannot go anywhere else, is he allowed to say Shema where he can hear [woman] singing?", 5, 16
@@ -165,7 +162,7 @@ const rawCsvData = `ID,Question,Chapter,Paragraph
 260217233562, "Can [woman] say [a davar shebikedusha2] if she is only wearing a robe without a belt?", 5, 17
 260217233563, "[a large number] people urinate in an empty [something large for holding liquid]. How much water needs to be added to the [something large for holding liquid] to allow them to say [a prayer service] nearby?", 5, 2
 260217233564, "[a large number] people urinated on the floor of the [kind of place where people play team sports games] during the [kind of sports] game. How much water is needed to nullify the urine so that they can say [a davar shebikedusha] after the game?", 5, 2
-260217233565, "[person] has a [kind of container] full of urine. If [person] pours it into a [kind of container2 filled with water, can they say [a davar shebikedusha] nearby?", 5, 2
+260217233565, "[person] has a [kind of container] full of urine. If [person] pours it into a [kind of container2] filled with water, can they say [a davar shebikedusha] nearby?", 5, 2
 260217233566, "[person] has two [kind of container]s: one with water and one with urine. Each [kind of container] has [number] reviot of liquid. How can [person] combine the [kind of container]s to let them talk to [person2] tp review halachos?", 5, 2
 260217233567, "[person] is in a [kind of place] where someone left excrement. What do they need to do to think about [a davar kedusha]?", 5, 2
 260217233568, "[person1] is in a [kind of place1] where [number] people urinated. What do they need to do to think about [a davar kedusha1]?", 5, 2
@@ -178,7 +175,7 @@ const rawCsvData = `ID,Question,Chapter,Paragraph
 260217233575, "[person3] is in a [kind of place3] where someone urinated. What do they need to do to think about [a davar kedusha3]?", 5, 2
 260217233576, "[person3] urinated in [a place]. How much water does he need to pour on the urine to say [a davar kedusha3] in the [a place]?", 5, 2
 260217233577, "If [person1] pours a reviit of water onto the urine in a [kind of container used for putting urine], can they say [a davar kedusha1] nearby?", 5, 2
-260217233578, "If [person2] covers the feces in the [part of a house] with a [kind of covering], can she say [a a davar kedusha2]?", 5, 2
+260217233578, "If [person2] covers the feces in the [part of a house] with a [kind of covering], can she say [a davar kedusha2]?", 5, 2
 260217233579, "The smell of the [something that smells bad] extends through the [kind of area]. Can [person1] think about [a davar kedusha1] there?", 5, 2
 260217233580, "There is a toilet containing urine in the [kind of room]. How much water does [person3] ned to add to let them say [a davar shebikedusha] there?", 5, 2
 260217233581, "[person] has a little excrement in the place where it comes out that is covered by their clothes. Can they say [a dvar kedusha]?", 5, 3
@@ -225,6 +222,9 @@ const rawCsvData = `ID,Question,Chapter,Paragraph
 260217233622, "Can [person] say that [person1] shouldn’t be blessed with [a good thing that a person wants in their life]?", 6, 3
 260217233623, "Can [person1] refer to and say [a name of Hashem] over and over for fun?", 6, 3
 260217233624, "Can [person2] write the word [a word for Hashem in any language]?", 6, 3`;
+
+
+
 
 
 
