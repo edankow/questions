@@ -306,15 +306,16 @@ function updateProfileDropdown() {
             }
 
             matches.forEach((match, index) => {
-                const labelText = match.replace('[', '').replace(']', '');
+                // Original: [man1] -> labelText: man1
+                // New: Strip all digits for display purposes
+                const labelText = match.replace(/[\[\]\d]/g, ''); 
+                
                 const group = document.createElement('div');
                 group.className = 'input-group';
                 
-		// Check if we have seen this specific placeholder (e.g., "[person1]") before
-        	const rememberedValue = sessionMemory[match] || '';
+                // Check if we have seen this specific placeholder (e.g., "[man1]") before
+                const rememberedValue = sessionMemory[match] || '';
 
-                // Key logic: if not the last input, focus the next one. 
-                // If it is the last input, generate the question.
                 const isLast = index === matches.length - 1;
                 const action = isLast 
                     ? "generateQuestion()" 
@@ -325,18 +326,17 @@ function updateProfileDropdown() {
                     <input type="text" 
                            placeholder="Enter ${labelText}..." 
                            data-placeholder="${match}"
-			   value="${rememberedValue}"
+                           value="${rememberedValue}"
                            onkeyup="if(event.key === 'Enter') { ${action} }">
                 `;
                 container.appendChild(group);
                 
-                // Auto-focus the first field
                 if (index === 0) {
                     setTimeout(() => {
-             	    const allInputs = container.querySelectorAll('input');
-              	    const firstEmpty = Array.from(allInputs).find(input => !input.value) || allInputs[0];
-              	    firstEmpty.focus();
-          	    }, 10);
+                        const allInputs = container.querySelectorAll('input');
+                        const firstEmpty = Array.from(allInputs).find(input => !input.value) || allInputs[0];
+                        firstEmpty.focus();
+                    }, 10);
                 }
             });
         }
