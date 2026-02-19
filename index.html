@@ -78,6 +78,16 @@
     transform: scale(1.2); /* Subtle grow effect on hover */
 }
 
+.bsd {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-family: "SBL Hebrew", "Times New Roman", serif;
+    font-size: 14px;
+    direction: rtl;
+    color: #7f8c8d; /* A subtle grey to match your UI */
+}
+
     </style>
 
 <script src="questions.js"></script>
@@ -85,7 +95,7 @@
 
 </head>
 <body>
-
+<div class="bsd">בס"ד</div>
     <h1>KSA Study Tool</h1>
 
 <div class="profile-section">
@@ -156,7 +166,7 @@ function init() {
         // First time load: Force user to create a profile
         let name = "";
         while (!name || name.trim() === "") {
-            name = prompt("Welcome! Please enter a user name to begin:");
+            name = prompt("Welcome! Please enter a name for your session to begin:");
         }
         name = name.trim();
         profiles[name] = {};
