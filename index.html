@@ -3,104 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KSA Questions Study Tool</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h1 { color: #2c3e50; text-align: center; }
-        .profile-section { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 30px; background: #ebf0f1; padding: 15px; border-radius: 8px; }
-        .input-group { margin: 15px 0; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #7f8c8d; font-size: 0.9em; }
-        input[type="text"], select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
-        button { cursor: pointer; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; font-weight: 600; transition: opacity 0.2s; }
-        .btn-primary { background-color: #3498db; color: white; }
-        .btn-success { background-color: #27ae60; color: white; }
-        .btn-warning { background-color: #d35400; color: white; }
-        .btn-outline { background: transparent; border: 1px solid #3498db; color: #3498db; }
-        .hidden { display: none; }
-        .creativity-box { border-left: 4px solid #3498db; padding-left: 20px; }
-        .question-text { font-size: 1.2em; font-weight: 500; margin: 20px 0; padding: 15px; background: #fffbe6; border-radius: 8px; }
-        .stats { font-size: 0.8em; color: #95a5a6; margin-top: 10px; }
-        .actions { display: flex; gap: 10px; margin-top: 20px; }
+    <title>KS"A Questions Study Tool</title>
+    
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
+<link rel="stylesheet" href="style.css">
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: white;
-    min-width: 180px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 100;
-    border-radius: 8px;
-    padding: 10px 0;
-}
-
-.show-menu {
-    display: block !important;
-}
-
-.dropdown-content button {
-    color: #333;
-    padding: 10px 16px;
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.dropdown-content button:hover {
-    background-color: #f1f1f1;
-}
-
-#reviewPhase {
-    position: relative;
-}
-
-.source-link {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    text-decoration: none;
-    font-size: 48px; /* Increased size */
-    color: #3498db;
-    transition: transform 0.2s, color 0.2s;
-    line-height: 1;
-}
-
-.source-link:hover {
-    color: #2980b9;
-    transform: scale(1.2); /* Subtle grow effect on hover */
-}
-
-.bsd {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-family: "SBL Hebrew", "Times New Roman", serif;
-    font-size: 14px;
-    direction: rtl;
-    color: #7f8c8d; /* A subtle grey to match your UI */
-}
-
-    </style>
 
 <script src="questions.js"></script>
 
 
 </head>
 <body>
+
+<div class="wip-banner">
+        ⚠️ This site is a work in progress. </div>
+
 <div class="bsd">בס"ד</div>
-    <h1>KSA Study Tool</h1>
+    <h1>KS"A Questions Study Tool</h1>
 
 <div class="profile-section">
     <div>
         <select id="profileSelect"></select>
+	<div id="progressContainer" class="progress-info"></div>
     </div>
 
     <div class="dropdown">
@@ -128,15 +52,18 @@
         <h3>Evaluate the question:</h3>
         <div id="finalQuestion" class="question-text"></div>
         <div class="actions">
+
             <button class="btn-success" onclick="handleResponse('confident')">Answered Confidently</button>
             <button class="btn-warning" onclick="handleResponse('review')">Could Use More Review</button>
+	    <button class="btn-outline btn-back" onclick="goBackToEdit()">← Back to Inputs</button>
+
         </div>
     </div>
 
     <div id="completionState" class="card hidden">
         <h3>All caught up!</h3>
         <p>You've reviewed all the questions currently available.</p>
-	<button class="btn-outline" style="border-color: #27ae60; color: #27ae60;" onclick="clearReviewQueue()">Reset Review Timer</button><br><br>
+	<button class="btn-outline" style="border-color: #27ae60; color: #27ae60;" onclick="clearReviewQueue()">Browse reviewed questions</button><br><br>
         <button class="btn-primary" onclick="resetProgress()">Restart Questions</button>
     </div>
 
@@ -154,6 +81,7 @@ let activeQuestion = null;
 let sessionMemory = {};
 let consecutiveCount = 0;
 let lastUsedIndex = -1;
+let ignoreTimestamps = false;
 
 // Initialize App
 function init() {
@@ -211,13 +139,25 @@ function updateProfileDropdown() {
         select.appendChild(opt);
     });
 
-    // When the user picks a different name:
+    // Calculate Stats
+    const total = questions.length;
+    const profileData = profiles[currentProfile] || {};
+    const done = Object.values(profileData).filter(q => q.status === 'confident').length;
+    const review = Object.values(profileData).filter(q => q.status === 'review').length;
+    const unasked = total - (done + review);
+
+    // Display Stats
+    document.getElementById('progressContainer').innerHTML = `
+        <span><span class="dot dot-done"></span><strong>${done}</strong> Mastered</span>
+        <span><span class="dot dot-review"></span><strong>${review}</strong> Reviewing</span>
+        <span><span class="dot dot-new"></span><strong>${unasked}</strong> New</span>
+    `;
+
     select.onchange = (e) => {
         currentProfile = e.target.value;
-        localStorage.setItem('ksa_current_profile', currentProfile); // Persist the switch
-        
-        // REINITIALIZE:
-        // This clears any old inputs and checks the 24-hour lockout for the new profile
+        localStorage.setItem('ksa_current_profile', currentProfile);
+	ignoreTimestamps = false
+        updateProfileDropdown(); // Refresh stats on change
         loadNextQuestion();
     };
 }
@@ -252,6 +192,7 @@ function updateProfileDropdown() {
 
                 // 3. If "review", only include if 24 hours have passed
                 if (data.status === 'review') {
+		    if (ignoreTimestamps) return true;
                     const timeElapsed = now - data.timestamp;
                     return timeElapsed > TWENTY_FOUR_HOURS;
                 }
@@ -306,30 +247,30 @@ function updateProfileDropdown() {
             }
 
             matches.forEach((match, index) => {
-                // Original: [man1] -> labelText: man1
-                // New: Strip all digits for display purposes
-                const labelText = match.replace(/[\[\]\d]/g, ''); 
-                
-                const group = document.createElement('div');
-                group.className = 'input-group';
-                
-                // Check if we have seen this specific placeholder (e.g., "[man1]") before
-                const rememberedValue = sessionMemory[match] || '';
-
-                const isLast = index === matches.length - 1;
-                const action = isLast 
-                    ? "generateQuestion()" 
-                    : `document.querySelectorAll('#inputContainer input')[${index + 1}].focus()`;
-
-                group.innerHTML = `
-                    <label>${labelText}</label>
-                    <input type="text" 
-                           placeholder="Enter ${labelText}..." 
-                           data-placeholder="${match}"
-                           value="${rememberedValue}"
-                           onkeyup="if(event.key === 'Enter') { ${action} }">
-                `;
-                container.appendChild(group);
+	    // Strip digits and brackets for the base word
+	    const rawLabel = match.replace(/[\[\]\d]/g, ''); 
+	    
+	    // Create a capitalized version for the header ONLY
+	    const capitalizedLabel = rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1);
+	    
+	    const group = document.createElement('div');
+	    group.className = 'input-group';
+	    
+	    const rememberedValue = sessionMemory[match] || '';
+	    const isLast = index === matches.length - 1;
+	    const action = isLast 
+	        ? "generateQuestion()" 
+	        : `document.querySelectorAll('#inputContainer input')[${index + 1}].focus()`;
+	
+	    group.innerHTML = `
+	        <label>${capitalizedLabel}</label>
+	        <input type="text" 
+	               placeholder="Enter ${rawLabel}..." 
+	               data-placeholder="${match}"
+	               value="${rememberedValue}"
+	               onkeyup="if(event.key === 'Enter') { ${action} }">
+	    `;
+	    container.appendChild(group);
                 
                 if (index === 0) {
                     setTimeout(() => {
@@ -379,16 +320,33 @@ function updateProfileDropdown() {
                 timestamp: Date.now()
             };
             saveToStorage();
+            updateProfileDropdown();
             loadNextQuestion();
         }
 
-        function resetProgress() {
-            if(confirm("Are you sure you want to clear your progress for this profile?")) {
-                profiles[currentProfile] = {};
-                saveToStorage();
-                loadNextQuestion();
-            }
-        }
+function resetProgress() {
+    const message = `Are you sure you want to restart? 
+
+A backup of your current progress will be saved as "${currentProfile}_${new Date().getTime()}".`;
+
+    if (confirm(message)) {
+        // 1. Create a timestamped backup name
+        const backupName = `${currentProfile}_${Date.now()}`;
+        
+        // 2. Clone the current progress into the backup profile
+        profiles[backupName] = JSON.parse(JSON.stringify(profiles[currentProfile]));
+        
+        // 3. Clear the progress for the active profile
+        profiles[currentProfile] = {};
+        
+        // 4. Save changes and refresh the UI
+        saveToStorage();
+        updateProfileDropdown();
+        loadNextQuestion();
+        
+        alert(`Progress cleared. Backup created: ${backupName}`);
+    }
+}
 
         function exportProfile() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(profiles[currentProfile]));
@@ -437,25 +395,9 @@ function deleteCurrentProfile() {
 }
 
 function clearReviewQueue() {
-    const profileData = profiles[currentProfile];
-    let count = 0;
-
-    // Iterate through all answered questions in the current profile
-    Object.keys(profileData).forEach(qId => {
-        // Only remove if the status is 'review'
-        if (profileData[qId].status === 'review') {
-            delete profileData[qId];
-            count++;
-        }
-    });
-
-    if (count > 0) {
-        saveToStorage(); // Persist the changes to localStorage
-        alert(`Cleared ${count} questions from the review queue. They are now available to study again.`);
-        loadNextQuestion(); // Refresh the view to show newly available questions
-    } else {
-        alert("No questions are currently in the 24-hour review lockout.");
-    }
+ignoreTimestamps = true;
+    alert("Review timer ignored. All 'Review' questions are now available.");
+    loadNextQuestion();
 }
 
 function importProfile(event) {
@@ -506,6 +448,13 @@ window.onclick = function(event) {
             }
         }
     }
+}
+
+
+function goBackToEdit() {
+    // Simply trigger the setup again for the current active question
+    // This will pull the current values from sessionMemory automatically
+    showPhase('setupPhase');
 }
 
     </script>
