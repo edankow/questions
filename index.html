@@ -40,13 +40,16 @@
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
 </div>
 
-    <div id="setupPhase" class="card hidden">
-        <div class="creativity-box">
-            <h3>Fill in the blanks:</h3>
-            <div id="inputContainer"></div>
-            <button class="btn-primary" style="margin-top: 20px;" onclick="generateQuestion()">Generate Question</button>
-        </div>
+<div id="setupPhase" class="card hidden">
+    <div class="creativity-box">
+        <h3>Create the Scenario</h3>
+        <p class="stats" style="margin-bottom: 15px; line-height: 1.4;">
+            Provide specific examples for the categories below. We'll use them to make a study question based on a practical scenario.
+        </p>
+        <div id="inputContainer"></div>
+        <button class="btn-primary" style="margin-top: 20px;" onclick="generateQuestion()">Generate Question</button>
     </div>
+</div>
 
     <div id="reviewPhase" class="card hidden">
         <h3>Evaluate the question:</h3>
