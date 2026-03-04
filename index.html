@@ -66,9 +66,16 @@
     <div id="completionState" class="card hidden">
         <h3>All caught up!</h3>
         <p>You've reviewed all the questions currently available.</p>
-	<button class="btn-outline" style="border-color: #27ae60; color: #27ae60;" onclick="clearReviewQueue()">Browse reviewed questions</button><br><br>
+	<button class="btn-outline" style="border-color: #27ae60; color: #27ae60;" onclick="clearReviewQueue()">Revisit 'needs review' questions</button><br><br>
         <button class="btn-primary" onclick="resetProgress()">Restart Questions</button>
     </div>
+
+<div id="historySection" class="card">
+    <h3>Question History</h3>
+    <div id="historyList" style="max-height: 300px; overflow-y: auto;">
+        <p class="stats">No questions answered yet.</p>
+    </div>
+</div>
 
 
     <script>
@@ -111,6 +118,7 @@ function init() {
     }
 
     updateProfileDropdown();
+    updateHistoryList();
     loadNextQuestion();
 }
 
@@ -152,7 +160,7 @@ function updateProfileDropdown() {
     // Display Stats
     document.getElementById('progressContainer').innerHTML = `
         <span><span class="dot dot-done"></span><strong>${done}</strong> Mastered</span>
-        <span><span class="dot dot-review"></span><strong>${review}</strong> Reviewing</span>
+        <span><span class="dot dot-review"></span><strong>${review}</strong> Needs Review</span>
         <span><span class="dot dot-new"></span><strong>${unasked}</strong> New</span>
     `;
 
@@ -161,6 +169,7 @@ function updateProfileDropdown() {
         localStorage.setItem('ksa_current_profile', currentProfile);
 	ignoreTimestamps = false
         updateProfileDropdown(); // Refresh stats on change
+	updateHistoryList();
         loadNextQuestion();
     };
 }
@@ -184,24 +193,36 @@ function updateProfileDropdown() {
             const now = Date.now();
             const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
+            const profileData = profiles[currentProfile] || {};
+            
+            // Count how many questions are currently in the "review" state
+            const reviewCount = Object.values(profileData).filter(q => q.status === 'review').length;
+            const reviewBtn = document.querySelector("#completionState button[onclick='clearReviewQueue()']");
+
             const availablePool = questions.filter(q => {
-                const data = profiles[currentProfile][q.id];
-                
-                // 1. If never answered, it stays in the pool
+                const data = profileData[q.id];
                 if (!data) return true;
-
-                // 2. If confident, it stays out of the pool
                 if (data.status === 'confident') return false;
-
-                // 3. If "review", only include if 24 hours have passed
                 if (data.status === 'review') {
-		    if (ignoreTimestamps) return true;
+                    if (ignoreTimestamps) return true;
                     const timeElapsed = now - data.timestamp;
                     return timeElapsed > TWENTY_FOUR_HOURS;
                 }
-
                 return true;
             });
+
+            if (availablePool.length === 0) {
+                // Toggle visibility of the "Revisit" button
+                if (reviewBtn) {
+                    if (reviewCount > 0) {
+                        reviewBtn.classList.remove('hidden-button');
+                    } else {
+                        reviewBtn.classList.add('hidden-button');
+                    }
+                }
+                showPhase('completionState');
+                return;
+            }
 
             if (availablePool.length === 0) {
                 showPhase('completionState');
@@ -316,16 +337,22 @@ function updateProfileDropdown() {
             showPhase('reviewPhase');
         }
 
-        function handleResponse(status) {
-            // Save both the status and the current timestamp
-            profiles[currentProfile][activeQuestion.id] = {
-                status: status,
-                timestamp: Date.now()
-            };
-            saveToStorage();
-            updateProfileDropdown();
-            loadNextQuestion();
-        }
+function handleResponse(status) {
+    // Get the generated text currently showing in the UI
+    const generatedText = document.getElementById('finalQuestion').innerText.replace('ⓘ', '').trim();
+
+    // Save status, timestamp, AND the specific scenario generated
+    profiles[currentProfile][activeQuestion.id] = {
+        status: status,
+        timestamp: Date.now(),
+        scenario: generatedText // Store the personalized version
+    };
+    
+    saveToStorage();
+    updateProfileDropdown();
+    updateHistoryList();
+    loadNextQuestion();
+}
 
 function resetProgress() {
     const message = `Are you sure you want to restart? 
@@ -345,6 +372,7 @@ A backup of your current progress will be saved as "${currentProfile}_${new Date
         // 4. Save changes and refresh the UI
         saveToStorage();
         updateProfileDropdown();
+	updateHistoryList();
         loadNextQuestion();
         
         alert(`Progress cleared. Backup created: ${backupName}`);
@@ -399,7 +427,6 @@ function deleteCurrentProfile() {
 
 function clearReviewQueue() {
 ignoreTimestamps = true;
-    alert("Review timer ignored. All 'Review' questions are now available.");
     loadNextQuestion();
 }
 
@@ -459,6 +486,54 @@ function goBackToEdit() {
     // This will pull the current values from sessionMemory automatically
     showPhase('setupPhase');
 }
+
+
+function updateHistoryList() {
+    const historyContainer = document.getElementById('historyList');
+    const profileData = profiles[currentProfile] || {};
+    
+    // Filter the master list for questions that have a record in the current profile
+    const askedQuestions = questions.filter(q => profileData[q.id]);
+
+    if (askedQuestions.length === 0) {
+        historyContainer.innerHTML = '<p class="stats">No questions answered yet.</p>';
+        return;
+    }
+
+    // Generate a table or list of the questions
+    let html = `<table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
+        <thead>
+            <tr style="text-align: left; border-bottom: 2px solid #eee;">
+                <th style="padding: 8px;">ID</th>
+                <th style="padding: 8px;">Question Text</th>
+                <th style="padding: 8px;">Source</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+	askedQuestions.forEach(q => {
+	    const record = profileData[q.id];
+	    const status = record.status;
+	    const statusColor = status === 'confident' ? '#27ae60' : '#d35400';
+	    
+	    // Use the saved scenario if it exists; otherwise, use the default template
+	    const displaySnippet = record.scenario || q.text;
+	    
+	    html += `
+	        <tr style="border-bottom: 1px solid #eee;">
+	            <td style="padding: 8px; color: #95a5a6;">${q.id}</td>
+	            <td style="padding: 8px;">
+	                <span class="dot" style="background-color: ${statusColor}"></span> 
+	                ${displaySnippet}
+	            </td>
+	            <td style="padding: 8px; white-space: nowrap;">Ch. ${q.chapter}, ¶ ${q.paragraph}</td>
+	        </tr>`;
+	});
+
+    html += `</tbody></table>`;
+    historyContainer.innerHTML = html;
+}
+
 
     </script>
 </body>
