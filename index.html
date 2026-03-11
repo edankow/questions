@@ -19,7 +19,7 @@
         ⚠️ This site is a work in progress. </div>
 
 <div class="bsd">בס"ד</div>
-    <h1>KS"A Questions Study Tool</h1>
+    <h1>Kitzur Shulchan Arukh (KS"A) Questions Study Tool</h1>
 
 <div class="profile-section">
     <div>
@@ -28,26 +28,45 @@
     </div>
 
     <div class="dropdown">
-        <button class="btn-outline" onclick="toggleMenu(event)">Edit Profiles ▾</button>
-        <div id="profileMenu" class="dropdown-content">
+        <button class="btn-outline" onclick="toggleMenu(this, 'menu-profiles')">Edit Profiles ▾</button>
+        <div id="menu-profiles" class="dropdown-content">
             <button onclick="createNewProfile()">New Profile</button>
             <button onclick="exportProfile()">Export Profile</button>
             <button onclick="document.getElementById('importInput').click()">Load Profile</button>
-	    <button onclick="toggleHistory()">View History Table</button>
-	    <button onclick="exportWorksheet()">Export as Worksheet</button>
             <hr>
             <button class="btn-delete" onclick="deleteCurrentProfile()">Delete Profile</button>
         </div>
     </div>
+
+
+	<div class="dropdown">
+        <button class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Other tools ▾</button>
+        <div id="menu-tools" class="dropdown-content">
+	    <button onclick="toggleHistory()">View History Table</button>
+	    <button onclick="exportWorksheet()">Export as Worksheet</button>
+        </div>
+    </div>
+
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
 </div>
 
 <div id="setupPhase" class="card hidden">
     <div class="creativity-box">
-        <h3>Create the Scenario</h3>
-        <p class="stats" style="margin-bottom: 15px; line-height: 1.4;">
-            Provide specific examples for the categories below. We'll use them to make a study question based on a practical scenario.
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h3 style="margin: 0;">Create the Scenario</h3>
+            <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions">ⓘ</button>
+        </div>
+        
+<p class="stats" style="margin-top: 10px; color: #7f8c8d;">
+            Provide specific examples below to generate a practical scenario.
         </p>
+
+        <p id="scenarioInstructions" class="stats hidden-info" style="margin-top: 5px; line-height: 1.4; border-left: 2px solid #3498db; padding-left: 10px;">
+            <span style="display: block; color: #7f8c8d;">
+                <strong>Note:</strong> Please use <strong>fictional names</strong> rather than real people you know. Feel free to replace "they/their" with gender-specific pronouns as you read.
+            </span>
+        </p>
+
         <div id="inputContainer"></div>
         <button class="btn-primary" style="margin-top: 20px;" onclick="generateQuestion()">Generate Question</button>
     </div>
@@ -55,20 +74,29 @@
 
     <div id="reviewPhase" class="card hidden">
         <h3>Evaluate the question:</h3>
+	<p class="stats" style="margin-bottom: 15px; line-height: 1.4;">
+            Consider the scenario on your own or with a <i>chevrusa</i>. If you need to check the ⓘ source to answer, select "Needs Review."
+        </p>
         <div id="finalQuestion" class="question-text"></div>
+	<div id="sourceCitation" style="text-align: right; margin-top: 10px;"></div>
         <div class="actions">
-
-            <button class="btn-success" onclick="handleResponse('confident')">Answered Confidently</button>
-            <button class="btn-warning" onclick="handleResponse('review')">Could Use More Review</button>
-	    <button class="btn-outline btn-back" onclick="goBackToEdit()">← Back to Inputs</button>
-
-        </div>
+	    <div class="tooltip-wrapper">
+	        <button class="btn-success" onclick="handleResponse('confident')">Answered Confidently</button>
+	        <span class="tooltip-text">Marks as <strong>Mastered</strong> and removes from deck.</span>
+	    </div>
+	    
+	    <div class="tooltip-wrapper">
+	        <button class="btn-warning" onclick="handleResponse('review')">Needs Review</button>
+	        <span class="tooltip-text">Reappears in <strong>24 hours</strong>.</span>
+	    </div>
+	</div>
     </div>
 
     <div id="completionState" class="card hidden">
         <h3>All caught up!</h3>
         <p>You've reviewed all the questions currently available.</p>
 	<button class="btn-outline" style="border-color: #27ae60; color: #27ae60;" onclick="clearReviewQueue()">Revisit 'needs review' questions</button><br><br>
+	<button class="btn-outline" style="border-color: #3498db; color: #3498db;" onclick="revisitMastered()">Revisit 'mastered' questions</button><br><br>
         <button class="btn-primary" onclick="resetProgress()">Restart Questions</button>
     </div>
 
@@ -81,8 +109,6 @@
 
 
     <script>
-
-
 
         // State variables
 let questions = [];
@@ -111,6 +137,14 @@ function init() {
 
     updateProfileDropdown();
     updateHistoryList();
+    loadNextQuestion();
+}
+
+// New state variable to track the review mode
+let reviewMasteredMode = false;
+
+function revisitMastered() {
+    reviewMasteredMode = true;
     loadNextQuestion();
 }
 
@@ -179,6 +213,17 @@ function updateProfileDropdown() {
     ).length;
     const unasked = total - (done + review);
 
+	const masteredBtn = document.querySelector("#completionState button[onclick='revisitMastered()']");
+    if (masteredBtn) {
+        if (done > 0) {
+            masteredBtn.classList.remove('hidden-button');
+            // Ensure any <br> tags associated with it are also managed if necessary, 
+            // though class toggling on the button is usually sufficient.
+        } else {
+            masteredBtn.classList.add('hidden-button');
+        }
+    }
+
     // Display Stats
     document.getElementById('progressContainer').innerHTML = `
         <span><span class="dot dot-done"></span><strong>${done}</strong> Mastered</span>
@@ -190,6 +235,7 @@ function updateProfileDropdown() {
         currentProfile = e.target.value;
         localStorage.setItem('ksa_current_profile', currentProfile);
 	ignoreTimestamps = false
+	reviewMasteredMode = false;
         updateProfileDropdown(); // Refresh stats on change
 	updateHistoryList();
         loadNextQuestion();
@@ -212,76 +258,68 @@ function updateProfileDropdown() {
         }
 
         function loadNextQuestion() {
-            const now = Date.now();
-            const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
-
-            const profileData = profiles[currentProfile] || {};
-            
-            // Count how many questions are currently in the "review" state
-            const reviewCount = Object.values(profileData).filter(q => q.status === 'review').length;
-            const reviewBtn = document.querySelector("#completionState button[onclick='clearReviewQueue()']");
-
-            const availablePool = questions.filter(q => {
-                const data = profileData[q.id];
-                if (!data) return true;
-                if (data.status === 'confident') return false;
-                if (data.status === 'review') {
-                    if (ignoreTimestamps) return true;
-                    const timeElapsed = now - data.timestamp;
-                    return timeElapsed > TWENTY_FOUR_HOURS;
-                }
-                return true;
-            });
-
-            if (availablePool.length === 0) {
-                // Toggle visibility of the "Revisit" button
-                if (reviewBtn) {
-                    if (reviewCount > 0) {
-                        reviewBtn.classList.remove('hidden-button');
-                    } else {
-                        reviewBtn.classList.add('hidden-button');
-                    }
-                }
-                showPhase('completionState');
-                return;
-            }
-
-            if (availablePool.length === 0) {
-                showPhase('completionState');
-                return;
-            }
-
-            // 2. Logic to determine the NEXT question
-	    let nextIndex;
-	
-	    // Jump to a random spot if we've done 5 in a row or if it's the very first question
-	    if (consecutiveCount >= 5 || lastUsedIndex === -1) {
-	        nextIndex = Math.floor(Math.random() * availablePool.length);
-	        consecutiveCount = 1; // Reset count (this first one counts as 1)
-	    } else {
-	        // Try to find the "next" one in the available pool relative to the last ID used
-	        // Since the 'questions' array is naturally ordered, we find the first available
-	        // question whose index in the master list is greater than our last index.
-	        const nextAvailable = availablePool.find(q => questions.indexOf(q) > lastUsedIndex);
-	
-	        if (nextAvailable) {
-	            nextIndex = availablePool.indexOf(nextAvailable);
-	            consecutiveCount++;
-	        } else {
-	            // If no "next" questions exist further down the list, loop back or jump
-	            nextIndex = 0; 
-	            consecutiveCount = 1;
-	        }
-	    }
-	
-	    activeQuestion = availablePool[nextIndex];
-	    lastUsedIndex = questions.indexOf(activeQuestion); // Track position in master list
-	    
-	    setupCreativity(activeQuestion.text);
+    const now = Date.now();
+    const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+    const profileData = profiles[currentProfile] || {};
+    
+    const availablePool = questions.filter(q => {
+        const data = profileData[q.id];
+        
+        // If we are in "Revisit Mastered" mode, only show mastered ones
+        if (reviewMasteredMode) {
+            return data && data.status === 'confident';
         }
+
+        // Standard Logic
+        if (!data) return true;
+        if (data.status === 'confident') return false;
+        if (data.status === 'review') {
+            if (ignoreTimestamps) return true;
+            return (now - data.timestamp) > TWENTY_FOUR_HOURS;
+        }
+        return true;
+    });
+
+    if (availablePool.length === 0) {
+        // If we were reviewing mastered and ran out, turn off the mode
+        reviewMasteredMode = false; 
+        
+        const reviewCount = Object.values(profileData).filter(q => q.status === 'review').length;
+        const reviewBtn = document.querySelector("#completionState button[onclick='clearReviewQueue()']");
+        if (reviewBtn) {
+            reviewCount > 0 ? reviewBtn.classList.remove('hidden-button') : reviewBtn.classList.add('hidden-button');
+        }
+        showPhase('completionState');
+        return;
+    }
+
+    // Determine the next question index (Standard random/sequential logic)
+    let nextIndex;
+    if (consecutiveCount >= 5 || lastUsedIndex === -1) {
+        nextIndex = Math.floor(Math.random() * availablePool.length);
+        consecutiveCount = 1;
+    } else {
+        const nextAvailable = availablePool.find(q => questions.indexOf(q) > lastUsedIndex);
+        if (nextAvailable) {
+            nextIndex = availablePool.indexOf(nextAvailable);
+            consecutiveCount++;
+        } else {
+            nextIndex = 0; 
+            consecutiveCount = 1;
+        }
+    }
+
+    activeQuestion = availablePool[nextIndex];
+    lastUsedIndex = questions.indexOf(activeQuestion);
+	showPhase('setupPhase');
+    setupCreativity(activeQuestion.text);
+}
 
         function setupCreativity(text) {
             showPhase('setupPhase');
+
+		document.getElementById('scenarioInstructions').classList.add('hidden-info');
+  	 	 document.querySelector('.info-toggle').style.color = '#3498db';
             const container = document.getElementById('inputContainer');
             container.innerHTML = '';
             
@@ -329,45 +367,41 @@ function updateProfileDropdown() {
         }
 
         function generateQuestion() {
-            let finalText = activeQuestion.text;
-            const inputs = document.querySelectorAll('#inputContainer input');
-            
-            inputs.forEach(input => {
-                const val = input.value || `(${input.getAttribute('data-placeholder')})`;
-                const placeholder = input.getAttribute('data-placeholder');
-		// Save the value to memory for next time this placeholder appears
-        	if (val) {
-            		sessionMemory[placeholder] = val;
-        	}
-
-        	const displayVal = val || `(${placeholder})`;
-                finalText = finalText.split(placeholder).join(`<strong>${val}</strong>`);
-            });
-
-            // Construct the Sefaria URL
-            const sefariaUrl = `https://www.sefaria.org/Kitzur_Shulchan_Arukh.${activeQuestion.chapter}.${activeQuestion.paragraph}`;
-            
-            // Generate the link HTML
-            const linkHtml = `
-                <a href="${sefariaUrl}" target="_blank" class="source-link" title="View Source on Sefaria">
-                    ⓘ
-                </a>
-            `;
-
-            // Set the question text and append the icon
-            document.getElementById('finalQuestion').innerHTML = finalText + linkHtml;
-            showPhase('reviewPhase');
+    let finalText = activeQuestion.text;
+    const inputs = document.querySelectorAll('#inputContainer input');
+    
+    inputs.forEach(input => {
+        const val = input.value || `(${input.getAttribute('data-placeholder')})`;
+        const placeholder = input.getAttribute('data-placeholder');
+        if (val) {
+            sessionMemory[placeholder] = val;
         }
+        finalText = finalText.split(placeholder).join(`<strong>${val}</strong>`);
+    });
+
+    // 1. Set the Scenario Text
+    document.getElementById('finalQuestion').innerHTML = finalText;
+
+    // 2. Set the Source Citation separately
+    const sefariaUrl = `https://www.sefaria.org/Kitzur_Shulchan_Arukh.${activeQuestion.chapter}.${activeQuestion.paragraph}`;
+    const linkText = `ⓘ KS"A ${parseInt(activeQuestion.chapter)}:${parseInt(activeQuestion.paragraph)}`;
+    
+    document.getElementById('sourceCitation').innerHTML = `
+        <a href="${sefariaUrl}" target="_blank" class="source-link" title="View Source on Sefaria">
+            ${linkText}
+        </a>
+    `;
+
+    showPhase('reviewPhase');
+}
 
 function handleResponse(status) {
-    // Get the generated text currently showing in the UI
-    const generatedText = document.getElementById('finalQuestion').innerText.replace('ⓘ', '').trim();
+    const generatedText = document.getElementById('finalQuestion').innerText.trim();
 
-    // Save status, timestamp, AND the specific scenario generated
     profiles[currentProfile][activeQuestion.id] = {
         status: status,
         timestamp: Date.now(),
-        scenario: generatedText // Store the personalized version
+        scenario: generatedText 
     };
     
     saveToStorage();
@@ -492,9 +526,23 @@ function importProfile(event) {
     reader.readAsText(file);
 }
 
-function toggleMenu(event) {
-    event.stopPropagation(); // Prevents the click from immediately closing the menu
-    document.getElementById("profileMenu").classList.toggle("show-menu");
+function toggleMenu(button, menuId) {
+    // 1. Get the menu we want to open
+    const targetMenu = document.getElementById(menuId);
+    
+    // 2. Find all other dropdowns and close them
+    const allMenus = document.getElementsByClassName("dropdown-content");
+    for (let menu of allMenus) {
+        if (menu.id !== menuId) {
+            menu.classList.remove('show-menu');
+        }
+    }
+
+    // 3. Toggle the targeted menu
+    targetMenu.classList.toggle("show-menu");
+    
+    // 4. Prevent the window.onclick from firing immediately
+    event.stopPropagation();
 }
 
 // Close the dropdown if the user clicks outside of it
@@ -664,13 +712,21 @@ function exportWorksheet() {
 
 
 
-
+function toggleScenarioInfo() {
+    const infoBox = document.getElementById('scenarioInstructions');
+    const isHidden = infoBox.classList.toggle('hidden-info');
+    
+    // Optional: Change icon color when active
+    const btn = document.querySelector('.info-toggle');
+    btn.style.color = isHidden ? '#3498db' : '#2c3e50';
+}
 
     </script>
 
 <div id="welcomeModal" class="modal-overlay hidden">
     <div class="card modal-content">
         <h2>Welcome to KS"A Study Tool</h2>
+	<p>A scenario-based application for mastering the Kitzur Shulchan Arukh.</p>
         <p>How would you like to begin?</p>
         <div class="modal-actions">
             <button class="btn-primary" onclick="handleInitialChoice('new')">Create New Profile</button>
