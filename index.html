@@ -33,6 +33,8 @@
             <button onclick="createNewProfile()">New Profile</button>
             <button onclick="exportProfile()">Export Profile</button>
             <button onclick="document.getElementById('importInput').click()">Load Profile</button>
+	    <button onclick="toggleHistory()">View History Table</button>
+	    <button onclick="exportWorksheet()">Export as Worksheet</button>
             <hr>
             <button class="btn-delete" onclick="deleteCurrentProfile()">Delete Profile</button>
         </div>
@@ -70,7 +72,7 @@
         <button class="btn-primary" onclick="resetProgress()">Restart Questions</button>
     </div>
 
-<div id="historySection" class="card">
+<div id="historySection" class="card hidden">
     <h3>Question History</h3>
     <div id="historyList" style="max-height: 300px; overflow-y: auto;">
         <p class="stats">No questions answered yet.</p>
@@ -96,23 +98,13 @@ let ignoreTimestamps = false;
 // Initialize App
 function init() {
     questions = parseCSV(rawCsvData);
-
-    // Check if any profiles exist
     const profileNames = Object.keys(profiles);
 
     if (profileNames.length === 0) {
-        // First time load: Force user to create a profile
-        let name = "";
-        while (!name || name.trim() === "") {
-            name = prompt("Welcome! Please enter a name for your session to begin:");
-        }
-        name = name.trim();
-        profiles[name] = {};
-        currentProfile = name;
-        saveToStorage();
-        localStorage.setItem('ksa_current_profile', name);
+        // Show the custom choice modal instead of a prompt
+        document.getElementById('welcomeModal').classList.remove('hidden');
+        return; // Stop until user clicks a button
     } else if (!currentProfile || !profiles[currentProfile]) {
-        // If a profile exists but currentProfile is lost, default to the first one
         currentProfile = profileNames[0];
         localStorage.setItem('ksa_current_profile', currentProfile);
     }
@@ -121,6 +113,30 @@ function init() {
     updateHistoryList();
     loadNextQuestion();
 }
+
+function handleInitialChoice(choice) {
+    if (choice === 'new') {
+        let name = prompt("Please enter a name for your session:");
+        if (!name || name.trim() === "") return; // Don't close if they didn't enter a name
+        
+        name = name.trim();
+        profiles[name] = {};
+        currentProfile = name;
+        saveToStorage();
+        localStorage.setItem('ksa_current_profile', name);
+        
+        document.getElementById('welcomeModal').classList.add('hidden');
+        updateProfileDropdown();
+        updateHistoryList();
+        loadNextQuestion();
+    } else {
+        // Trigger the file input and let importProfile handle the rest
+        document.getElementById('importInput').click();
+        // The modal will stay until importProfile confirms success
+    }
+}
+
+
 
         // Modified CSV Parser to use the ID from the dataset
         function parseCSV(str) {
@@ -153,8 +169,14 @@ function updateProfileDropdown() {
     // Calculate Stats
     const total = questions.length;
     const profileData = profiles[currentProfile] || {};
-    const done = Object.values(profileData).filter(q => q.status === 'confident').length;
-    const review = Object.values(profileData).filter(q => q.status === 'review').length;
+	const validIds = new Set(questions.map(q => q.id)); // Create a Set of valid IDs for high-speed lookup
+	// Filter profile data to only include entries that exist in the database
+	const done = Object.keys(profileData).filter(id => 
+        validIds.has(id) && profileData[id].status === 'confident'
+        ).length;    
+	const review = Object.keys(profileData).filter(id => 
+        validIds.has(id) && profileData[id].status === 'review'
+    ).length;
     const unasked = total - (done + review);
 
     // Display Stats
@@ -380,14 +402,18 @@ A backup of your current progress will be saved as "${currentProfile}_${new Date
 }
 
         function exportProfile() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(profiles[currentProfile]));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", `${currentProfile}_ksa_progress.json`);
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
+    // Adding 'null, 4' as arguments creates a "pretty-printed" JSON with 4-space indentation
+    const jsonString = JSON.stringify(profiles[currentProfile], null, 4);
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonString);
+    
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", `${currentProfile}_ksa_progress.json`);
+    document.body.appendChild(downloadAnchorNode);
+    
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
 
         function showPhase(phaseId) {
             ['setupPhase', 'reviewPhase', 'completionState'].forEach(id => {
@@ -432,31 +458,35 @@ ignoreTimestamps = true;
 
 function importProfile(event) {
     const file = event.target.files[0];
-    if (!file) return;
+    if (!file) {
+        // If they cancelled the file picker on the very first run, restart init
+        if (Object.keys(profiles).length === 0) init();
+        return;
+    }
 
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
             const importedData = JSON.parse(e.target.result);
-            // Use the filename (minus extension) as the profile name
             const profileName = file.name.replace('_ksa_progress.json', '').replace('.json', '');
             
-            if (confirm(`Import data for profile "${profileName}"? This will overwrite existing progress for this name.`)) {
-                profiles[profileName] = importedData;
-                currentProfile = profileName;
-                
-                saveToStorage(); // Save the newly imported data to localStorage
-                localStorage.setItem('ksa_current_profile', currentProfile); // Update current session
-                
-                updateProfileDropdown(); // Refresh the UI dropdown
-                loadNextQuestion(); // Jump straight into the questions
-                alert("Profile loaded successfully!");
-            }
+            // Reduced the confirm requirement slightly for first-run for better UX
+            profiles[profileName] = importedData;
+            currentProfile = profileName;
+            
+            saveToStorage();
+            localStorage.setItem('ksa_current_profile', currentProfile);
+            
+            updateProfileDropdown();
+            updateHistoryList();
+            loadNextQuestion();
+		document.getElementById('welcomeModal').classList.add('hidden');
+            alert(`Profile "${profileName}" loaded successfully!`);
         } catch (err) {
             alert("Error: Invalid profile file.");
             console.error(err);
+            if (Object.keys(profiles).length === 0) init();
         }
-        // Clear the input so the same file can be uploaded again if needed
         event.target.value = '';
     };
     reader.readAsText(file);
@@ -535,6 +565,120 @@ function updateHistoryList() {
 }
 
 
+function toggleHistory() {
+    const historySec = document.getElementById('historySection');
+    const isHidden = historySec.classList.toggle('hidden');
+    
+    // Optional: Update the button text inside the menu if you want it to be dynamic
+    const btn = event.target;
+    if (btn && btn.tagName === 'BUTTON') {
+        btn.innerText = isHidden ? "View History Table" : "Hide History Table";
+    }
+}
+
+
+
+
+function exportWorksheet() {
+    const profileData = profiles[currentProfile] || {};
+    
+    // 1. Filter and Prepare Data
+    const answeredQuestions = questions
+        .filter(q => profileData[q.id])
+        .map(q => ({
+            ...q,
+            scenario: profileData[q.id].scenario || q.text,
+            // Convert to numbers for proper numerical sorting (e.g., Ch 9 before Ch 10)
+            sortCh: parseInt(q.chapter),
+            sortPara: parseInt(q.paragraph)
+        }));
+
+    if (answeredQuestions.length === 0) {
+        alert("No questions answered yet to generate a worksheet.");
+        return;
+    }
+
+    // 2. Sort by Chapter, then Paragraph
+    answeredQuestions.sort((a, b) => a.sortCh - b.sortCh || a.sortPara - b.sortPara);
+
+    // 3. Build HTML
+    let worksheetHtml = `
+        <html>
+        <head>
+            <title>Worksheet - ${currentProfile}</title>
+            <style>
+                body { font-family: 'SBL Hebrew', 'Times New Roman', serif; padding: 40px; line-height: 1.6; color: #333; }
+                .header { text-align: center; position: relative; border-bottom: 2px solid #333; margin-bottom: 30px; padding-bottom: 10px; }
+                .bsd { position: absolute; top: 0; right: 0; font-size: 14px; }
+                h2.chapter-header { background: #f4f4f4; padding: 8px; border-left: 5px solid #2c3e50; margin-top: 30px; }
+                h3.para-header { border-bottom: 1px solid #ccc; margin-top: 20px; color: #7f8c8d; font-size: 1.1em; }
+                .q-item { margin-bottom: 25px; margin-left: 20px; page-break-inside: avoid; }
+                .q-text { font-size: 1.15em; margin-bottom: 8px; }
+                .answer-space { border-bottom: 1px dotted #ccc; height: 40px; margin-top: 10px; width: 95%; }
+                @media print { .no-print { display: none; } }
+            </style>
+        </head>
+        <body>
+            <div class="no-print" style="background: #eee; padding: 10px; margin-bottom: 20px; text-align: center;">
+                <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer;">Print Worksheet</button>
+            </div>
+            <div class="header">
+                <div class="bsd">בס"ד</div>
+                <h1>Kitzur Shulchan Arukh Study Worksheet</h1>
+                <p>Profile: ${currentProfile} | Questions: ${answeredQuestions.length}</p>
+            </div>
+    `;
+
+    let lastCh = null;
+    let lastPara = null;
+
+    answeredQuestions.forEach((q) => {
+        // Add Chapter Header
+        if (q.chapter !== lastCh) {
+            worksheetHtml += `<h2 class="chapter-header">Chapter ${parseInt(q.chapter)}</h2>`;
+            lastCh = q.chapter;
+            lastPara = null; // Reset para tracking for new chapter
+        }
+
+        // Add Paragraph Header
+        if (q.paragraph !== lastPara) {
+            worksheetHtml += `<h3 class="para-header">Paragraph ${parseInt(q.paragraph)}</h3>`;
+            lastPara = q.paragraph;
+        }
+
+        // Add Question
+        worksheetHtml += `
+            <div class="q-item">
+                <div class="q-text">${q.scenario}</div>
+                <div class="answer-space"></div>
+            </div>
+        `;
+    });
+
+    worksheetHtml += `</body></html>`;
+
+    const win = window.open('', '_blank');
+    win.document.write(worksheetHtml);
+    win.document.close();
+}
+
+
+
+
+
     </script>
+
+<div id="welcomeModal" class="modal-overlay hidden">
+    <div class="card modal-content">
+        <h2>Welcome to KS"A Study Tool</h2>
+        <p>How would you like to begin?</p>
+        <div class="modal-actions">
+            <button class="btn-primary" onclick="handleInitialChoice('new')">Create New Profile</button>
+            <button class="btn-outline" onclick="handleInitialChoice('load')">Load Existing Profile</button>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
