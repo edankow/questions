@@ -10,8 +10,6 @@
     background: #ebf0f1;
     padding: 15px;
     border-radius: 8px;
-    
-    /* ADD THESE TWO LINES */
     flex-wrap: wrap; 
     text-align: center;
 }
@@ -226,3 +224,16 @@
 .hidden-info {
     display: none !important;
 }
+
+.footer-attribution {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .footer-attribution strong {
+            color: #2c3e50;
+        }
