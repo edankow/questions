@@ -99,14 +99,16 @@ KSA004002260221096, "Can [person2] defecate in [a public place2] while a lot of 
 KSA004002260221097, "The [kind of professional] asks [person] to defecate in a [kind of container]. Can [person] do so while the [kind of professional] stands there watching?", 004, 002
 KSA004004260221098, "[person2] is not sure how they should have dealt with [something important] according to halacha. Can [person2] think about this while [doing an activity] in the bathroom?", 004, 004
 KSA004004260221099, "Can [person] think about [an idea from the Torah] in the bathroom?", 004, 004
+KSA004004260427326, "Can [person] review [an area of Torah study] in the bathroom?", 004, 004
 KSA004005260221100, "[man] has to wipe his anus with his bare hands after defecation. Which fingers can [man] use to wipe?", 004, 005
+KSA004005260427327, "If [man] dpes not have anything he can use to clean himself after defecating, what body parts can he use?", 004, 005
 KSA004006260221101, "[person] defecates just a tiny amount. Do they need to bless ‘asher yatzar’ afterward?", 004, 006
 KSA004006260221102, "[person] went to the bathroom and forgot to bless ‘asher yatzar’. Later, they went to the bathroom again. How many times will they now say ‘asher yatzar’?", 004, 006
 KSA004006260221103, "[person2] drinks a laxative and has to go to the bathroom. After they come out, they know they will probably have to go back into the bathroom very soon. Do they say ‘asher yatzar’?", 004, 006
 KSA004006260221104, "[person2] urinates just a tiny drop. Do they need to bless ‘asher yatzar’ afterward?", 004, 006
+KSA004006260427328, "[person] urinated, then [did an activity], then urinated again and remembered they forgot to say asher yatzar initially. How many times do they say asher yatzar?", 004, 006
 KSA005002260221162, "[a large number] people urinate in an empty [something large for holding liquid]. How much water needs to be added to the [something large for holding liquid] to allow them to say [a prayer service] nearby?", 005, 002
 KSA005002260221163, "[a large number] people urinated on the floor of the [kind of place where people play team sports games] during the [kind of sports] game. How much water is needed to nullify the urine so that they can say [a davar shebikedusha] after the game?", 005, 002
-KSA005002260412108, "[a large number] people urinated in the [kind of room]. How much water is needed to nullify the urine so that everyone can say [a davar shebikedusha]?", 005, 002
 KSA005002260221164, "[person] has a [kind of container] full of urine. If [person] pours it into a [kind of container2] filled with water, can they say [a davar shebikedusha] nearby?", 005, 002
 KSA005002260221165, "[person] has two [kind of container]s: one with water and one with urine. Each [kind of container] has [number] reviot of liquid. How can [person] combine the [kind of container]s to let them talk to [person2] to review halachos?", 005, 002
 KSA005002260221166, "[person] is in a [kind of place] where someone left excrement. What do they need to do to think about [a davar kedusha]?", 005, 002
@@ -123,12 +125,27 @@ KSA005002260221176, "If [person1] pours a reviit of water onto the urine in a [k
 KSA005002260221177, "If [person2] covers the feces in the [part of a house] with a [kind of covering], can they say [a davar kedusha2]?", 005, 002
 KSA005002260221178, "The smell of the [something that smells bad] extends through the [kind of area]. Can [person1] think about [a davar kedusha1] there?", 005, 002
 KSA005002260221179, "There is a toilet containing urine in the [kind of room]. How much water does [person3] need to add to let them say [a davar shebikedusha] there?", 005, 002
+KSA005002260412108, "[a large number] people urinated in the [kind of room]. How much water is needed to nullify the urine so that everyone can say [a davar shebikedusha]?", 005, 002
+KSA005002260412273, "[person] urinated in a [kind of container meant for holding urine/feces] and left it in the [kind of room]. How much water does [person2] need to add to it to nullify it so that [person2] can say [a davar torah]?", 005, 002
+KSA005002260427329, "[person] is locked in a [kind of room] with feces. What do they need to do to say [a davar shebikedusha] in the closet?", 005, 002
+KSA005002260427330, "[person] is [doing activity] in a [kind of room] and ends up urinating in the [kind of room]. What do they need to do to say [a davar shebikedusha] in the [kind of room] while [doing activity]?", 005, 002
+KSA005002260427331, "In a strange turn of events, [number from one to ten] of [person]'s [Jewish holiday] guests are forced to urinate in [person]'s [kind of room] because the bathroom is inaccessible. After all [number from one to ten] of them urinate in a [kind of container] in the [kind of room], what do they have to do to keep using the room when it's time to say a beracha acharonah?", 005, 002
+KSA005002260427332, "[person] has a [kind of container] that [person2] urinated in. How much water is needed in a second [kind of container] for the urine from the first [kind of container] to be nullified if it is poured in to the second [kind of container]?", 005, 002
+KSA005002260427333, "[person2] pours a reviit of water in to a [kind of container designed for urine or feces] after someone urinated in it once. Can [person2] then say [a davar kedusha] nearby?", 005, 002
+KSA005002260427334, "[person] urinates on a sponge, which absorbs the liquid. Can they learn [an area of Torah study] nearby?", 005, 002
 KSA005003260221180, "[person] has a little excrement in the place where it comes out that is covered by their clothes. Can they say [a dvar kedusha]?", 005, 003
 KSA005003260221181, "[person] has a little excrement on their [body part] that is covered by their clothes. Can they say [a dvar kedusha]?", 005, 003
+KSA005003260412274, "[person1] accidentally gets feces smeared on the skin of their [body part]. What can [person1] do to say [a beracha] before they get home and shower?", 005, 003
+KSA005003260427335, "[person] is davening [part of the tefillah]. Due to an accident, some feces lands on [person]'s neck. Can [person] continue davening?", 005, 003
 KSA005004260221182, "[person] is in a clean [kind of room] and has to pray. There is a room with human waste on an upper floor. Can [person] pray?", 005, 004
 KSA005004260221183, "[person1] is [doing activity] in [place1]. Do they need to check for urine or feces nearby before saying [a davar kedusha1]?", 005, 004
+KSA005004260427336, "[person2] is in [a place that might have feces or urine] and wants to eat [a kind of food]. Do they need to check for urine or feces nearby before making a beracha?", 005, 004
 KSA005005260221184, "[person] is [number] months old and produces excrement. Is their excrement a problem for [person2] to say [a davar shebikedusha]?", 005, 005
 KSA005005260221185, "[person] is [number] months old and produces urine. Is their urine a problem for [person2] to say [a davar shebikedusha]?", 005, 005
+KSA005005260412275, "[person4] urinated on the floor of the [kind of building]. They are [number from one to twenty] months old. Can [person1] keep learning nearby?", 005, 005
+KSA005005260412276, "[person1] is [number from one to a hundd] weeks old. After [person1] defecates in [person2]'s [kind of room], can [person2] keep davening there?", 005, 005
+KSA005005260427337, "Can [person] daven in a room with feces from a [number from one to ten]-month-old, if [person] is required to stay in the room?", 005, 005
+KSA005005260427338, "A [number from one to ten2]-month-old defecated on the floor of the [kind of room]. Will [person2] daven nearby?", 005, 005
 KSA005006260221186, "[person] finds a pile of weasel feces while [doing activity] in the [kind of place]. Can [person] say [a davar kedusha2] nearby without cleaning up the weasel feces?", 005, 006
 KSA005006260221187, "[person] is by a pool of water used to soak cannabis. Can [person] say [a davar shebikedusha]?", 005, 006
 KSA005006260221188, "[person1] is by a pool of water used to soak flax. Can [person1] say [a davar shebikedusha1]?", 005, 006
@@ -142,18 +159,47 @@ KSA005006260221195, "[person2] is in a place with a smelly [type of animal] carc
 KSA005006260221196, "[person2] is in a place with cat excrement that doesn’t smell bad. Can [person2] say [a davar shebikedusha2]?", 005, 006
 KSA005006260221197, "[person3] is in a chicken coop. Can [person3] say [a davar shebikedusha3]?", 005, 006
 KSA005006260221198, "[person3] is in a place with [type of bird] excrement. Can [person3] say [a davar shebikedusha3]?", 005, 006
+KSA005006260412277, "[person2] is learning [an area of Torah] while their friend [person3] chases turkeys. When one of the turkeys defecates, can they keep learning?", 005, 006
+KSA005006260427339, "[person] is working at a [kind of place that many turkeys live]. Can they daven near the turkeys?", 005, 006
+KSA005006260427340, "Can [person2] make a beracha on [kind of food] if there are [kind of animal] feces nearby?", 005, 006
+KSA005006260427341, "[person]'s [kind of animal2] defecated in front of the [kind of building] and now it's smelly. Can [person] say [a davar kedusha] there?", 005, 006
+KSA005006260427342, "Can [person2] tell [person3] about [an area of Torah study] if there's a rotting [kind of food] nearby?", 005, 006
+KSA005006260427343, "Can [person4] and [person3] move inside the chicken coop to keep learning [an area of Torah study] to avoid [a problem] in the beis medrash?", 005, 006
+KSA005006260427344, "[a nice park] is picturesque but currently smells bad. Can [person] sit nearby and review [an area of Torah study]?", 005, 006
+KSA005006260427345, "[person4] puts a bunch of [hemp or flax] in a [kind of container] of water to sit. Can they learn [an area of Torah study] while they wait for it to finish soaking?", 005, 006
+KSA005006260427352, "[person] opens their [kind of carrying bag for a meal] and finds feces of a [weird kind of animal]. Do they need to avoid the feces to make a beracha?", 005, 006
+KSA005006260427353, "Can [person2] daven near a [kind of trash container] of smelly, rotting [kind of food?", 005, 006
+KSA005006260429373, "Does [person] need to check for [kind of animal] feces before saying [an area of Torah study] in a [kind of outdoor area] with a lot of [kind of animal]s?", 005, 006
+KSA005006260429374, "can [person] learn [an area of Torah study2] near smelly [kind of animal2] feces?", 005, 006
+KSA005006260429375, "Can [person2] daven in a [kind of room] that smells like a dead [kind of animal]?", 005, 006
 KSA005007260221199, "[person] is in a room with a lot of excrement, and this excrement is frozen and very brittle and thus doesn’t smell. Can [person] say [a davar shebikedusha2]?", 005, 007
 KSA005007260221200, "[person] is in a room with a lot of excrement, and this excrement is very dry and crumbly and doesn’t smell. Can [person] say [a davar shebikedusha]?", 005, 007
 KSA005007260221201, "[person2] is in a [kind of place] with excrement that is covered by snow. Can [person2] say [a davar shebikedusha]?", 005, 007
 KSA005007260221202, "[person2] is in a room with a lot of excrement, and this excrement is very dry and crumbly and smells bad. Can [person2] say [a davar shebikedusha2]?", 005, 007
+KSA005007260427346, "[person] is [doing activity] in the [kind of room] and finds dry and powdery feces. Can they continue to say Tehilim chapters while [doing activity]?", 005, 007
+KSA005007260427347, "[person3] has a [kind of container] that totally froze with feces in it. Do these still count as feces that [person3] needs to avoid?", 005, 007
+KSA005007260427348, "[person] defecates in the [kind of outdoor area] on a snowy day. If they cover the feces with snow, can they say [a davar kedusha] nearby?", 005, 007
+KSA005007260427354, "[person] has feces in the [kind of place] that are so dry that they crumble into dust if [person] kicks them. May [person] study [an area of Torah study] in their vicinity?", 005, 007
+KSA005007260428355, "[person] takes some frozen feces out of the [kind of container] and wants to say [a beracha]. Does [person] need to cover the feces?", 005, 007
+KSA005007260429376, "A group of feces are heated by [a heat source that makes things very hot] until they dehydrate. [person] finds that they are brittle and crumble if rolled. Can [person] use them for [a decorative purpose]?", 005, 007
+KSA005007260429377, "[person] is in a [kind of outdoor hiding spot] on a winter day and learning [an area of Torah study]. After [person] defecates, can they keep learning if they cover the feces with snow?", 005, 007
 KSA005008260221203, "There is excrement behind [person] and it doesn’t smell even up close. How far away from the excrement does [person] need to go to say [a davar kedusha]?", 005, 008
 KSA005008260221204, "There is excrement behind [person], who doesn’t have a sense of smell. How far away from the excrement does [person] need to go to say [a davar kedusha]?", 005, 008
 KSA005008260221205, "There is excrement in front of [person]. At night, how far away from the excrement does [person] need to go to say [a davar kedusha]?", 005, 008
 KSA005008260221206, "There is excrement in front of [person]. During the day, how far away from the excrement does [person] need to go to say [a davar kedusha]?", 005, 008
 KSA005008260221207, "There is excrement off to the side of [person]. How can [person] say [a davar kedusha] without going very far away?", 005, 008
-KSA005008260323152, "There is excrement off to the side of [person]. How far away from the excrement does [person] need to go to say [a davar kedusha]?", 005, 008
 KSA005008260221209, "There is smelly excrement behind [person]. How far away from the excrement does [person] need to go to say [a davar kedusha]?", 005, 008
+KSA005008260323152, "There is excrement off to the side of [person]. How far away from the excrement does [person] need to go to say [a davar kedusha]?", 005, 008
+KSA005008260427349, "How far does [person[ have to go from the turkey feces to daven?", 005, 008
+KSA005008260427350, "[person2] can't smell the feces, but other people nearby can. How far does [person2] need to go away from them to bless for eating [a kind of food]?", 005, 008
+KSA005008260427351, "A gathering of feces is located just [a cardinal direction] of [person]. If [person] continues facing [a cardinal direction], how far do they have to go fro mthe feces to study [an area of Torah study]?", 005, 008
+KSA005008260428356, "[person] is in a dark [kind of place] with feces on the other end of the area. Where does [person] have to go to make a beracha on a [kind of food]?", 005, 008
+KSA005008260429378, "How far from [person3]'s feces does [person] have to go to daven?", 005, 008
+KSA005008260429379, "[person] has lost their sense of smell. How far does [person] need to keep away from smelly feces?", 005, 008
+KSA005008260429380, "When [person] steps out of the [kind of building], they see feces further down the way. Can they say over [a davar shebikedusha]?", 005, 008
+KSA005008260429381, "It is the middle of the night. [person2] defecated in the middle of a [kind of open area]. [person] is [number between ten and a hundred] feet away. If [person] wants to say [a davar shebikedusha], what direction can they face?", 005, 008
 KSA005009260221210, "[person] is serving as a shaliach tzibur for a group of Jews’ tefilah in a [kind of room]. If excrement is found in the same [kind of room] but it is behind the shaliach tzibur and the smell doesn’t extend within four amot of the shaliach tzibur, then can they go ahead and daven?", 005, 009
+KSA005009260428357, "Can [man] and his friends daven in a [kind of room] that contains feces?", 005, 009
 KSA005010260221105, "[person1] was in [a place suitable to suspect that there was excrement there], did not check whether there was excrement present, davened the 18 blessings, and afterward found excrement. Does [person1] need to repeat the 18 blessings?", 005, 010
 KSA005010260221106, "[person1] was in [a place suitable to suspect that there was excrement there], did not check whether there was excrement present, said birkat hamazon, and afterward found excrement. Does [person1] repeat birkat hamazon?", 005, 010
 KSA005010260221107, "[person1] was in [a place suitable to suspect that there was excrement there], did not check whether there was excrement present, said the Shema with its berachos, and afterward found excrement. Does [person1] repeat the berachos of the Shema?", 005, 010
@@ -167,10 +213,21 @@ KSA005010260221114, "[person2] was in a [a place suitable to suspect that there 
 KSA005010260221115, "[person2] was in a [a place suitable to suspect that there was excrement there2], did not check whether there was excrement present, said the Shema, and afterward found excrement. Does [person2] repeat the Shema?", 005, 010
 KSA005010260221116, "[person2] was in a [a place suitable to suspect that there was urine there], did not check whether there was urine present, said the Shema with its berachos, and afterward found urine. Does [person2] repeat the berachos of the Shema?", 005, 010
 KSA005010260221117, "[person2] was in a [kind of place2], did not check whether there was excrement present, said the Shema, and afterward found excrement. Does [person2] repeat the Shema?", 005, 010
+KSA005010260428358, "[person2] davened in a [kind of place that often has feces] and then realized that there had been feces there all along that [person2] hadn't noticed. Do they need to daven again?", 005, 010
+KSA005010260428359, "[man] said keriyat shema in a [kind of place that often has feces2] and then realized that there had been feces there all along that [man] hadn't noticed. Does he need to say keriyat shema with its berachos again?", 005, 010
+KSA005010260428360, "[man] said keriyat shema in a [kind of place where feces wouldn't be found usually] and then found feces nearby. Will he repeat keriyat shema?", 005, 010
+KSA005010260428361, "[person] davened in a [kind of place where urine is often found] and then found urine nearby. Will they daven again?", 005, 010
+KSA005010260428362, "[man] said shema in a [kind of place where urine is often found2] and then found urine in a puddle. Will he say shema again?", 005, 010
+KSA005010260429382, "[person] was in a [place that could have feces] and said [a beracha or set of berachos] and afterward found feces nearby. Does [person] need to  say [a beracha or set of berachos] again?", 005, 010
+KSA005010260429383, "[man] said shema in [a place where feces wouldn't be found] and then found feces nearby. Will he repeat the shema?", 005, 010
+KSA005010260429384, "[person] davened in [a place where urine could be found] and then found urine nearby. Does [person] daven again?", 005, 010
 KSA005011260221118, "A smell left [person1] from below. Can [person1] learn [an area of torah learning]?", 005, 011
 KSA005011260221119, "A smell left [person1] from below. Can [person1] say [a davar shebikedusha]?", 005, 011
 KSA005011260221120, "A smell left [person1] from below. Can [person2] say [a davar shebikedusha] nearby?", 005, 011
 KSA005011260221121, "A smell left [person1] from below. Can [person2] study [an area of torah learning] nearby?", 005, 011
+KSA005011260428363, "[person3] farted. Can they say [a davar shebikedusha]?", 005, 011
+KSA005011260428364, "Once [person] farted, can [person3] say [a beracha]?", 005, 011
+KSA005011260428365, "Once [person] farted, can [person3] say [divrei Torah]?", 005, 011
 KSA005012260221122, "[person] wants to say [a davar kedusha] and is right next to a [kind of bathroom] where [person2] is doing their thing. What does [person] need to do?", 005, 012
 KSA005012260221123, "[person] wants to say [a davar kedusha] and is right next to an empty [kind of bathroom] that is free of excrement. What does [person] need to do?", 005, 012
 KSA005012260221124, "[person1] has a favorite [kind of chair] that they like to sit on while they do their [activity done sitting]. If you lift up a special cushion, this [kind of chair] has a hole in the middle. A [kind of container] fits into a slot beneath the hole. [person1] is sitting on the chair and releases excrement into the hole. Then [person1] finishes, takes the [kind of container] out of the room, covers the hole in the [kind of chair] with the cushion, and sits back down. [person2] is nearby and wants to say [a davar kedusha]. What should [person2] do?", 005, 012
@@ -178,8 +235,9 @@ KSA005012260221125, "[person4] has a favorite chair that they like to sit on whi
 KSA005012260221126, "[person3] has a favorite [kind of chair2] that they like to sit on while they do their [activity done sitting2]. If you lift up a special cushion, this [kind of chair2] has a hole in the middle. A [kind of container] fits into a slot beneath the hole. [person3] is sitting on the chair and releases excrement into the hole. Then [person3] finishes, covers the hole in the [kind of chair2] with the cushion, and sits back down. [person2] is nearby and wants to say [a davar kedusha2]. What should [person2] do?", 005, 012
 KSA005012260221127, "There is a special toilet, which is a [kind of chair3] with a hole in the middle. A [kind of container] fits into a slot beneath the hole. [person1] is sitting on the chair and releases excrement into the hole into the [kind of container]. [person1] finishes, takes out the [kind of container], covers the hole in the [kind of chair3], and leaves. [person2] is nearby and wants to say [a davar kedusha]. What should [person2] do?", 005, 012
 KSA005012260221128, "There is a special toilet, which is a [kind of chair2] with a hole in the middle. A [kind of container2] fits into a slot beneath the hole. [person3] is sitting on the chair and releases excrement into the hole into the [kind of container2]. [person3] finishes, takes out the [kind of container2], and leaves. [person2] is nearby and wants to say [a davar kedusha2]. What should [person2] do?", 005, 012
-KSA005013260221129, "[person1] has a [type of container] made of [glass or a type of metal] and designated for putting [excrement or urine]. The [type of container] is clean and doesn’t smell bad. Can [person1] say [a davar kedusha] near this [type of container]?", 005, 013
-KSA005013260221130, "[person1] has a [type of container] made of [glass or a type of metal] and designated for putting [excrement or urine]. The [type of container] is clean but still a little bit smelly. Can [person1] say [a davar kedusha2] near this [type of container]?", 005, 013
+KSA005012260429385, "[person] has a special toilet built as a [kind of chair]. A [kind of cover placed over the seat of a chair] is placed over the top when it is not being used. The basin of the toilet can be taken away. When the toilet is covered by its lid, can [person2] say [a davar shebikedusha] nearby?", 005, 012
+KSA005013260221129, "[person1] has a [type of container] made of [glass] and designated for putting [excrement or urine]. The [type of container] is clean and doesn’t smell bad. Can [person1] say [a davar kedusha] near this [type of container]?", 005, 013
+KSA005013260221130, "[person1] has a [type of container] made of glass and designated for putting [excrement or urine]. The [type of container] is clean but still a little bit smelly. Can [person1] say [a davar kedusha2] near this [type of container]?", 005, 013
 KSA005013260221131, "[person1] has a [type of container] made of [pottery or wood] and designated for putting [excrement or urine]. Is this considered halachically the same as an outhouse?", 005, 013
 KSA005013260221132, "[person1] has a [type of container] made of [pottery or wood] and designated for putting [excrement or urine]. The [type of container] is clean and doesn’t have a bad smell. The [type of container] is full of clean water. Is this [type of container] considered something that needs to be avoided to say [a davar kedusha]?", 005, 013
 KSA005013260221133, "[person1] has a [type of container] made of [pottery or wood] and designated for putting [excrement or urine]. The [type of container] is clean and doesn’t have a bad smell. The [type of container] is turned upside down. Is this [type of container] considered something that needs to be avoided to say [a davar kedusha]?", 005, 013
@@ -189,13 +247,24 @@ KSA005013260221136, "[person1] owns a pig named [name for a farm animal]. Can [p
 KSA005013260221137, "[person2] has a [type of container] made of [glass or a type of metal] and designated for putting [excrement or urine]. The [type of container] is a bit dirty. Can [person2] say [a davar kedusha] near this [type of container]?", 005, 013
 KSA005013260221138, "[person2] has a [type of container2] made of [pottery or wood] and designated for putting [excrement or urine]. The [type of container2] is clean and doesn’t have a bad smell. Is this [type of container2] considered halachically the same as an outhouse?", 005, 013
 KSA005013260221139, "[person2] is hired to help wash a pig named [name for a farm animal]. When the pig is clean, can [person2] sing [a Jewish song]?", 005, 013
+KSA005013260415181, "[person1] has a [type of container] made of [a type of metal] and designated for putting [excrement or urine]. The [type of container] is clean and doesn’t smell bad. Can [person1] say [a davar kedusha] near this [type of container]?", 005, 013
+KSA005013260415183, "[person1] has a [type of container] made of [a type of metal] and designated for putting [excrement or urine]. The [type of container] is clean but still a little bit smelly. Can [person1] say [a davar kedusha2] near this [type of container]?", 005, 013
 KSA005014260221140, "Can [person] say [a common Jewish greeting] to [person1] in a dirty [kind of place]?", 005, 014
 KSA005014260221141, "Can [person] think about [a davar kedusha] in a room where people bathe?", 005, 014
+KSA005014260428366, "[man] and [man2] are in a bathhouse. May [man] say [divrei Torah2]?", 005, 014
+KSA005014260428367, "[man] and [man3] are in a bathhouse. In the course of conversation, can [man] say [a common expression that includes the word 'Hashem']?", 005, 014
+KSA005014260429386, "Can [person] say shalom to [person3] in the bathroom?", 005, 014
 KSA005015260221142, "Can [person] say [a davar shebikedusha] while wearing a [a kind of garment] and nothing else?", 005, 015
 KSA005015260221143, "Can [person] say [a davar shebikedusha] while young [person1] is bathing nearby?", 005, 015
 KSA005015260221144, "Can [person1] say [a davar shebikedusha1] while facing [a kind of erva] if [person1] closes their eyes?", 005, 015
 KSA005015260221145, "Does [man] have to look away from baby [man2] while making the berachas of milah?", 005, 015
 KSA005015260221146, "Can [person] say [a davar Torah] in front of [person2], who is wearing a [kind of garment] and nothing else?", 005, 015
+KSA005015260422303, "If [person1] is on [a surface that one can stand on] and [person2] is there [doing something] completely nude, can [person1] say a beracha on [something you can say a beracha on]?", 005, 015
+KSA005015260428368, "Can [man] speak about [an area of Torah] while facing [number from 13 to 30]-year-old [person]'s exposed [body part]?", 005, 015
+KSA005015260428369, "Can [man] speak about [an area of Torah2] while facing [number from 1 to 11]-year-old [person2]'s exposed [body part2]?", 005, 015
+KSA005015260428370, "Can [person] speak about [an area in Torah] while their [body part3] is exposed?", 005, 015
+KSA005015260428371, "Can [person2] daven for [something the world needs] while facing a naked [number from 1 to 11]-year-old?", 005, 015
+KSA005015260428372, "Can [person3] make a beracha on [something that one says a beracha on] if they turn away from [number from 1 to 11]-year-old [person4], whose [body part2] is exposed?", 005, 015
 KSA005016260221147, "[man] cannot say [a davar shebikedusha] in front of [woman] because [woman]’s [body part normally covered] is exposed. Does [woman]’s husband [man2] also have to wait to cover this to say [a davar shebikedusha]?", 005, 016
 KSA005016260221148, "[man] hears [woman1] singing. [man] is learning [a davar Torah]. If he cannot make [woman1] stop singing and cannot go anywhere else, is he allowed to learn [a davar Torah] where he can hear [woman1] singing?", 005, 016
 KSA005016260221149, "[man1] hears [woman] singing. [man1] has to say Shema. If he cannot make [woman] stop singing and cannot go anywhere else, is he allowed to say Shema where he can hear [woman] singing?", 005, 016
@@ -204,6 +273,10 @@ KSA005016260221151, "[woman]’s [article of clothing] has a hole of diameter [n
 KSA005016260221152, "[woman1] is married and usually covers her entire hair with a [head covering]. Can [woman2] talk about [a davar shebikedusha] with [woman1] while [woman1]’s hair is totally exposed?", 005, 016
 KSA005016260221153, "A tefach is revealed of Mrs. [last name]'s [a body part that women normally cover]. Is this considered erva to Mr. [last name]?", 005, 016
 KSA005016260221154, "A tefach is revealed of Mrs. [last name2]'s [a body part that women normally cover]. Is this considered erva to Mr. [last name]?", 005, 016
+KSA005016260422304, "[lady] has an exposed area of her [body region] [number from 1 to 5] inches in length. Is this considered erva to [man1]?", 005, 016
+KSA005016260422305, "[lady] has an exposed area on her [body part]. Can [lady]'s husband [man] say [a davar kedusha] while facing [lady]?", 005, 016
+KSA005016260422306, "[lady]'s hair is uncovered. Can [lady1] say a beracha on [something that you can say a beracha on] while facing [lady]?", 005, 016
+KSA005016260429387, "[woman]'s hair is not covered. Can her husband [man5] say [a beracha] while facing her?", 005, 016
 KSA005017260221155, "[man] is wearing a [type of garment that covers the whole body]. Can [man] say [a davar shebikedusha]?", 005, 017
 KSA005017260221156, "[man] is wearing a belt around his waistline underneath [a kind of garment that covers the whole body]. Can [man] say [a davar shebikedusha3]?", 005, 017
 KSA005017260221157, "[man1] is wearing a robe and presses his robe against his body all the way around his waistline using his arms. Can [man1] say [a davar shebikedusha]?", 005, 017
@@ -211,426 +284,353 @@ KSA005017260221158, "[man2] is wearing a belt around his waistline on top of a [
 KSA005017260221159, "Can [man] say [a davar shebikedusha] if he is naked in bed?", 005, 017
 KSA005017260221160, "Can [man1] say [a davar shebikedusha3] if he is only wearing a robe without a belt?", 005, 017
 KSA005017260221161, "Can [woman] say [a davar shebikedusha2] if she is only wearing a robe without a belt?", 005, 017
+KSA005017260422307, "[man] is wearing a sheet wrapped around his body like a [kind of clothing that is basically just a big sheet]. He has no other clothes on. What does he have to do to say [a davar kedusha]?", 005, 017
+KSA005017260422308, "[lady] is wearing a sheet wrapped around her body like a [kind of clothing that is basically just a big sheet]. She has no other clothes on. What does she have to do to say [a davar kedusha]?", 005, 017
 KSA006001260221211, "After eating [a meal], what kind of plan does [person] need to make before they start to make the beracha?", 006, 001
 KSA006001260221212, "Can [person] bless [a beracha that a person says to hashem] while doing [action that a person has to take in daily life]?", 006, 001
 KSA006001260221213, "Can [person] say [a beracha after eating food] while doing [an activity done to clean off after a meal]?", 006, 001
 KSA006001260221214, "How loudly does [person2] generally say the beracha [a beracha]?", 006, 001
 KSA006001260221215, "If [person1] is saying [a series of berachas] by rote and doesn’t know exactly what beracha they are up to after saying “baruch atah,” should they just keep going?", 006, 001
 KSA006001260221216, "When [person2] blesses [a beracha that a person says to hashem2] in daily life, how loud do they generally speak?", 006, 001
+KSA006001260422309, "Before [person] starts to say [a beracha for hashem], what will [person ] be sure to know about what they are going to say?", 006, 001
+KSA006001260422310, "Can [person1] [do something] while saying the beracha [the name of a beracha]?", 006, 001
+KSA006001260422311, "How loudly will [person] bless [the name of a beracha]?", 006, 001
+KSA006001260501388, "Does [person] need to know exactly what beracha they are about to say before they make [a beracha]?", 006, 001
+KSA006001260501389, "Can [person] [do a household task] while saying [a beracha]?", 006, 001
+KSA006001260501390, "Can [person3] [do a mitzvah] while they say [a beracha]?", 006, 001
 KSA006002260221217, "[person] has [something that goes in a person's mouth] in their mouth. Can [person] say [a beracha]?", 006, 002
 KSA006002260221218, "[person] has saliva in their mouth. Can [person] say [a beracha]?", 006, 002
+KSA006002260421280, "[person] is eating [kind of food]. While they still have some [kind of food] left in their mouth, can they grab [kind of food2] and start saying a beracha on it?", 006, 002
+KSA006002260421281, "[person2] is about to eat some [kind of food3] and is so excited that their mouth salivates a lot. Can they say the beracha with this extra saliva in their mouth?", 006, 002
+KSA006002260422312, "[person] is chewing on [something that a person puts in their mouth]. Does [person] need to take the [something that a person puts in their mouth] out of their mouth to make a new beracha on [something that you can make a beracha on]?", 006, 002
+KSA006002260501391, "May [person4] say [a beracha] while their [kind of dental equipment worn in the mouth] is in their mouth?", 006, 002
+KSA006002260501392, "Can [person2] say [a beracha] with a [small item] in their mouth?", 006, 002
+KSA006002260501393, "Can [person5] say [a beracha on eating] with a lot of extra saliva in his mouth?", 006, 002
 KSA006003260221219, "[person] is with their friend [person2] and making jokes. Can [person] make a beracha on [a kind of beverage] while in a completely silly mood?", 006, 003
 KSA006003260221220, "Can [person] say that [person1] shouldn’t be blessed with [a good thing that a person wants in their life]?", 006, 003
 KSA006003260221221, "Can [person1] refer to and say [a name of Hashem] over and over for fun?", 006, 003
 KSA006003260221222, "Can [person2] write the word [a word for Hashem in any language]?", 006, 003
+KSA006003260421282, "[person1] dislikes [person2]. Can they curse them?", 006, 003
+KSA006003260421283, "[person] has a lot of extra saliva building up during davening. Can they spit it out after saying [a pasuk in davening with Hashem's name]?", 006, 003
+KSA006003260421284, "Can [person] say "adoshem" instead of a-d-n-y when saying [a song or phrase with the word hashem written out]?", 006, 003
+KSA006003260422313, "Can [person] engage in a theoretical comparison of Hashem with [a type of thing] to help them with their [kind of personal goal or interest]?", 006, 003
+KSA006003260422314, "Is [person1] allowed to say that H' shouldn't bless [person3] with [something that people usually want]?", 006, 003
+KSA006003260422315, "Can [person] write [write a euphemism for a name of hashem like tzevakos here instead of an actual name of hashem] on a [writing surface] in a [kind of place]?", 006, 003
+KSA006003260501394, "Can [person] say to [person2] to thank G' for how nice the weather is?", 006, 003
+KSA006003260501395, "Can [famous politician] say that G' wants [a country] to [verb: a military action] [a country2]?", 006, 003
+KSA006003260501396, "Can [person2] say a halachically-required beracha to Hashem for [doing an activity]?", 006, 003
+KSA006003260501397, "Can [person3] mention G' while learning [an area of Torah study]?", 006, 003
+KSA006003260501398, "Can [person4] invoke G' in the course of discussing G's role in [a period of Jewish history]?", 006, 003
+KSA006003260501399, "Can a person write out "we should [do activity] G'-willing" in a [kind of physical written document]?", 006, 003
 KSA006004260223223, "[person] starts saying a [name of a beracha rishonah on food] on some [type of food] when they realize that they already made the right beracha. If they realize after saying "baruch atah hashem," what will they do?", 006, 004
 KSA006004260223224, "[person1] starts blessing [the name of a beracha] when they realize that they're not required to say this beracha. If they realize after saying "baruch atah hashem elokei," what will they do?", 006, 004
 KSA006004260223225, "[person] started to say the beracha of [the name of a beracha1] while [doing activity] but caught themselves and said "lamdeni chukecha" to make it a pasuk. What else do they need to say?", 006, 004
 KSA006004260223226, "[person] started to say the beracha of [the name of a beracha] while [doing activity] but caught themselves and said "yisrael avinu meolam vead olam" to make it a pasuk. What else do they need to say?", 006, 004
+KSA006004260421285, "[person1] already said [a beracha1]. They forget and start saying again "Baruch atah H'". What will they do if they remember now?", 006, 004
+KSA006004260421286, "[person2] starts saying "Baruch atah H' elokei" and then realizes they don't need to make [the name of a beracha]. What will they do?", 006, 004
 KSA006005260223227, "In [person]'s community, the custom is to pour out all water in the vicinity of a dead body. [person] made a beracha on a glass of water and then, before they started drinking, heard that a dead body was nearby. What will they do?", 006, 005
+KSA006006260421287, "[man] just finished shacharit and realized he isn't sure if he said [a beracha from birchot hashachar]. Wil he say the beracha now?", 006, 006
+KSA006006260421288, "[person] isn't sure whether or not they already said [a beracha that a person is required to say]. Will they say the beracha just in case?", 006, 006
+KSA006006260422316, "[person] realizes at [time of day] that they aren't sure if they said [a beracha that a person is obligated to say every day]. Will they go bakc and say the beracha?", 006, 006
+KSA006006260501400, "[person2] ate [kind of food] for [a meal] and isn't sure if they said the after-beracha yet. Should they make the beracha now?", 006, 006
+KSA006006260501401, "[person3] isn't sure if they said [a beracha that one must say every day]. Should they go back and say it?", 006, 006
 KSA006007260317271, "How many berachos is [man1] obligated to say on [name of a day]?", 006, 007
 KSA006008260223228, "When [person] is blessing [the name of a beracha] and [person2] hears them say "Baruch atah Hashem," what does [person2] say?", 006, 008
 KSA006008260223229, "When [person] blesses [the name of a series of berachas like birkat hamazon or birchot hashachar], what does [person2] say as soon as [person] says each beracha?", 006, 008
+KSA006008260421289, "When [person1] hears [person2] say "baruch atah H" of [name of a beracha], what does [person1] say?", 006, 008
+KSA006008260421290, "[person1] is saying [a beracha]. What will [person2] do when they hear [person1] finish saying [a beracha]?", 006, 008
+KSA006008260422317, "[person] says a beracha "[the name of a beracha]" and [person2] hears. Can [person2] skip answering Amen?", 006, 008
 KSA006009260223230, "If [person] is saying [the name of a beracha] for themselves and for [person2], will [person2] say "baruch hu uvaruch shemo"?", 006, 009
+KSA006009260421291, "[person1] is in the middle of [something that is forbidden to interrupt] and hears [person2] make [a beracha]. When [person2] gets to "baruch atah hashem" of the beracha, what will [person1] say?", 006, 009
+KSA006009260421292, "[person1] and [person2] both need to say [a beracha], but [person1] doesn't know the words, so [person2] says [a beracha] for both of them. When [person2] says "Baruch atah H", what will [person1] say?", 006, 009
+KSA006009260422318, "[person] is involved in [a situation where a person halachically isn't supposed to interrupt to speak] and hears [person2] making a beracha [name of a beracha]. What will [person] say after [person2] says "Baruch atah H'", considering that [person] is still involved in [a situation where a person halachically isn't supposed to interrupt to speak]?", 006, 009
+KSA006009260422319, "[person] is saying the beracha [the name of a beracha] for [person2]. After [person] says "baruch atah H'", what will [person2] answer?", 006, 009
+KSA006009260501402, "[person2] is blessing [a beracha] on behalf of [person3]. Does [person3] say "Baruch hu uvaruch shemo" after [person2] says "Baruch atah H'"?", 006, 009
 KSA006010260223231, "[person] listens to [person1] saying [the name of a beracha]. How long does [person] need to wait to start saying amen?", 006, 010
 KSA006010260223232, "[person] blesses [the name of a beracha] very quietly. How quietly does [person2] say amen?", 006, 010
+KSA006010260421293, "When [person] says [a beracha1], can [person1] answer amen before [person] finishes the last word?", 006, 010
+KSA006010260421294, "[person3] blesses [a beracha] at [a loudness level of talking] after [a shul event]. How loudly can [person2] answer amen?", 006, 010
 KSA006011260223233, "[person] says [the name of a beracha]. When they finish, do they answer amen?", 006, 011
 KSA006011260223234, "[person] and [person1] both finish saying [the name of a beracha] simultaneously. Can they answer amen to one another's berachos?", 006, 011
 KSA006011260223235, "[person] finishes saying [the name of a beracha1] at the same moment that [person1] finishes saying [the name of a beracha]. Can they answer amen to one another's berachos?", 006, 011
 KSA006011260223236, "[person] and [person1] both finish saying the beracha of yishtabach simultaneously. Can they answer amen to one another's berachos?", 006, 011
+KSA006011260421295, "After [person2] says [a beracha1], can they answer amen?", 006, 011
+KSA006011260421296, "[person1] and [person2] both say [a beracha from davening] in unison. When they finish [a beracha from davening], can they answer amen to one another?", 006, 011
+KSA006011260421297, "At maariv, [person2] and [person3] both hear one another finish saying the beracha shomer amo yisrael laad simultaneously. May they answer amen to one another?", 006, 011
+KSA006011260422320, "[person1] blesses [the name of a beracha] just as [person2] blesses [the name of a beracha2]. Can they answer amen to one another?", 006, 011
+KSA006011260422321, "[person1] blesses [the name of a beracha] just as [person2] blesses [the name of a beracha]. Can they answer amen to one another?", 006, 011
+KSA006011260422322, "[person] and [person3] both finish the beracha at the end of hallel simultaneously. Can they answer amen to one another?", 006, 011
 KSA007001260223237, "[person] is saying birchot haTorah while standing near [person1]. Can [person] say the entire set of berachas loudly?", 007, 001
+KSA007001260421298, "[person1] is saying birchot haTorah out loud. Can they say the entire thing loudly if [person2] is nearby?", 007, 001
+KSA007001260422323, "Can [person] say the entire birchot hatorah out loud in front of [person2]?", 007, 001
 KSA007002260223238, "If [person2] wakes up at [time in the early morning], can they say all of birchos hashachar?", 007, 002
+KSA007002260421299, "Can [man1] bless "hanoten lasechvi vinah" at [time in the early morning]?", 007, 002
+KSA007002260422324, "When is the earliest time that [person] can bless "hanoten lasechvi vinah"?", 007, 002
+KSA007002260501403, "When [person] wakes up at [time in the early morning before dawn], can they say all of birchos hashachar?", 007, 002
+KSA007002260501404, "When [person] wakes up at [time in the early morning after dawn], can they say all of birchos hashachar?", 007, 002
 KSA007003260221223, "[person] is blind. Will [person] still say the beracha "pokeach ivrim"?", 007, 003
 KSA007003260221224, "After making the beracha "matir asurim," [person] realizes they have not yet blessed "zokef kefufim." Can they make that beracha?", 007, 003
 KSA007003260221225, "After making the beracha "zokef kefufim," [person] realizes they have not yet blessed "matir asurim." Can they make that beracha?", 007, 003
 KSA007003260221226, "After making the beracha "[one of birchos hashachar]," [person] realizes they have not yet blessed "matir asurim." Can they make that beracha?", 007, 003
+KSA007003260421300, "[person4] is blind. What beracha does [person4] say for "pokeach ivrim"?", 007, 003
+KSA007003260421301, "Can [person5] say all of birchot hashachar backwards?", 007, 003
 KSA007004260221227, "After [person] says "hamaavir shenah meeinai utenumah meafapai," does [person2] answer "amen"?", 007, 004
+KSA007004260422325, "Does [person2] need to answer amen after [person3] says "hamaavir shenah meeinai utenumah meafapai"?", 007, 004
 KSA007005260221228, "[person] stays up all night [doing activity]. Can they make the beracha "al netilat yadayim" in the morning before shacharit?", 007, 005
 KSA007005260221229, "[person2] stays up all night [doing activity2]. Can they make all the berachas of birchos hashachar on their own in the morning?", 007, 005
+KSA007005260421302, "[person] stays up all night [doing activity1]. Can they make the beracha "al netilat yadayim" before shacharit?", 007, 005
+KSA007005260501409, "[man] stays up all night [doing activity]. In the morning, which berachas will he ask [man2] to say for him?", 007, 005
 KSA007006260221230, "[person] doesn't bless "al netilat yadayim" before shacharit. Will they bless "al netilat yadayim" after shacharit?", 007, 006
+KSA007006260501410, "[man] forgets to bless "elokai neshamah" before shacharit. How long can he say it afterward?", 007, 006
+KSA007006260501411, "[man] forgets to bless "al netilat yadayim" before shacharit. How long can he say it afterward?", 007, 006
 KSA007007260221231, "[person] is running late. Can they skip birchot haTorah until after shacharit?", 007, 007
 KSA007007260221232, "[man1] forgot to say birchot haTorah. What does he need to do right after shemoneh esreh of shacharit?", 007, 007
 KSA007007260221233, "[man] realizes after shacharit that he forgot to say birchot haTorah. Will he say them now?", 007, 007
+KSA007007260501412, "[man2] doesn't say birchot haTorah before shacharit. How long does he have to say it after shacharit?", 007, 007
+KSA007007260501413, "Can [man] wait to say birchot haTorah until after shacharit?", 007, 007
+KSA007007260501414, "[man] forgot to say birchot haTorah before shacharit. What will he do now?", 007, 007
+KSA007007260501415, "[man] didn't say birchot haTorah yet. Should he say them before mincha?", 007, 007
 KSA007008260221234, "[man2] arrives at shul and is called up for an aliya before he's said birchot haTorah. After the aliyah, how will he make birchot haTorah?", 007, 008
+KSA007008260501416, "[man] forgets to say birchot haTorah. He is called up to an aliyah. When he says birchot haTorah later, does he say it normally?", 007, 008
 KSA008001260221235, "After [man] wakes up at [a time in the morning], can he start working on [a chore or assignment that a person has to do]?", 008, 001
-KSA000001260221236, "Can [man1] leave to start travelling to [a faraway place] at [a time in the morning]?", 008, 001
+KSA008001260221236, "Can [man1] leave to start travelling to [a faraway place] at [a time in the morning]?", 008, 001
+KSA008001260501405, "[man3] wakes up at [time in the early morning just after dawn]. Can he on [a personal project] before shacharit?", 008, 001
+KSA008001260501406, "[man2] wakes up after dawn. Can he deal with [a household chore] before he goes to daven shacharit?", 008, 001
+KSA008001260501407, "[man] wakes up on [day of the week] at sunrise. Since he wants to visit [a tourist attraction], can he start travelling there and daven at a shul on the way?", 008, 001
+KSA008001260501408, "[man3] wakes up. Can he start travelling to [a town or province2] before shacharit?", 008, 001
+KSA008001260501417, "[man] is going on a trip to [a state or province]. Can he start travelling at [a time in the early morning] to get there?", 008, 001
 KSA008002260221237, "Can [man] eat [a kind of food] at [a time in the morning] before saying shacharit?", 008, 002
 KSA008002260221238, "Can [man] have [coffee or tea] with [sugar or milk] at [time in the morning] before saying shacharit?", 008, 002
 KSA008002260221239, "[man1] does not feel well and cannot wait until after saying shacharit at shul to have [coffee or tea] with [sugar or milk]. Can he have some before he goes to shul and davens?", 008, 002
 KSA008002260221240, "[man1] does not feel well and cannot wait until after saying shacharit at shul to eat [a kind of food]. Can he have some before he goes to shul and davens?", 008, 002
+KSA008002260501418, "[man] is awake a bit after dawn. May he eat a [kind of food]?", 008, 002
+KSA008002260501419, "[man2] is not feeling well. Is it better ofr him to have [a kind of sugary drink] and then go to shul, or to daven on his own?", 008, 002
+KSA008002260501420, "Can [man] drink a glass of [a sugary drink] before shacharit?", 008, 002
+KSA008002260501421, "[man] wakes up and is seriously ill. Can he eat [a kind of food2]?", 008, 002
+KSA008002260504438, "[man] wakes up at [a time in the early morning around dawn]. Can he have some [kind of food]?", 008, 002
 KSA008003260221241, "[man] wakes up at [a time in the early morning before dawn]. Can he have some [kind of food]?", 008, 003
+KSA008003260501422, "[man] wakes up considerably before dawn. Can he eat a [kind of snacky food] while he does [a relaxing activity]?", 008, 003
 KSA008004260221242, "May [man] drink [water, coffee, or tea] at [a time in the morning] before shacharit?", 008, 004
 KSA008004260221243, "May [man] drink [water, coffee, or tea] on Shabbos morning before shacharit?", 008, 004
+KSA008004260501423, "May [man] drink plain coffee when he wakes up?", 008, 004
+KSA008004260501424, "May [man] drink plain water when he wakes up?", 008, 004
+KSA008004260501425, "May [man] drink plain tea when he wakes up?", 008, 004
+KSA008004260501426, "Is it better for [man] to drink [a sugary drink2] before shul on [a day with kiddush] morning or to pray shacharit on his own?", 008, 004
 KSA008005260221244, "When [man] runs into [person] in the morning on his way to shacharit, can he greet them?", 008, 005
 KSA008005260221245, "When [man] sees [person2] in the morning on his way to shacharit, can he approach them to greet them?", 008, 005
+KSA008005260503427, "[man] runs into [person2] in the morning before shacharit. Can he say hello?", 008, 005
+KSA008005260503428, "[man] passes [person] while walking to shacharit. Can he approach to say hello?", 008, 005
+KSA008005260503429, "Can [man] say [an abnormal greeting] to [person2] when he runs into them in the morning before shacharit?", 008, 005
+KSA008005260503430, "Can [man] say [a normal greeting] to [person] when he runs into them in the morning before shacharit?", 008, 005
+KSA008005260504439, "Can [man] stop by [man2]'s house to see if he's home and say hello on the way to shacharit?", 008, 005
+KSA008005260504440, "Can [man] reply to [person]'s [kind of electronic message] when he wakes up before shacharit?", 008, 005
+KSA008005260504441, "When [man] runs into [person] before shacharit, what greeting should he use to greet them?", 008, 005
 KSA008006260221246, "[man1] wakes up at [time in the morning]. Can he learn [an area of Torah] and then daven shacharit on his own?", 008, 006
 KSA008006260221247, "[man1] wakes up at [time in the morning]. Can he study [an area of Torah] before heading to his normal minyan at shul?", 008, 006
 KSA008006260221248, "If the only shiur on [an area of Torah] is at [time in the morning], can [man] go straight to the shiur after waking up and then daven shacharit on his own afterward?", 008, 006
+KSA008006260503431, "Can [man] study [an area of Torah study] in the morning before shacharit?", 008, 006
+KSA008006260503432, "If [man2] doesn't habitually daven shacharit with a certain minyan, can he go to a shiur covering [an area of Torah study] before davening shacharit?", 008, 006
+KSA008006260504442, "[man] doesn't consistently daven with a minyan for shacharit. Can he study [an area of Torah study] in the morning before going to the [a normal hour for shacharit] shacharit?", 008, 006
+KSA008006260504443, "[man2] consistently davens with a minyan for shacharit. Can he study [an area of Torah study2] in the morning before going to the [a normal hour for shacharit] shacharit?", 008, 006
+KSA008006260504444, "[man] wakes up at [a normal hour for shacharit] on [day of the week]. There is a shiur 30 minutes later that he could attend before davening on his own, and a shiur another 20 minutes after that he could attend after davening on his own. Which one will he attend?", 008, 006
 KSA009001260221249, "Does [man] wear a tallit katan at [a time of day]?", 009, 001
 KSA009001260221250, "Can [man] make a talit katan from [color]-dyed [kind of clothing material]?", 009, 001
 KSA009001260221251, "Can [man] make a tallit katan that is [a fraction] square amot in area?", 009, 001
 KSA009001260221252, "Can [man] sew together the sides of a talit katan to make it easier to wear?", 009, 001
 KSA009001260221253, "[man] is [someone's age in years] years old. Does he need a talit gadol?", 009, 001
-KSA005002260412273, "[person] urinated in a [kind of container meant for holding urine/feces] and left it in the [kind of room]. How much water does [person2] need to add to it to nullify it so that [person2] can say [a davar torah]?", 005, 002
-KSA005003260412274, "[person1] accidentally gets feces smeared on the skin of their [body part]. What can [person1] do to say [a beracha] before they get home and shower?", 005, 003
-KSA005005260412275, "[person4] urinated on the floor of the [kind of building]. They are [number from 1 to 20] months old. Can [person1] keep learning nearby?", 005, 005
-KSA005005260412276, "[person1] is [number from 1 to 100] weeks old. After [person1] defecates in [person2]'s [kind of room], can [person2] keep davening there?", 005, 005
-KSA005006260412277, "[person2] is learning [an area of Torah] while their friend [person3] chases turkeys. When one of the turkeys defecates, can they keep learning?", 005, 006`;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+KSA009001260503433, "Does [man] take off his talit katan before doing [an activity] at [time of day]?", 009, 001
+KSA009001260503434, "Does [man] make a talit katan out of [a cloth-like material]?", 009, 001
+KSA009001260503435, "How wide does [man] need to make his talit katan?", 009, 001
+KSA009001260503436, "When [man] sews together the sides of his talit katan, how much of the side can he sew together?", 009, 001
+KSA009001260503437, "[man] is a single man who was never married. Does he wear a talit during tefilah?", 009, 001
+KSA009001260504445, "Does [man] wear a talit katan while he [does activity]?", 009, 001
+KSA009001260504446, "Can [man] make his talit katan out of his [household items made out of cloth]?", 009, 001
+KSA009001260504447, "Can [man] make a [color] talit katan?", 009, 001
+KSA009001260504448, "Can [man] make his cotton [kind of clothing item] into a talit katan?", 009, 001
+KSA009001260504449, "Can [man] make a talit katan [a fraction] amah wide and [a fraction] amah long?", 009, 001
+KSA009001260504450, "Can [man] make a talit katan [a fraction] amah wide and [a number from one to ten] amos long?", 009, 001
+KSA009001260504451, "[man] is [number from 13 to 50] years old. Does he need his own talit gadol to wear during tefilah?", 009, 001
+KSA009001260505457, "Can [man] buy tzitzit from [weird name for a person] the [adjective describing a lack of good middos in some way] [job title]?", 009, 001
+KSA009002260504452, "[person] only has linen cloth. Can they use it to make a talit?", 009, 002
+KSA009002260504453, "[man] has a rectangular linen garment he wants to wear for [doing activity] that lacks tzitzit. Can he attach wool tzitzit?", 009, 002
+KSA009002260505458, "Linen and [a kind of fabric material other than linen] fabric are both available. Which can [person] use to make a talit?", 009, 002
+KSA009002260505459, "[man] has a talit made fully out of linen. Can he attach wool tzitzit to the corners?", 009, 002
+KSA009003260504454, "As long as the hole for the tzitzah is only 3 agudalin from one side of the corner, can it be [number from 4 to 10] agudalin from the remaining side?", 009, 003
+KSA009003260504455, "A tzitzah goes thru a hole in the corner of [man]'s rectangular garment. The hole is 3 agudalin from each side of the corner. Is this tzitzah kosher?", 009, 003
+KSA009003260504456, "[man] is tying tzitzit on the corner of a talit that has fringes left unwoven along two of the sides. How does [man] take into account these fringes when measuring the location for the tzitzit hole?", 009, 003
+KSA009003260505460, "Can [person] make the hole in the corner of the tallit for the tzitzah [number between three and ten] agudalin from the side of the corner?", 009, 003
+KSA009003260505461, "When [person] measures the agudalin between the tzitzah hole and the edge of the talit corner, which part of the thumb does he use?", 009, 003
+KSA009003260505462, "[person] makes a hole in the corner of the talit which is [number from four to ten] agudalin from the side of the corner. when the tzitzit is tied, the hole is pulled within 3 agudalin of the edge. Is this kosher?", 009, 003
+KSA009003260505463, "[man] ties tzitzit thru a hole [number from four to ten] agudalin from the side of the talit's corner. The hole is then epanded by cutting it so that it extends closer to the corner, within 3 agudalin. Is this kosher?", 009, 003
+KSA009003260505464, "[man] ties tzitzit thru a hole at the corner of a talit. The hole is one agudal from the edge of the corner. Is this tzitzah kosher?", 009, 003
+KSA009003260505465, "[man] ties tzitzit thru a hole at the corner of a talit. The hole is three agudalin from the edge of the corner. When the tzitzah knot is tightened, the hole is brought one agudal from the edge. Is this tzitzah kosher?", 009, 003
+KSA009003260505466, "[man] tied tzitzit thru a hole at the corner of a talit. The unwoven threads at the edge of the talit extend along the sides of the corner. Is this tzitzah kosher?", 009, 003
+KSA009004260505467, "[man] tied tzitzit thru a correctly-positioned hole at the corner of a talit. The hole now becomes torn so that it extends very close to the edge of the corner. Is the tzitzah still kosher?", 009, 004
+KSA009004260505468, "When [person] is sewing a talit for [man], does [person] need to reinforce the edge of the talit corners and the holes for the tzitzit?", 009, 004
+KSA009005260505469, "[man] ties tzitzit for his talit. How many knots and coils does he make?", 009, 005
+KSA009005260505470, "How many strings does [man[ use to tie a new tzitzit?", 009, 005
+KSA009005260505471, "How many loops does [man] wind in each coil of the tzitzit?", 009, 005
+KSA009005260505472, "When [man] ties tzitzit, which of the coils does he make longest?", 009, 005
+KSA009005260505473, "When [man] ties tzitzit, how long must be the distance from the knot at the base to the tip of each string?", 009, 005
+KSA009005260505474, "[man] ties tzitzit, making the strings extend [number from one to five] times longer than the area of knots and coils. Is this right?", 009, 005
+KSA009005260505475, "On one of [man]'s tzitzit, the strings come out in two groups of four from the last knot. Two strings are selected emerging from the same side of the knot. What are the chances these two strings are actually connected at the base and are one long string?", 009, 005
+KSA009005260607533, "When [man] ties tzitzit, will he make each set of coils equally spaced out?", 009, 005
+KSA009005260607534, "[man] ties tzitzit on the corner of his garment. From the base of the first knot to the end of the longest string is [number from twelve to twenty] agudalin. Is this tzitzah kosher?", 009, 005
+KSA009005260607535, "[man] ties tzitzit on the corner of his garment. From the base of the first knot to the end of the shortest string is [number from twelve to fifteen] agudalin. Is this tzitzah kosher?", 009, 005
+KSA009005260607536, "[man] ties tzitzit on the corner of his garment. From the base of the first knot to the end of the shortest string is [number from five to eleven] agudalin. Is the tzitzah kosher?", 009, 005
+KSA009005260607537, "[man] ties tzitzit. From the end of the third knot to the end of each string is at least [number from one to twenty] agudalin. Is the tzitzah kosher?", 009, 005
+KSA009005260607538, "[man] ties tzitzit. The distance from the first knot to the fifth knot is [number from one to three] agudalin. How long should he make the strings hanging beyond the fifth knot?", 009, 005
+KSA009005260607539, "[man] ties tzitzit. The distance from the first knot to the fifth knot is [number from four to eight] agudalin. How long should he make the strings hanging beyond the knots and coils?", 009, 005
+KSA009005260607540, "[man] ties tzitzit. When he ties a knot, how does he determine which hanging threads to put in each group of threads that form the knot?", 009, 005
+KSA009006260505476, "[man] takes a long thread, folds it into four lengths, and then passes the four folded lengths thru a garment's corner hole to tie tzitzit. Can [man] tie the tzitzit and then cut apart the lengths to make kosher tzitzit?", 009, 006
+KSA009006260505477, "[man] has a tzitzah tied to the corner of his garment. The hole tears and the whole tzitzah falls off the garment. If [man] reattaches the sides of the hole, putting back the tzitzah, is it kosher to wear?", 009, 006
+KSA009006260506478, "[man] had a three-cornered garment with tzitzit on each corner. If [man] reshapes the garment to have four corners, how many tzitzit does he need to add?", 009, 006
+KSA009006260513479, "[man] had a [kind of shirt with little corners cut into the waist, like a suit jacket or polo shirt] with four tiny corners that he tied tzitzit to. Afterward, he cut up the sides of the shirt to make the corners much larger and the whole garment rectangular in shape. Are the tzitzit kosher?", 009, 006
+KSA009006260513480, "[man] tied tzitzit onto a [cylindrical, slender object], and then transferred the tzitzit into slits in the corners of a garment and sewed up the slits into holes to attach the tzitzit to the garment. Are the tzitzit kosher?", 009, 006
+KSA009007260513481, "Does [man] need to check if the tzitzit are kosher before putting on a tallit at [time of day]?", 009, 007
+KSA009007260513482, "Which part of the tzitzit does [man] need to check each time he examines the tzitzit to ensure they are kosher?", 009, 007
+KSA009007260513483, "[man] is putting on a tallit. The strings on the end of one of the tzitzit are tangled up. Does he need to separate the strings and straighten them out?", 009, 007
+KSA009007260513484, "[man] gets to shul late in the morning and it's almost time for pesukei dezimrah. Does he need to check his tzitzit before putting on his tallit?", 009, 007
+KSA009007260513485, "[man] gets to shul late in the morning and it's almost time for barchu. Does he need to check his tzitzit before putting on his tallit?", 009, 007
+KSA009007260513486, "[man] gets to shul late in the morning and it's almost time for the Torah reading. Does he need to check his tzitzit before putting on his tallit?", 009, 007
+KSA009008260513487, "Does [person] make a beracha before [doing an action that is a mitzvah1]?", 009, 008
+KSA009008260513488, "[person1] makes a beracha on the mitzvah of [an action that is a mitzvah]. How long does [person1] need to wait afterward to start [an action that is a mitzvah]?", 009, 008
+KSA009008260513489, "How does [man[ hold the tallit before making the beracha on it if he is a normal, healthy person?", 009, 008
+KSA009008260513490, "Before [man] makes the beracha on putting on a tallit, what does he need to remember about the mitzvah?", 009, 008
+KSA009008260513491, "What beracha does [man] say on putting on the tallit?", 009, 008
+KSA009008260513492, "What posture does [man] adopt for his body when he makes the beracha on putting on the tallit?", 009, 008
+KSA009008260513493, "What does [man] do with the tallit after making the beracha on its donning?", 009, 008
+KSA009008260513494, "After putting on the tallit, how long does [man] hold it wrapped around the head?", 009, 008
+KSA009008260513495, "What does [man] do after putting on the tallit while it is still wrapped around his head?", 009, 008
+KSA009008260513496, "Is it okay if [man]'s tzitzit drag on the ground while dancing on [a time of year with dancing in shul]?", 009, 008
+KSA009008260513497, "What can [man] do while dancing on simchat Torah at shul to prevent his tzitzit from dragging on the ground?", 009, 008
+KSA009008260607541, "[man] is standing in shul. Does he need to sit down to put on his tallit?", 009, 008
+KSA009008260607542, "When [man] puts on a tallit, how much of his head does he cover after first making the beracha?", 009, 008
+KSA009008260607543, "When [man] puts on a tallit after making the beracha, what does he do with the corners of the tallit?", 009, 008
+KSA009009260513498, "At [time of day]l, can [man] make a beracha on wearing the tzitzit?", 009, 009
+KSA009009260513499, "[man] wakes up in the morning and looks out the window. How does he know if it's time yet to make a beracha on tzitzit?", 009, 009
+KSA009009260513500, "[man1] has a tallit gadol and puts on a tallit katan at night. When will he say the beracha over it? What beracha does he make?", 009, 009
+KSA009009260513501, "[man2] has a tallit gadol and puts on a tallit katan while his hands are still dirty. When will he say the beracha over it? What beracha does he make?", 009, 009
+KSA009009260513502, "[man] does not have a tallit gadol and puts on a tallit katan while his hands are clean during the day. When will he say the beracha over it? What beracha does he make?", 009, 009
+KSA009009260513503, "[man] does not have a tallit gadol and puts on a tallit katan at night. When will he say the beracha over it? What beracha does he make?", 009, 009
+KSA009009260513504, "[man3] does not have a tallit gadol and puts on a tallit katan while hi shands are dirty. When will he say the beracha over it? What beracha does he make?", 009, 009
+KSA009009260513505, "[man] puts on a tallit katan during the day and leaves it on overnight. When does he say a beracha over it the next day? What beracha does he make?", 009, 009
+KSA009009260616544, "At [time during the day], will [man] make a beracha on putting on tzitzit?", 009, 009
+KSA009009260616545, "At [time during the night], will [man] make a beracha on putting on tzitzit?", 009, 009
+KSA009009260616546, "Will [man] bless on wearing tzitzit right after dawn?", 009, 009
+KSA009009260616547, "Can [man] bless on wearing tzitzit once the world is fully lit before the sun comes out yet in the morning?", 009, 009
+KSA009010260513506, "[man] takes off a tallit and then puts it back on. Does he need a new beracha?", 009, 010
+KSA009010260513507, "[man] takes off his tallit to go to the bathroom and plans to put it back on right afterward. When does he need to make a new beracha?", 009, 010
+KSA009010260607508, "[man] takes off his talit planning to put it back on in [a small number] minutes. Does he need a new beracha when he puts it back on?", 009, 010
+KSA009010260607509, "[man] takes off his talit not planning to wear it again soon. Does he need a new beracha when he puts it back on after [a small number] minutes?", 009, 010
+KSA009010260607510, "[man]'s talit falls off his body, except that a part of it remains covering his [body part]. Does he need a new beracha to put it fully back on?", 009, 010
+KSA009010260607511, "[man]s talit falls fully off his body and lands on the [furniture item]. Does he need a new beracha to put the talit back on?", 009, 010
+KSA009010260607512, "[man]'s talit falls off his body and he catches it with his [movable body part] before it finishes falling. Does he need a new beracha to put it back on?", 009, 010
+KSA009010260607513, "[man]'s talit falls off his body onto the ground while he is saying [part of the shacharit tefilah that one can't interrupt]. When will he put it back on, and how will he do so?", 009, 010
+KSA009010260616548, "[man] takes off his tallit to go [do activity], planning to put it back on right after. Does he need to make a new beracha on it?", 009, 010
+KSA009010260616549, "[man] takes off his tallit to go and [do activity2] without any intention of putting it back on soon. Will he make a new beracha on the tallit when he puts it back on afterward?", 009, 010
+KSA009011260607514, "[man] does not have his own talit available. What does he need to hear from [man2] to be allowed to wear [man2]'s tallit?", 009, 011
+KSA009011260607515, "What does [man] need to hear from [man2] to have permission to move [man2]'s tallit from the [kind of non-bathroom room in a shul1] to the [kind of non-bathroom room in a shul2]?", 009, 011
+KSA009011260607516, "On [a weekday], [man] needed a talit and [man2] wasn't around, so [man] unfolded [man2]'s talit and put it on. Will he fold it back afterward?", 009, 011
+KSA009011260607517, "On Shabbos, [man] needed a talit and [man2] wasn't around, so [man] unfolded [man2]'s talit and put it on. Will [man] fold it back afterward?", 009, 011
+KSA009011260607518, "If [man] borrows [man2]'s talit to put on for an aliya to the Torah, does [man] make a beracha on wearing it?", 009, 011
+KSA009011260607519, "If [man] borrows [man2]'s talit to put on for an aliya to the Torah, what intention will [man] have in mind regarding acquiring the talit when he takes it?", 009, 011
+KSA009011260607520, "If [man] borrows a talit from the shul to put on for an aliya to the Torah, does [man] make a beracha on wearing it?", 009, 011
+KSA009012260607521, "[person] and [person2] get in an argument about whether when the Torah talks about "tzemer" it includes wool from a [kind of animal that makes wool]. What is the answer?", 009, 012
+KSA009012260607522, "[person] and [person2] get in an argument about whether when the halacha talks about "tzemer" it includes wool from a [kind of animal that makes wool2]. What is the answer?", 009, 012
+KSA009012260607523, "Will [man] make a beracha on a talit with warp made of wool and woof of silk?", 009, 012
+KSA009012260607524, "Will [man] make a beracha on a talit with warp made of wool and woof of cotton?", 009, 012
+KSA009012260607525, "Will [man] make a beracha on a talit with warp made of silk and woof of wool?", 009, 012
+KSA009012260607526, "Will [man] make a beracha on a talit with warp made of cotton and woof of wool?", 009, 012
+KSA009012260607527, "Will [man] make a beracha on a talit made of silk with wool tzitzit?", 009, 012
+KSA009012260607528, "If [man]'s talit is made of [a kind of non-wool cloth] and has wool tzitzit, how will [man] make the beracha on putting on the talit?", 009, 012
+KSA009012260607529, "Will [man] make a beracha on a talit made of wool with wool tzitzit?", 009, 012
+KSA009012260607530, "Will [man] make a beracha on a talit made of silk with silk tzitzit?", 009, 012
+KSA009012260607531, "Can [man] use a combination of wool and silk threads to tie the tzitzit on a talit?", 009, 012
+KSA009012260607532, "Can [man] buy silk strings from a factory in [country] to tie his tzitzit?", 009, 012
+KSA009013260616550, "One of the strings on one of the tzitzit on [man]'s tallit breaks [number from four to nine] agudalin past the knots. Is the tzitzit still kosher?", 009, 013
+KSA009013260616551, "One of the strings on one of the tzitzit on [man]'s tallit breaks [number from one to three] agudalin past the knots. Is the tzitzit still kosher?", 009, 013
+KSA009013260616552, "Four of the eight strings hanging past the knots on [man]'s tzitzit break [two or three] agudalin past the knots. Is the tzitzit still kosher?", 009, 013
+KSA009013260616553, "Six of the eight strings hanging past the knots on [man]'s tzitzit break [two or three] agudalin past the knots. Is the tzitzit still kosher?", 009, 013
+KSA009013260616554, "On [man]'s tzitzit, two strings that aren't connected at the base of the tzitzit both broke right after the knots. Is the tzitzit still kosher?", 009, 013
+KSA009013260616555, "On [man]'s tallit, two of the tzitzit strings that are connected at the base of the tzitzit both broke a bit after the knots. Is the talit still kosher?", 009, 013
+KSA009013260616556, "On [man]'s talit, one of the tzitzit strings breaks just past the knots. If the tzitzah is otherwise intact, is it kosher?", 009, 013
+KSA009013260616557, "On [man]'s talit, one of the strings breaks [number from zero to three] agudalin past the knots, and another string on the same tzitzah breaks [number from zero to three2] agudalin past the knots. Is the tzitzah still kosher?", 009, 013
+KSA009013260616558, "[man] ties tzitzit knots so that the opposite ends of each string are always separate on opposite sides of each knot. If two strings break on opposite sides right past the last knot, is the tzitzah kosher?", 009, 013
+KSA009013260616559, "[man2] ties tzitzit knots so that the opposite ends of each string are always separate on opposite sides of each knot. If two strings break on the same side right past the last knot, is the tzitzit kosher?", 009, 013
+KSA009013260616560, "One of [man]'s four tzitzit strings breaks by the hole in the talit corner before the knots. Is the tzitzit kosher?", 009, 013
+KSA009013260616561, "[man] tied tzitzit so the strings were all at least [number from twelve to twenty] agudalin from the first knot to the end of each string. Afterwards, some of the strings break so they are only [number from three to eleven] agudalin past the knots. Is the tzitzit still kosher?", 009, 013
+KSA009013260616562, "[man] ties tzitzit so the strings are all at least [number from six to eleven] agudalin from the first knot to the end of each string. Afterwards, some of the strings break so they are only five agudalin past the knots. Is the tzitzit still kosher?", 009, 013
+KSA009014260616563, "[man] ties tzitzit with four [type of cloth material] threads. Is the tzitzit kosher?", 009, 014
+KSA009014260616564, "[man2] ties kosher tzitzit of [type of string used to tie tzitzit] strings. The twisted strands that form the string come apart on one of the strings [number from two to ten] agudalin past the knots. Does this affect the kosher status of the tzitzit?", 009, 014
+KSA009015260616565, "[man] has a talit [number from one to four] amot wide and twice as long. He divides it into two smaller garments [number from one to four] amot long and [number from one to four] amot wide. If he reattaches the two garments again, to what extent are the original tzitzit still kosher?", 009, 015
+KSA009015260616566, "[man] has a talit [the minimum width of a talit] wide and [a length less than twice the minimum length of a talit] long. He divides it into two smaller garments half as long and equally wide. After he reattaches the two halves, under what conditions are the original tzitzit kosher?", 009, 015
+KSA009015260616567, "[man] has a talit [number from one to four] amot wide and one and [a fraction less than one] amot long. He divides it into two smaller garments, each [number from one to four] amot wide, and one an amah long and the other [a fraction less than one] amot long. After he reattaches the two halves, to what extent are the original tzitzit kosher?", 009, 015
+KSA009016260616568, "A rectangle of fabric is cut off from the corner of [man]'s talit, measuring [number less than three] agudalin by [number less than three1] agudalin. To be nice, [person] sewed the rectangle of fabric back on. Where should [man] tie his tzitzit on the corner?", 009, 016
+KSA009016260616569, "Before [man2] was able to tie tzitzit on his new rectangular garment, a rectangle of fabric ripped off from the corner of [man]'s talit, measuring [number less than three] agudalin by [number less than three1] agudalin. Once the rectangle was sown back on, where can [man2] tie the tzitzit on this corner?", 009, 016
+KSA009016260617570, "The corner of [man]'s new rectangular garment tore off most of the way and only a little part of it remains attached. If [man] gets it sewn back on properly, can he attach tzitzit to this talit normally?", 009, 016
+KSA009016260617571, "[man2] is making a new talit. Will he add smaller rectangular pieces of fabric in the corners on top of the main garment?", 009, 016
+KSA009017260617572, "[man]'s talit has a hole slightly less far away from both sides of the corner than the distance from the middle knuckle of the thumb to the tip of the nail. Is this a good hole to attach tzitzit thru?", 009, 017
+KSA009017260617573, "[man]'s talit has a hole slightly farther away from both sides of the corner than the distance from the middle knuckle of the thumb to the tip of the nail. Is this a good hole to attach tzitzit thru?", 009, 017
+KSA009017260617574, "[man] needs to add stitches to his [kind of cloth used for a talit] talit in the area around the tzitzit hole. What kind of thread can he use?", 009, 017
+KSA009017260617575, "[man] has a talit made of [kind of cloth used for talit2]. What kind of thread can he use to reinforce the edges of the tzitzit hole?", 009, 017
+KSA009017260617576, "[man] has a talit with [kind of cloth used for talit] tzitzit. What kind of thread can he use to reinforce the edges of the tzitzit hole?", 009, 017
+KSA009017260617577, "[man] has a [kind of thread used for tzitzit2] talit with [kind of thread used for tzitzit2] tzitzit. Can he use [color] [kind of thread used for tzitzit2] thread to sew around the corner and tzitzit hole?", 009, 017
+KSA009018260617578, "[man]'s talit has kosher tzitzit, but he thinks that other tzitzit would be nicer. Can he take off the current tzitzit to replace them?", 009, 018
+KSA009018260617579, "[man2]'s talit has kosher tzitzit. Since he is feeling [an emotion], can he and [man] take off [man2]'s tzitzit and replace them with other, just-as-good tzitzit?", 009, 018
+KSA009018260618580, "[man]'s talit is [number from one to fifty] years old. All of the tzitzit are still kosher, but some of the threads are broken. Is he permitted to remove these damaged tzitzit?", 009, 018
+KSA009018260618581, "[man]'s old talit has nice kosher tzitzit. Can he remove them and replace them with other kosher tzitzit that aren't as nice?", 009, 018
+KSA009018260618582, "[man] has a talit that he doesn't plan to wear. Can he remove its tzitzit?", 009, 018
+KSA009018260618583, "After one of [man]'s tzitzit became pasul, he detaches it from his talit. Can he throw it out in the [gross spot] with the [gross item]?", 009, 018
+KSA009019260618584, "After one of [man]'s tzitzit became pasul, he detaches it from his talit. Can he throw it out in the [kind of trash receptacle] with the [thing that goes in the trash]?", 009, 019
+KSA009019260618585, "[person] has a pasul tzitzit removed from a talit. What will they do with it?", 009, 019
+KSA009019260618586, "[person] has an old talit garment that isn't worn anymore as a mitzvah. Can they use it as a [kind of rectangular decorative household garment]?", 009, 019
+KSA009019260618587, "[person] has an old talit garment that isn't worn anymore as a mitzvah. Can they use it as a [kind of rectangular household garment used for cleaning]?", 009, 019
+KSA009020260618588, "[man3] comes on Shabbat morning to shul and examines his talit. As far as he knew before Shabbat, it was kosher, but now one of the tzizit is evidently pasul. If there is another talit that he can borrow, can he wear his talit anyway?", 009, 020
+KSA009020260618589, "[man3] comes on Shabbat morning to shul and examines his talit. As far as he knew before Shabbat, it was kosher, but now one of the tzizit is evidently pasul. If there is no other talit that he can borrow, can he wear his talit with a pasul tzitzit?", 009, 020
+KSA009020260618590, "[man] gets to shul on Shabbos and finds that his talit has become pasul since the last time he examined it, and there are no others he can wear. Since he's embarrassed not to wear a talit, he decides to put it on anyway. What beracha does he make?", 009, 020
+KSA009020260618591, "On [day of the week], [person] discovers that the tzitzit on his talit have become pasul. On Shabbat, he still hasn't gotten around to fixing them. If there isn't another tallit for him to wear and he's embarrassed not to wear a tallit at shul on Shabbat, what beracha would he make on wearing his tallit?", 009, 020
+KSA009021260618592, "[man5] wears a garment that is obligated in tzitzit without tzitzit on it. What is the technical classification of the nature of his sin?", 009, 021
+KSA009021260618593, "[man] has a rectangular plastic rain poncho that does not have tzitzit, and it is too challenging to try to attach tzitzit to the garment. What should he do instead?", 009, 021
+KSA009021260618594, "[man] has a rectangular [kind of rectangular garment] without tzitzit that he therefore cannot wear. He takes one of the corners and folds it and sews the corner back so it looks rounded off. Can [man] wear this garment now?", 009, 021
+KSA010001260618595, "[man] puts on pasul tefillin. Does this fulfill the mitzvah of wearing tefillin?", 010, 001
+KSA010001260618596, "When [man] puts on pasul tefillin thinking they are kosher, can he make a beracha?", 010, 001
+KSA010001260618597, "[man] needs new tefillin. Can he buy them from [person]?", 010, 001
+KSA010001260618598, "[man2] needs new tefillin. Can he buy them from the Rav of [the name of a shul]?", 010, 001
+KSA010001260618599, "[man3] needs new tefillin. Can he buy them from [man4], a well-known heaven-fearing sofer?", 010, 001
+KSA010001260618600, "Can [man] buy tefillin straps from [man3], who is known as a scrupulously honest merchant, if they were made for the mitzvah of tefillin from [kind of zoo animal] skins?", 010, 001
+KSA010001260618601, "Can [man] buy tefillin straps from [man2], who is a reliable person, if they were made for the mitzvah of tefillin from [kosher animal] hide?", 010, 001
+KSA010001260618602, "If [man] asks [man4], who is faithful and honest, to cut strips of leather the right dimensions for tefillin straps, can [man] use these straps for tefillin?", 010, 001
+KSA010001260618603, "[man] has a friend [man2], who knows [person1], who sells tefillins sets for a low price. [man] doesn't know much about the quality or origin of the tefillin. If he decides to buy them anyway, are they kosher?", 010, 001
+KSA010001260618604, "[person] finds a really good deal on tefillin online and decides to buy them for [man6]. Are they kosher?", 010, 001
+KSA010001260618605, "[man] buys himself a nice [expensive physical purchase]. How much should he spend on a nice [item used for a mitzvah]?", 010, 001
+KSA010001260618606, "The straps of [man2]'s tefillin are [color1]. Is that okay?", 010, 001
+KSA010001260618607, "The boxes of [man3]'s tefillin are [color2]. Is that okay?", 010, 001
+KSA010001260618608, "The boxes of [man6]'s tefillin are rotting. Is that okay?", 010, 001
+KSA010001260618609, "How should [man] blacken his tefillin straps if they change color to [color1]?", 010, 001
+KSA010001260618610, "How often should [man] maintain his tefillin straps to keep them black?", 010, 001
+KSA010001260618611, "Can [man] use [non-kosher fish species] oil to blacken his tefillin straps?", 010, 001
+KSA010001260618612, "Can [man] use [kosher fish species] oil to blacken his tefillin straps?", 010, 001
+KSA010001260618613, "[man]'s tefillin get a hole in the side after a few years. How should he determine if they are still koshre?", 010, 001
+KSA010001260618614, "The stiches start to break open on [man]'s tefillin. How should he determine if they are still kosher?", 010, 001
+KSA010001260618615, "The corner of [man]'s head tefillin rubs on the [something that is low overhead that a person can hit their head on] and ends up with a dent. Are the tefillin still suitable for the mitzvah?", 010, 001
+KSA010001260618616, "As [man3]'s tefillin get older, some of the skin on top of the bayis starts breaking away. Are they tefillin still kosher?", 010, 001
+KSA010001260618617, "[man] is careful about the mitzvah of tefillin, treats them with sanctity, and doesn't speak about mundane matters while wearing them. How will this affect the length of his life?", 010, 001
+KSA010001260618618, "[man] is careful about the mitzvah of tefillin, treats them with sanctity, and doesn't speak about mundane matters while wearing them. What are the chances that he has a part in olam haba?", 010, 001
+KSA010001260618619, "[man] puts the top of his talit over his head at shacharit. How much of his head tefillin should be covered with the tallit?", 010, 001
+KSA010002260618620, "[man] wakes up early when it's still dark out. Can he put on tefillin yet?", 010, 002
+KSA010002260618621, "[man] wakes up early. When it's just starting to get light out, can he put on tefillin yet", 010, 002
+KSA010002260618622, "When [man] puts on his tallit in the morning, should he wait until after he puts on his tefillin first?", 010, 002
+KSA010002260618623, "When [man] puts on his tefillin in the morning, should he wait until after he puts on his tallit first?", 010, 002
+KSA010002260618624, "As [man] is heading to put on his tallit, he touches the tefillin. Does he put on the tallit or the tefillin first?", 010, 002
+KSA010002260618625, "As [man2] is getting ready in the morning, he touches the tefillin bag. Does he put on the tefillin before his tallit?", 010, 002
+KSA010003260622626, "[man] is right-handed. Which arm does he wear the tefillin on?", 010, 003
+KSA010003260622627, "[man2] is left-handed. Which arm does he wear the tefillin on?", 010, 003
+KSA010003260622628, "[man2] is putting on his tefillin shel yad. Which part of the arm does it go on?", 010, 003
+KSA010003260622629, "[man3]'s tefillin sits on his bicep. Exactly where on the circumference of his arm should it sit?", 010, 003
+KSA010003260622630, "[man] is putting on his tefillin shel rosh. Where on his head does the bayis sit?", 010, 003
+KSA010003260622631, "[man] is putting on his tefillin shel rosh. Can the front of the tefillin rest on his forehead just in front of the base of his hairline?", 010, 003
+KSA010003260622632, "[man] is putting on his tefillin shel rosh. Can the tefillin box sit on top of his head with the back of the base sitting just up to the area where a baby's skull is soft?", 010, 003`;
 
 
 
