@@ -49,6 +49,15 @@
     </div>
 	 <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions">ⓘ</button>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
+	<p id="scenarioInstructions" class="stats hidden-info" style="margin-top: 5px; line-height: 1.4; border-left: 2px solid #3498db; padding-left: 10px;">
+            <span style="display: block; color: #7f8c8d;">
+                 
+            This tool was last updated in 2026 and created by Even, who personally wrote all of the question and scenario text. AI was used to help create the web page and functionality, but none of the content.
+       			<br><br>
+            Special thanks to my friend Yehoshua, who told me many years ago that I had to learn the KS"A. 
+    
+            </span>
+        </p>
 </div>
 
 <div id="setupPhase" class="card hidden">
@@ -59,16 +68,6 @@
         
 <p class="stats" style="margin-top: 10px; color: #7f8c8d;">
              Provide specific examples for the categories below, and then press 'Generate Question.' <strong>Note:</strong> Please use <strong>fictional names</strong> rather than real people you know, to avoid attributing problematic scenarios to real people.
-        </p>
-
-        <p id="scenarioInstructions" class="stats hidden-info" style="margin-top: 5px; line-height: 1.4; border-left: 2px solid #3498db; padding-left: 10px;">
-            <span style="display: block; color: #7f8c8d;">
-                 
-            This tool was last updated in 2026 and created by Even, who personally wrote all of the question and scenario text. AI was used to help create the web page and functionality, but none of the content.
-       			<br><br>
-            Special thanks to my friend Yehoshua, who told me many years ago that I had to learn the KS"A. 
-    
-            </span>
         </p>
 
         <div id="inputContainer"></div>
