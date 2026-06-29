@@ -325,6 +325,27 @@ function updateProfileDropdown() {
     });
 
     if (availablePool.length === 0) {
+
+	// Check if we are currently filtering by a specific chapter
+	    if (currentFilter !== "all") {
+	        alert("You've finished all available questions in this chapter! Returning to 'All Chapters'.");
+	        const menu = document.getElementById('chapterFilter');
+		menu.value = 'all'; // Set to the value corresponding to "All Chapters"
+		
+
+	        // 2. Update the filter state to "all"
+	        currentFilter = "all";
+	        
+	        // 3. Update the dropdown UI to show "all"
+	        document.querySelectorAll('.chapterFilter').forEach(s => s.value = "all");
+	        
+	        // 4. Reload the question list to pull from all chapters
+	        loadNextQuestion();
+	        return; 
+	    }
+
+
+
         // If we were reviewing mastered and ran out, turn off the mode
         reviewMasteredMode = false; 
         
