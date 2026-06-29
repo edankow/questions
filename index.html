@@ -46,26 +46,37 @@
 	    <button onclick="toggleHistory()">View History Table</button>
 	    <button onclick="exportWorksheet()">Export as Worksheet</button>
         </div>
+	
     </div>
+
 	 <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions">ⓘ</button>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
 	<p id="scenarioInstructions" class="stats hidden-info" style="margin-top: 5px; line-height: 1.4; ">
-            <span style="display: block; color: #7f8c8d;">
-                 
+            <span style="display: block; color: #7f8c8d; text-align: left;">
+                 This tool isn't meant to replace opening up a Kitzur Shulchan Aruch sefer. Rather, this is
+		a good way to increase your grasp on the halachas by quizzing a friend once you've
+		learned the material at a basic level. <br><br>
+
             This tool was last updated in 2026 and created by Even, who personally wrote all of the question and scenario text. AI was used to help create the web page and functionality, but none of the content.
        			<br><br>
-            Special thanks to my friend Yehoshua, who told me many years ago that I had to learn the KS"A. 
+            Special thanks to my friend Yehoshua, who pushed me many years ago to start learning the KS"A. 
     
             </span>
         </p>
+
+
 </div>
 
+
 <div id="setupPhase" class="card hidden">
-    <div class="creativity-box">
+    <div class="creativity-box" >
         <div style="display: flex; align-items: center; justify-content: space-between;">
             <h3 style="margin: 0;">Create the Scenario</h3>
-        </div>
         
+    <select id="chapterFilter" onchange="updateFilterMode(this.value)" style="width: 200px; text-align: left; padding: 6px;">
+        <option value="all">Shuffling all chapters</option>
+        </select>
+</div>
 <p class="stats" style="margin-top: 10px; color: #7f8c8d;">
              Provide specific examples for the categories below, and then press 'Generate Question.' <strong>Note:</strong> Please use <strong>fictional names</strong> rather than real people you know, to avoid attributing problematic scenarios to real people.
         </p>
@@ -117,6 +128,7 @@
 
         // State variables
 let questions = [];
+let currentFilter = "all"; // Default to showing everything
 // Change: Initialize as an empty object instead of a hardcoded "Default User"
 let profiles = JSON.parse(localStorage.getItem('ksa_profiles')) || {}; 
 let currentProfile = localStorage.getItem('ksa_current_profile');
@@ -140,10 +152,31 @@ function init() {
         localStorage.setItem('ksa_current_profile', currentProfile);
     }
 
+    initChapterFilters();
+
     updateProfileDropdown();
     updateHistoryList();
     loadNextQuestion();
+	
 }
+
+function initChapterFilters() {
+    const chapters = [...new Set(questions.map(q => q.chapter))].sort((a,b) => a - b);
+    const select = document.getElementById('chapterFilter');
+    
+    chapters.forEach(ch => {
+        let opt = document.createElement('option');
+        opt.value = ch;
+        opt.innerText = "Chapter " + parseInt(ch, 10); // Use parseInt to convert "01" to 1, "005" to 5, etc.
+        select.appendChild(opt);
+    });
+}
+
+function updateFilterMode(value) {
+    currentFilter = value;
+    loadNextQuestion(); // Re-runs your filtering logic
+}
+
 
 // New state variable to track the review mode
 let reviewMasteredMode = false;
@@ -268,6 +301,12 @@ function updateProfileDropdown() {
     const profileData = profiles[currentProfile] || {};
     
     const availablePool = questions.filter(q => {
+
+	// filter: check if the chapter is selected
+   	if (currentFilter !== "all" && q.chapter.toString() !== currentFilter.toString()) {
+        	return false; 
+    	}
+
         const data = profileData[q.id];
         
         // If we are in "Revisit Mastered" mode, only show mastered ones
