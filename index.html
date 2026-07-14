@@ -11,7 +11,7 @@
 
 
 <script src="questions.js"></script>
-
+<script src="chapters.js"></script>
 
 </head>
 <body>
@@ -164,10 +164,53 @@ function initChapterFilters() {
     const chapters = [...new Set(questions.map(q => q.chapter))].sort((a,b) => a - b);
     const select = document.getElementById('chapterFilter');
     
+
+    select.innerHTML = '<option value="all">Shuffling all chapters</option>';
+
+    const now = Date.now();
+    const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+    const profileData = profiles[currentProfile] || {};
+
+
     chapters.forEach(ch => {
-        let opt = document.createElement('option');
+
+	// Does this chapter have any available questions?
+        let hasAvailable = false;
+
+        for (const q of questions) {
+            if (q.chapter != ch) continue;
+
+            const data = profileData[q.id];
+
+            if (!data) {
+                hasAvailable = true;
+                break;
+            }
+
+            if (
+                data.status === "review" &&
+                (ignoreTimestamps || (now - data.timestamp) > TWENTY_FOUR_HOURS)
+            ) {
+                hasAvailable = true;
+                break;
+            }
+        }
+
+
+        const opt = document.createElement('option');
         opt.value = ch;
-        opt.innerText = "Chapter " + parseInt(ch, 10); // Use parseInt to convert "01" to 1, "005" to 5, etc.
+
+        const chapterNumber = parseInt(ch, 10); // Use parseInt to convert "01" to 1, "005" to 5, etc.
+	const chapterName = chapterNames[chapterNumber];
+
+        const label = chapterName
+            ? `Chapter ${chapterNumber} — ${chapterName}`
+            : `Chapter ${chapterNumber}`;
+
+        opt.innerText = hasAvailable
+            ? label
+            : `✓ ${label}`;
+
         select.appendChild(opt);
     });
 }
@@ -274,6 +317,7 @@ function updateProfileDropdown() {
         localStorage.setItem('ksa_current_profile', currentProfile);
 	ignoreTimestamps = false
 	reviewMasteredMode = false;
+	initChapterFilters(); 
         updateProfileDropdown(); // Refresh stats on change
 	updateHistoryList();
         loadNextQuestion();
@@ -335,6 +379,7 @@ function updateProfileDropdown() {
 
 	        // 2. Update the filter state to "all"
 	        currentFilter = "all";
+		initChapterFilters(); //update menu to show that all were answered
 	        
 	        // 3. Update the dropdown UI to show "all"
 	        document.querySelectorAll('.chapterFilter').forEach(s => s.value = "all");
