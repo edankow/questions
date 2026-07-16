@@ -224,3 +224,26 @@
 .hidden-info {
     display: none !important;
 }
+
+/* code block below written by manus.im to fix iphone problem with drop-down menu for chapters.*/
+@media only screen and (max-width: 768px) {
+    #chapterFilter {
+        z-index: 1000; /* Ensure it's above other elements */
+        position: relative; /* Needed for z-index to work */
+        -webkit-appearance: menulist-button; /* Ensure native dropdown appearance on iOS */
+        appearance: menulist-button;
+    }
+    .profile-section {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: stretch;
+    }
+    .dropdown {
+        width: 100%; /* Make dropdowns take full width */
+    }
+    .dropdown-content {
+        position: static; /* Allow dropdown content to flow naturally */
+        width: 100%;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
