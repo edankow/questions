@@ -190,7 +190,7 @@ KSA005008260221206, "There is excrement in front of [person]. During the day, ho
 KSA005008260221207, "There is excrement off to the side of [person]. How can [person] say [a davar kedusha] without going very far away?", 5, 8
 KSA005008260221209, "There is smelly excrement behind [person]. How far away from the excrement does [person] need to go to say [a davar kedusha]?", 5, 8
 KSA005008260323152, "There is excrement off to the side of [person]. How far away from the excrement does [person] need to go to say [a davar kedusha]?", 5, 8
-KSA005008260427349, "How far does [person[ have to go from the turkey feces to daven?", 5, 8
+KSA005008260427349, "How far does [person] have to go from the turkey feces to daven?", 5, 8
 KSA005008260427350, "[person2] can't smell the feces, but other people nearby can. How far does [person2] need to go away from them to bless for eating [a kind of food]?", 5, 8
 KSA005008260427351, "A gathering of feces is located just [a cardinal direction] of [person]. If [person] continues facing [a cardinal direction], how far do they have to go fro mthe feces to study [an area of Torah study]?", 5, 8
 KSA005008260428356, "[person] is in a dark [kind of place] with feces on the other end of the area. Where does [person] have to go to make a beracha on a [kind of food]?", 5, 8
@@ -292,7 +292,7 @@ KSA006001260221213, "Can [person] say [a beracha after eating food] while doing 
 KSA006001260221214, "How loudly does [person2] generally say the beracha [a beracha]?", 6, 1
 KSA006001260221215, "If [person1] is saying [a series of berachas] by rote and doesn’t know exactly what beracha they are up to after saying “baruch atah,” should they just keep going?", 6, 1
 KSA006001260221216, "When [person2] blesses [a beracha that a person says to hashem2] in daily life, how loud do they generally speak?", 6, 1
-KSA006001260422309, "Before [person] starts to say [a beracha for hashem], what will [person ] be sure to know about what they are going to say?", 6, 1
+KSA006001260422309, "Before [person] starts to say [a beracha for hashem], what will [person] be sure to know about what they are going to say?", 6, 1
 KSA006001260422310, "Can [person1] [do something] while saying the beracha [the name of a beracha]?", 6, 1
 KSA006001260422311, "How loudly will [person] bless [the name of a beracha]?", 6, 1
 KSA006001260501388, "Does [person] need to know exactly what beracha they are about to say before they make [a beracha]?", 6, 1
@@ -305,14 +305,14 @@ KSA006002260421281, "[person2] is about to eat some [kind of food3] and is so ex
 KSA006002260422312, "[person] is chewing on [something that a person puts in their mouth]. Does [person] need to take the [something that a person puts in their mouth] out of their mouth to make a new beracha on [something that you can make a beracha on]?", 6, 2
 KSA006002260501391, "May [person4] say [a beracha] while their [kind of dental equipment worn in the mouth] is in their mouth?", 6, 2
 KSA006002260501392, "Can [person2] say [a beracha] with a [small item] in their mouth?", 6, 2
-KSA006002260501393, "Can [person5] say [a beracha on eating] with a lot of extra saliva in his mouth?", 6, 2
+KSA006002260501393, "Can [person5] say [a beracha on eating] with a lot of extra saliva in their mouth?", 6, 2
 KSA006003260221219, "[person] is with their friend [person2] and making jokes. Can [person] make a beracha on [a kind of beverage] while in a completely silly mood?", 6, 3
 KSA006003260221220, "Can [person] say that [person1] shouldn’t be blessed with [a good thing that a person wants in their life]?", 6, 3
 KSA006003260221221, "Can [person1] refer to and say [a name of Hashem] over and over for fun?", 6, 3
 KSA006003260221222, "Can [person2] write the word [a word for Hashem in any language]?", 6, 3
 KSA006003260421282, "[person1] dislikes [person2]. Can they curse them?", 6, 3
 KSA006003260421283, "[person] has a lot of extra saliva building up during davening. Can they spit it out after saying [a pasuk in davening with Hashem's name]?", 6, 3
-KSA006003260421284, "Can [person] say "adoshem" instead of a-d-n-y when saying [a song or phrase with the word hashem written out]?", 6, 3
+KSA006003260421284, "Can [person] say 'adoshem' instead of a-d-n-y when saying [a song or phrase with the word hashem written out]?", 6, 3
 KSA006003260422313, "Can [person] engage in a theoretical comparison of Hashem with [a type of thing] to help them with their [kind of personal goal or interest]?", 6, 3
 KSA006003260422314, "Is [person1] allowed to say that H' shouldn't bless [person3] with [something that people usually want]?", 6, 3
 KSA006003260422315, "Can [person] write [write a euphemism for a name of hashem like tzevakos here instead of an actual name of hashem] on a [writing surface] in a [kind of place]?", 6, 3
@@ -321,13 +321,13 @@ KSA006003260501395, "Can [famous politician] say that G' wants [a country] to [v
 KSA006003260501396, "Can [person2] say a halachically-required beracha to Hashem for [doing an activity]?", 6, 3
 KSA006003260501397, "Can [person3] mention G' while learning [an area of Torah study]?", 6, 3
 KSA006003260501398, "Can [person4] invoke G' in the course of discussing G's role in [a period of Jewish history]?", 6, 3
-KSA006003260501399, "Can a person write out "we should [do activity] G'-willing" in a [kind of physical written document]?", 6, 3
-KSA006004260223223, "[person] starts saying a [name of a beracha rishonah on food] on some [type of food] when they realize that they already made the right beracha. If they realize after saying "baruch atah hashem," what will they do?", 6, 4
-KSA006004260223224, "[person1] starts blessing [the name of a beracha] when they realize that they're not required to say this beracha. If they realize after saying "baruch atah hashem elokei," what will they do?", 6, 4
-KSA006004260223225, "[person] started to say the beracha of [the name of a beracha1] while [doing activity] but caught themselves and said "lamdeni chukecha" to make it a pasuk. What else do they need to say?", 6, 4
-KSA006004260223226, "[person] started to say the beracha of [the name of a beracha] while [doing activity] but caught themselves and said "yisrael avinu meolam vead olam" to make it a pasuk. What else do they need to say?", 6, 4
-KSA006004260421285, "[person1] already said [a beracha1]. They forget and start saying again "Baruch atah H'". What will they do if they remember now?", 6, 4
-KSA006004260421286, "[person2] starts saying "Baruch atah H' elokei" and then realizes they don't need to make [the name of a beracha]. What will they do?", 6, 4
+KSA006003260501399, "Can a person write out 'we should [do activity] G'-willing' in a [kind of physical written document]?", 6, 3
+KSA006004260223223, "[person] starts saying a [name of a beracha rishonah on food] on some [type of food] when they realize that they already made the right beracha. If they realize after saying 'baruch atah hashem,' what will they do?", 6, 4
+KSA006004260223224, "[person1] starts blessing [the name of a beracha] when they realize that they're not required to say this beracha. If they realize after saying 'baruch atah hashem elokei,' what will they do?", 6, 4
+KSA006004260223225, "[person] started to say the beracha of [the name of a beracha1] while [doing activity] but caught themselves and said 'lamdeni chukecha' to make it a pasuk. What else do they need to say?", 6, 4
+KSA006004260223226, "[person] started to say the beracha of [the name of a beracha] while [doing activity] but caught themselves and said 'yisrael avinu meolam vead olam' to make it a pasuk. What else do they need to say?", 6, 4
+KSA006004260421285, "[person1] already said [a beracha1]. They forget and start saying again 'Baruch atah H'.' What will they do if they remember now?", 6, 4
+KSA006004260421286, "[person2] starts saying 'Baruch atah H' elokei' and then realizes they don't need to make [the name of a beracha]. What will they do?", 6, 4
 KSA006005260223227, "In [person]'s community, the custom is to pour out all water in the vicinity of a dead body. [person] made a beracha on a glass of water and then, before they started drinking, heard that a dead body was nearby. What will they do?", 6, 5
 KSA006006260421287, "[man] just finished shacharit and realized he isn't sure if he said [a beracha from birchot hashachar]. Wil he say the beracha now?", 6, 6
 KSA006006260421288, "[person] isn't sure whether or not they already said [a beracha that a person is required to say]. Will they say the beracha just in case?", 6, 6
@@ -335,17 +335,17 @@ KSA006006260422316, "[person] realizes at [time of day] that they aren't sure if
 KSA006006260501400, "[person2] ate [kind of food] for [a meal] and isn't sure if they said the after-beracha yet. Should they make the beracha now?", 6, 6
 KSA006006260501401, "[person3] isn't sure if they said [a beracha that one must say every day]. Should they go back and say it?", 6, 6
 KSA006007260317271, "How many berachos is [man1] obligated to say on [name of a day]?", 6, 7
-KSA006008260223228, "When [person] is blessing [the name of a beracha] and [person2] hears them say "Baruch atah Hashem," what does [person2] say?", 6, 8
+KSA006008260223228, "When [person] is blessing [the name of a beracha] and [person2] hears them say 'Baruch atah Hashem,' what does [person2] say?", 6, 8
 KSA006008260223229, "When [person] blesses [the name of a series of berachas like birkat hamazon or birchot hashachar], what does [person2] say as soon as [person] says each beracha?", 6, 8
-KSA006008260421289, "When [person1] hears [person2] say "baruch atah H" of [name of a beracha], what does [person1] say?", 6, 8
+KSA006008260421289, "When [person1] hears [person2] say 'baruch atah H' of [name of a beracha], what does [person1] say?", 6, 8
 KSA006008260421290, "[person1] is saying [a beracha]. What will [person2] do when they hear [person1] finish saying [a beracha]?", 6, 8
-KSA006008260422317, "[person] says a beracha "[the name of a beracha]" and [person2] hears. Can [person2] skip answering Amen?", 6, 8
-KSA006009260223230, "If [person] is saying [the name of a beracha] for themselves and for [person2], will [person2] say "baruch hu uvaruch shemo"?", 6, 9
-KSA006009260421291, "[person1] is in the middle of [something that is forbidden to interrupt] and hears [person2] make [a beracha]. When [person2] gets to "baruch atah hashem" of the beracha, what will [person1] say?", 6, 9
-KSA006009260421292, "[person1] and [person2] both need to say [a beracha], but [person1] doesn't know the words, so [person2] says [a beracha] for both of them. When [person2] says "Baruch atah H", what will [person1] say?", 6, 9
-KSA006009260422318, "[person] is involved in [a situation where a person halachically isn't supposed to interrupt to speak] and hears [person2] making a beracha [name of a beracha]. What will [person] say after [person2] says "Baruch atah H'", considering that [person] is still involved in [a situation where a person halachically isn't supposed to interrupt to speak]?", 6, 9
-KSA006009260422319, "[person] is saying the beracha [the name of a beracha] for [person2]. After [person] says "baruch atah H'", what will [person2] answer?", 6, 9
-KSA006009260501402, "[person2] is blessing [a beracha] on behalf of [person3]. Does [person3] say "Baruch hu uvaruch shemo" after [person2] says "Baruch atah H'"?", 6, 9
+KSA006008260422317, "[person] says a beracha '[the name of a beracha]' and [person2] hears. Can [person2] skip answering Amen?", 6, 8
+KSA006009260223230, "If [person] is saying [the name of a beracha] for themselves and for [person2], will [person2] say 'baruch hu uvaruch shemo'?", 6, 9
+KSA006009260421291, "[person1] is in the middle of [something that is forbidden to interrupt] and hears [person2] make [a beracha]. When [person2] gets to 'baruch atah hashem' of the beracha, what will [person1] say?", 6, 9
+KSA006009260421292, "[person1] and [person2] both need to say [a beracha], but [person1] doesn't know the words, so [person2] says [a beracha] for both of them. When [person2] says 'Baruch atah H', what will [person1] say?", 6, 9
+KSA006009260422318, "[person] is involved in [a situation where a person halachically isn't supposed to interrupt to speak] and hears [person2] making a beracha [name of a beracha]. What will [person] say after [person2] says 'Baruch atah H'', considering that [person] is still involved in [a situation where a person halachically isn't supposed to interrupt to speak]?", 6, 9
+KSA006009260422319, "[person] is saying the beracha [the name of a beracha] for [person2]. After [person] says 'baruch atah H',' what will [person2] answer?", 6, 9
+KSA006009260501402, "[person2] is blessing [a beracha] on behalf of [person3]. Does [person3] say 'Baruch hu uvaruch shemo' after [person2] says 'Baruch atah H''?", 6, 9
 KSA006010260223231, "[person] listens to [person1] saying [the name of a beracha]. How long does [person] need to wait to start saying amen?", 6, 10
 KSA006010260223232, "[person] blesses [the name of a beracha] very quietly. How quietly does [person2] say amen?", 6, 10
 KSA006010260421293, "When [person] says [a beracha1], can [person1] answer amen before [person] finishes the last word?", 6, 10
@@ -364,25 +364,25 @@ KSA007001260223237, "[person] is saying birchot haTorah while standing near [per
 KSA007001260421298, "[person1] is saying birchot haTorah out loud. Can they say the entire thing loudly if [person2] is nearby?", 7, 1
 KSA007001260422323, "Can [person] say the entire birchot hatorah out loud in front of [person2]?", 7, 1
 KSA007002260223238, "If [person2] wakes up at [time in the early morning], can they say all of birchos hashachar?", 7, 2
-KSA007002260421299, "Can [man1] bless "hanoten lasechvi vinah" at [time in the early morning]?", 7, 2
-KSA007002260422324, "When is the earliest time that [person] can bless "hanoten lasechvi vinah"?", 7, 2
+KSA007002260421299, "Can [man1] bless 'hanoten lasechvi vinah' at [time in the early morning]?", 7, 2
+KSA007002260422324, "When is the earliest time that [person] can bless 'hanoten lasechvi vinah'?", 7, 2
 KSA007002260501403, "When [person] wakes up at [time in the early morning before dawn], can they say all of birchos hashachar?", 7, 2
 KSA007002260501404, "When [person] wakes up at [time in the early morning after dawn], can they say all of birchos hashachar?", 7, 2
-KSA007003260221223, "[person] is blind. Will [person] still say the beracha "pokeach ivrim"?", 7, 3
-KSA007003260221224, "After making the beracha "matir asurim," [person] realizes they have not yet blessed "zokef kefufim." Can they make that beracha?", 7, 3
-KSA007003260221225, "After making the beracha "zokef kefufim," [person] realizes they have not yet blessed "matir asurim." Can they make that beracha?", 7, 3
-KSA007003260221226, "After making the beracha "[one of birchos hashachar]," [person] realizes they have not yet blessed "matir asurim." Can they make that beracha?", 7, 3
-KSA007003260421300, "[person4] is blind. What beracha does [person4] say for "pokeach ivrim"?", 7, 3
+KSA007003260221223, "[person] is blind. Will [person] still say the beracha 'pokeach ivrim'?", 7, 3
+KSA007003260221224, "After making the beracha 'matir asurim,' [person] realizes they have not yet blessed 'zokef kefufim.' Can they make that beracha?", 7, 3
+KSA007003260221225, "After making the beracha 'zokef kefufim,' [person] realizes they have not yet blessed 'matir asurim.' Can they make that beracha?", 7, 3
+KSA007003260221226, "After making the beracha '[one of birchos hashachar],' [person] realizes they have not yet blessed 'matir asurim.' Can they make that beracha?", 7, 3
+KSA007003260421300, "[person4] is blind. What beracha does [person4] say for 'pokeach ivrim'?", 7, 3
 KSA007003260421301, "Can [person5] say all of birchot hashachar backwards?", 7, 3
-KSA007004260221227, "After [person] says "hamaavir shenah meeinai utenumah meafapai," does [person2] answer "amen"?", 7, 4
-KSA007004260422325, "Does [person2] need to answer amen after [person3] says "hamaavir shenah meeinai utenumah meafapai"?", 7, 4
-KSA007005260221228, "[person] stays up all night [doing activity]. Can they make the beracha "al netilat yadayim" in the morning before shacharit?", 7, 5
+KSA007004260221227, "After [person] says 'hamaavir shenah meeinai utenumah meafapai,' does [person2] answer 'amen'?", 7, 4
+KSA007004260422325, "Does [person2] need to answer amen after [person3] says 'hamaavir shenah meeinai utenumah meafapai'?", 7, 4
+KSA007005260221228, "[person] stays up all night [doing activity]. Can they make the beracha 'al netilat yadayim' in the morning before shacharit?", 7, 5
 KSA007005260221229, "[person2] stays up all night [doing activity2]. Can they make all the berachas of birchos hashachar on their own in the morning?", 7, 5
-KSA007005260421302, "[person] stays up all night [doing activity1]. Can they make the beracha "al netilat yadayim" before shacharit?", 7, 5
+KSA007005260421302, "[person] stays up all night [doing activity1]. Can they make the beracha 'al netilat yadayim' before shacharit?", 7, 5
 KSA007005260501409, "[man] stays up all night [doing activity]. In the morning, which berachas will he ask [man2] to say for him?", 7, 5
-KSA007006260221230, "[person] doesn't bless "al netilat yadayim" before shacharit. Will they bless "al netilat yadayim" after shacharit?", 7, 6
-KSA007006260501410, "[man] forgets to bless "elokai neshamah" before shacharit. How long can he say it afterward?", 7, 6
-KSA007006260501411, "[man] forgets to bless "al netilat yadayim" before shacharit. How long can he say it afterward?", 7, 6
+KSA007006260221230, "[person] doesn't bless 'al netilat yadayim' before shacharit. Will they bless 'al netilat yadayim' after shacharit?", 7, 6
+KSA007006260501410, "[man] forgets to bless 'elokai neshamah' before shacharit. How long can he say it afterward?", 7, 6
+KSA007006260501411, "[man] forgets to bless 'al netilat yadayim' before shacharit. How long can he say it afterward?", 7, 6
 KSA007007260221231, "[person] is running late. Can they skip birchot haTorah until after shacharit?", 7, 7
 KSA007007260221232, "[man1] forgot to say birchot haTorah. What does he need to do right after shemoneh esreh of shacharit?", 7, 7
 KSA007007260221233, "[man] realizes after shacharit that he forgot to say birchot haTorah. Will he say them now?", 7, 7
@@ -536,8 +536,8 @@ KSA009011260607517, "On Shabbos, [man] needed a talit and [man2] wasn't around, 
 KSA009011260607518, "If [man] borrows [man2]'s talit to put on for an aliya to the Torah, does [man] make a beracha on wearing it?", 9, 11
 KSA009011260607519, "If [man] borrows [man2]'s talit to put on for an aliya to the Torah, what intention will [man] have in mind regarding acquiring the talit when he takes it?", 9, 11
 KSA009011260607520, "If [man] borrows a talit from the shul to put on for an aliya to the Torah, does [man] make a beracha on wearing it?", 9, 11
-KSA009012260607521, "[person] and [person2] get in an argument about whether when the Torah talks about "tzemer" it includes wool from a [kind of animal that makes wool]. What is the answer?", 9, 12
-KSA009012260607522, "[person] and [person2] get in an argument about whether when the halacha talks about "tzemer" it includes wool from a [kind of animal that makes wool2]. What is the answer?", 9, 12
+KSA009012260607521, "[person] and [person2] get in an argument about whether when the Torah talks about 'tzemer' it includes wool from a [kind of animal that makes wool]. What is the answer?", 9, 12
+KSA009012260607522, "[person] and [person2] get in an argument about whether when the halacha talks about 'tzemer' it includes wool from a [kind of animal that makes wool2]. What is the answer?", 9, 12
 KSA009012260607523, "Will [man] make a beracha on a talit with warp made of wool and woof of silk?", 9, 12
 KSA009012260607524, "Will [man] make a beracha on a talit with warp made of wool and woof of cotton?", 9, 12
 KSA009012260607525, "Will [man] make a beracha on a talit with warp made of silk and woof of wool?", 9, 12
