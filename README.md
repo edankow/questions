@@ -1,7 +1,7 @@
-A tool to quiz your friends on the Kitzur Shulchan Aruch to increase your own grasp of the teachings.
+A tool for quizzing friends on a body of practical material while strengthening your own understanding.
 
-Reading halachas from a book, or listening to shiurim is a great way to start. Without testing, though, you might never really show yourself that you know the material.
+Reading a book or listening to lessons is a great way to start learning. Without testing yourself, though, it can be difficult to know how well you actually understand and remember the material.
 
-This system uses a design like "mad libs" to help you come up with unique scenarios that make the halachas memorable. Then you can make new mental connections. In real life things are always messy. This process gets you ready to either know the halacha or where you want to start to ask a shaila.
+This system uses a format similar to "Mad Libs" to generate unique scenarios that make the underlying rules more memorable and help build new mental connections. Real-life situations are rarely as clean as textbook examples, so practicing with varied scenarios helps you recognize what you know and identify where you need more information.
 
-This is a pretty simple system, so I used AI to come up with the web platform in Javascript. I knew I wanted to be able to save accounts, so I designed the actual data system myself to target my priorities: being able to save, export, and share progress. I also came up with the structured format for the question data on my own, adapted from an earlier working version of this platform in Google Sheets.
+The web platform is a relatively simple JavaScript application, and I used AI to help with its implementation. I designed the underlying data system around my priorities: saving user progress and making that progress easy to export and share. I also designed the structured question-data format, adapting it from an earlier working version of the system I built in Google Sheets.
