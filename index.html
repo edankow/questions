@@ -23,14 +23,23 @@
     <h1>Kitzur Shulchan Aruch Study Tool</h1>
 
 <div class="profile-section">
-    <div>
+    <div class="study-profile-controls">
+        <label class="toolbar-label" for="profileSelect">Profile:</label>
         <select id="profileSelect"></select>
-	<div id="progressContainer" class="progress-info"></div>
     </div>
 
+    <div class="chapter-controls">
+        <div class="chapter-picker-row">
+        <details id="chapterFilter">
+            <summary id="chapterFilterSummary">Shuffling all chapters</summary>
+            <div id="chapterOptions" role="group" aria-label="Chapters to study"></div>
+        </details>
     <div class="dropdown">
-        <button class="btn-outline" onclick="toggleMenu(this, 'menu-profiles')">Edit Profiles ▾</button>
-        <div id="menu-profiles" class="dropdown-content">
+        <button class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Tools ▾</button>
+        <div id="menu-tools" class="dropdown-content">
+            <button onclick="toggleHistory()">View History Table</button>
+            <button onclick="exportWorksheet()">Export as Worksheet</button>
+            <hr>
             <button onclick="createNewProfile()">New Profile</button>
             <button onclick="exportProfile()">Export Profile</button>
             <button onclick="document.getElementById('importInput').click()">Load Profile</button>
@@ -38,18 +47,10 @@
             <button class="btn-delete" onclick="deleteCurrentProfile()">Delete Profile</button>
         </div>
     </div>
-
-
-	<div class="dropdown">
-        <button class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Other tools ▾</button>
-        <div id="menu-tools" class="dropdown-content">
-	    <button onclick="toggleHistory()">View History Table</button>
-	    <button onclick="exportWorksheet()">Export as Worksheet</button>
+            <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions" aria-label="Show instructions">ⓘ</button>
         </div>
-	
     </div>
-
-	 <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions">ⓘ</button>
+    <div id="progressContainer" class="progress-info" aria-live="polite"></div>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
 	<p id="scenarioInstructions" class="stats hidden-info" style="margin-top: 5px; line-height: 1.4; ">
             <span style="display: block; color: #7f8c8d; text-align: left;">
@@ -70,12 +71,9 @@
 
 <div id="setupPhase" class="card hidden">
     <div class="creativity-box" >
-        <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div class="scenario-header">
             <h3 style="margin: 0;">Create the Scenario</h3>
         
-    <select id="chapterFilter" onchange="updateFilterMode(this.value)" style="width: 200px; text-align: left; padding: 6px;">
-        <option value="all">Shuffling all chapters</option>
-        </select>
 </div>
 <p class="stats" style="margin-top: 10px; color: #7f8c8d;">
              Fill in the blanks below with specific examples, then click <b>Generate Question</b>. Please use <i>fictional names</i> rather than real people you know, to avoid attributing problematic scenarios to real people.
@@ -109,7 +107,9 @@
     </div>
 
     <div id="completionState" class="card hidden">
-        <h3>All caught up!</h3>
+        <div class="scenario-header">
+            <h3 style="margin: 0;">All caught up!</h3>
+        </div>
         <p>You've reviewed all the questions currently available.</p>
 	<button class="btn-outline" style="border-color: #27ae60; color: #27ae60;" onclick="clearReviewQueue()">Revisit 'needs review' questions</button><br><br>
 	<button class="btn-outline" style="border-color: #3498db; color: #3498db;" onclick="revisitMastered()">Revisit 'mastered' questions</button><br><br>
@@ -128,7 +128,7 @@
 
         // State variables
 let questions = [];
-let currentFilter = "all"; // Default to showing everything
+let currentFilter = "all"; // "all" or an array of chapter numbers as strings
 // Change: Initialize as an empty object instead of a hardcoded "Default User"
 let profiles = JSON.parse(localStorage.getItem('ksa_profiles')) || {}; 
 let currentProfile = localStorage.getItem('ksa_current_profile');
@@ -141,6 +141,8 @@ let ignoreTimestamps = false;
 // Initialize App
 function init() {
     questions = parseCSV(rawCsvData);
+    readChapterFilterFromUrl();
+    initChapterFilters();
     const profileNames = Object.keys(profiles);
 
     if (profileNames.length === 0) {
@@ -162,10 +164,35 @@ function init() {
 
 function initChapterFilters() {
     const chapters = [...new Set(questions.map(q => q.chapter))].sort((a,b) => a - b);
-    const select = document.getElementById('chapterFilter');
+    const select = document.getElementById('chapterOptions');
     
 
-    select.innerHTML = '<option value="all">Shuffling all chapters</option>';
+    select.replaceChildren();
+    function addChoice(value, text, completed = false) {
+        if (completed) {
+            const row = document.createElement('div');
+            row.className = 'chapter-completed';
+            row.setAttribute('aria-disabled', 'true');
+            row.setAttribute('aria-label', `${text}: no questions currently available`);
+            const indicator = document.createElement('span');
+            indicator.className = 'chapter-completion-mark';
+            indicator.textContent = '✓';
+            indicator.setAttribute('aria-hidden', 'true');
+            row.append(indicator, document.createTextNode(text));
+            select.appendChild(row);
+            return;
+        }
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.value = value;
+        input.checked = value === 'all' ? currentFilter === 'all'
+            : currentFilter !== 'all' && currentFilter.includes(value);
+        input.onchange = () => updateFilterMode(value, input.checked);
+        label.append(input, document.createTextNode(text));
+        select.appendChild(label);
+    }
+    addChoice('all', 'Shuffle all chapters');
 
     const now = Date.now();
     const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
@@ -182,6 +209,14 @@ function initChapterFilters() {
 
             const data = profileData[q.id];
 
+            if (reviewMasteredMode) {
+                if (data && data.status === 'confident') {
+                    hasAvailable = true;
+                    break;
+                }
+                continue;
+            }
+
             if (!data) {
                 hasAvailable = true;
                 break;
@@ -197,8 +232,6 @@ function initChapterFilters() {
         }
 
 
-        const opt = document.createElement('option');
-        opt.value = ch;
 
         const chapterNumber = parseInt(ch, 10); // Use parseInt to convert "01" to 1, "005" to 5, etc.
 	const chapterName = chapterNames[chapterNumber];
@@ -207,18 +240,86 @@ function initChapterFilters() {
             ? `Chapter ${chapterNumber} — ${chapterName}`
             : `Chapter ${chapterNumber}`;
 
-        opt.innerText = hasAvailable
-            ? label
-            : `✓ ${label}`;
-
-        select.appendChild(opt);
+        addChoice(String(Number(ch)), label, !hasAvailable);
     });
+    document.getElementById('chapterFilterSummary').textContent = currentFilter === 'all'
+        ? 'Shuffling all chapters'
+        : `Chapters ${currentFilter.join(', ')}`;
+    updateProgressStats();
 }
 
-function updateFilterMode(value) {
-    currentFilter = value;
-    loadNextQuestion(); // Re-runs your filtering logic
+function updateProgressStats() {
+    const selectedQuestions = questions.filter(q => currentFilter === 'all'
+        || currentFilter.includes(String(Number(q.chapter))));
+    renderProgressStats('progressContainer', selectedQuestions);
 }
+
+function renderProgressStats(containerId, questionPool) {
+    const profileData = profiles[currentProfile] || {};
+    const done = questionPool.filter(q => profileData[q.id]?.status === 'confident').length;
+    const review = questionPool.filter(q => profileData[q.id]?.status === 'review').length;
+    const unasked = questionPool.length - done - review;
+    document.getElementById(containerId).innerHTML = `
+        <span><strong>Questions:</strong></span>
+        <span><span class="dot dot-done"></span><strong>${done}</strong> Mastered</span>
+        <span><span class="dot dot-review"></span><strong>${review}</strong> Needs Review</span>
+        <span><span class="dot dot-new"></span><strong>${unasked}</strong> Not yet studied</span>
+    `;
+}
+
+function readChapterFilterFromUrl() {
+    const value = new URL(window.location.href).searchParams.get('chapters');
+    const validChapters = new Set(questions.map(q => String(Number(q.chapter))));
+    const selected = [...new Set((value || '').split(',')
+        .map(ch => ch.trim())
+        .filter(ch => /^\d+$/.test(ch))
+        .map(ch => String(Number(ch)))
+        .filter(ch => validChapters.has(ch)))].sort((a, b) => a - b);
+    currentFilter = value === 'all' || !selected.length ? 'all' : selected;
+    consecutiveCount = 0;
+    lastUsedIndex = -1;
+}
+
+function updateFilterMode(value, checked) {
+    const selected = new Set(currentFilter === 'all' ? [] : currentFilter);
+    if (checked) selected.add(value);
+    else selected.delete(value);
+    currentFilter = value === 'all' || !selected.size
+        ? 'all' : [...selected].sort((a, b) => a - b);
+    const url = new URL(window.location.href);
+    // Keep literal commas in the shareable URL and preserve other parameters and the hash.
+    url.searchParams.delete('chapters');
+    const query = url.searchParams.toString();
+    url.search = `${query ? query + '&' : ''}chapters=${currentFilter === 'all' ? 'all' : currentFilter.join(',')}`;
+    window.history.pushState(null, '', url.href);
+    consecutiveCount = 0;
+    lastUsedIndex = -1;
+    initChapterFilters();
+    if (profiles[currentProfile]) loadNextQuestion();
+    document.querySelector(`#chapterOptions input[value="${value}"]`)?.focus();
+}
+
+window.addEventListener('popstate', () => {
+    readChapterFilterFromUrl();
+    initChapterFilters();
+    if (profiles[currentProfile]) loadNextQuestion();
+});
+
+document.addEventListener('click', event => {
+    const picker = document.getElementById('chapterFilter');
+    if (!event.composedPath().includes(picker)) picker.open = false;
+});
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') document.getElementById('chapterFilter').open = false;
+});
+
+function sizeChapterMenu() {
+    const picker = document.getElementById('chapterFilter');
+    const space = document.documentElement.clientWidth - picker.getBoundingClientRect().left - 12;
+    picker.style.setProperty('--chapter-menu-space', `${Math.max(0, space)}px`);
+}
+document.getElementById('chapterFilter').addEventListener('toggle', sizeChapterMenu);
+window.addEventListener('resize', sizeChapterMenu);
 
 
 // New state variable to track the review mode
@@ -282,17 +383,12 @@ function updateProfileDropdown() {
     });
 
     // Calculate Stats
-    const total = questions.length;
     const profileData = profiles[currentProfile] || {};
 	const validIds = new Set(questions.map(q => q.id)); // Create a Set of valid IDs for high-speed lookup
 	// Filter profile data to only include entries that exist in the database
 	const done = Object.keys(profileData).filter(id => 
         validIds.has(id) && profileData[id].status === 'confident'
         ).length;    
-	const review = Object.keys(profileData).filter(id => 
-        validIds.has(id) && profileData[id].status === 'review'
-    ).length;
-    const unasked = total - (done + review);
 
 	const masteredBtn = document.querySelector("#completionState button[onclick='revisitMastered()']");
     if (masteredBtn) {
@@ -305,12 +401,7 @@ function updateProfileDropdown() {
         }
     }
 
-    // Display Stats
-    document.getElementById('progressContainer').innerHTML = `
-        <span><span class="dot dot-done"></span><strong>${done}</strong> Mastered</span>
-        <span><span class="dot dot-review"></span><strong>${review}</strong> Needs Review</span>
-        <span><span class="dot dot-new"></span><strong>${unasked}</strong> New</span>
-    `;
+    updateProgressStats();
 
     select.onchange = (e) => {
         currentProfile = e.target.value;
@@ -340,6 +431,7 @@ function updateProfileDropdown() {
         }
 
         function loadNextQuestion() {
+    initChapterFilters();
     const now = Date.now();
     const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
     const profileData = profiles[currentProfile] || {};
@@ -347,7 +439,7 @@ function updateProfileDropdown() {
     const availablePool = questions.filter(q => {
 
 	// filter: check if the chapter is selected
-   	if (currentFilter !== "all" && q.chapter.toString() !== currentFilter.toString()) {
+    if (currentFilter !== "all" && !currentFilter.includes(String(Number(q.chapter)))) {
         	return false; 
     	}
 
@@ -369,27 +461,11 @@ function updateProfileDropdown() {
     });
 
     if (availablePool.length === 0) {
-
-	// Check if we are currently filtering by a specific chapter
-	    if (currentFilter !== "all") {
-	        alert("You've finished all available questions in this chapter! Returning to 'All Chapters'.");
-	        const menu = document.getElementById('chapterFilter');
-		menu.value = 'all'; // Set to the value corresponding to "All Chapters"
-		
-
-	        // 2. Update the filter state to "all"
-	        currentFilter = "all";
-		initChapterFilters(); //update menu to show that all were answered
-	        
-	        // 3. Update the dropdown UI to show "all"
-	        document.querySelectorAll('.chapterFilter').forEach(s => s.value = "all");
-	        
-	        // 4. Reload the question list to pull from all chapters
-	        loadNextQuestion();
-	        return; 
-	    }
-
-
+        if (currentFilter !== 'all') {
+            alert("You've finished all available questions in the selected chapters! Returning to all chapters.");
+            updateFilterMode('all', true);
+            return;
+        }
 
         // If we were reviewing mastered and ran out, turn off the mode
         reviewMasteredMode = false; 
@@ -405,7 +481,7 @@ function updateProfileDropdown() {
 
     // Determine the next question index (Standard random/sequential logic)
     let nextIndex;
-    if (consecutiveCount >= 5 || lastUsedIndex === -1) {
+    if (currentFilter === "all" || currentFilter.length > 1 || consecutiveCount >= 5 || lastUsedIndex === -1) {
         nextIndex = Math.floor(Math.random() * availablePool.length);
         consecutiveCount = 1;
     } else {
@@ -468,6 +544,7 @@ function updateProfileDropdown() {
                 
                 if (index === 0) {
                     setTimeout(() => {
+                        if (document.getElementById('chapterFilter').open) return;
                         const allInputs = container.querySelectorAll('input');
                         const firstEmpty = Array.from(allInputs).find(input => !input.value) || allInputs[0];
                         firstEmpty.focus();
