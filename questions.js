@@ -313,7 +313,7 @@ KSA006003260221222, "Can [person2] write the word [a word for Hashem in any lang
 KSA006003260421282, "[person1] dislikes [person2]. Can they curse them?", 6, 3
 KSA006003260421283, "[person] has a lot of extra saliva building up during davening. Can they spit it out after saying [a pasuk in davening with Hashem's name]?", 6, 3
 KSA006003260421284, "Can [person] say 'adoshem' instead of a-d-n-y when saying [a song or phrase with the word hashem written out]?", 6, 3
-KSA006003260422313, "Can [person] engage in a theoretical comparison of Hashem with [a type of thing] to help them with their [kind of personal goal or interest]?", 6, 3
+KSA006003260422313, "Can [person] engage in a theoretical comparison of Hashem to [a type of thing] to help them with their [kind of personal goal or interest]?", 6, 3
 KSA006003260422314, "Is [person1] allowed to say that H' shouldn't bless [person3] with [something that people usually want]?", 6, 3
 KSA006003260422315, "Can [person] write [write a euphemism for a name of hashem like tzevakos here instead of an actual name of hashem] on a [writing surface] in a [kind of place]?", 6, 3
 KSA006003260501394, "Can [person] say to [person2] to thank G' for how nice the weather is?", 6, 3
@@ -502,12 +502,12 @@ KSA009008260513492, "What posture does [man] adopt for his body when he makes th
 KSA009008260513493, "What does [man] do with the tallit after making the beracha on its donning?", 9, 8
 KSA009008260513494, "After putting on the tallit, how long does [man] hold it wrapped around the head?", 9, 8
 KSA009008260513495, "What does [man] do after putting on the tallit while it is still wrapped around his head?", 9, 8
-KSA009008260513496, "Is it okay if [man]'s tzitzit drag on the ground while dancing on [a time of year with dancing in shul]?", 9, 8
+KSA009008260513496, "Is it okay if [man]'s tzitzit drag on the ground while dancing for [an occasion for dancing in shul]?", 9, 8
 KSA009008260513497, "What can [man] do while dancing on simchat Torah at shul to prevent his tzitzit from dragging on the ground?", 9, 8
 KSA009008260607541, "[man] is standing in shul. Does he need to sit down to put on his tallit?", 9, 8
 KSA009008260607542, "When [man] puts on a tallit, how much of his head does he cover after first making the beracha?", 9, 8
 KSA009008260607543, "When [man] puts on a tallit after making the beracha, what does he do with the corners of the tallit?", 9, 8
-KSA009009260513498, "At [time of day]l, can [man] make a beracha on wearing the tzitzit?", 9, 9
+KSA009009260513498, "At [time of day], can [man] make a beracha on wearing the tzitzit?", 9, 9
 KSA009009260513499, "[man] wakes up in the morning and looks out the window. How does he know if it's time yet to make a beracha on tzitzit?", 9, 9
 KSA009009260513500, "[man1] has a tallit gadol and puts on a tallit katan at night. When will he say the beracha over it? What beracha does he make?", 9, 9
 KSA009009260513501, "[man2] has a tallit gadol and puts on a tallit katan while his hands are still dirty. When will he say the beracha over it? What beracha does he make?", 9, 9
@@ -589,7 +589,7 @@ KSA009019260618587, "[person] has an old talit garment that isn't worn anymore a
 KSA009020260618588, "[man3] comes on Shabbat morning to shul and examines his talit. As far as he knew before Shabbat, it was kosher, but now one of the tzizit is evidently pasul. If there is another talit that he can borrow, can he wear his talit anyway?", 9, 20
 KSA009020260618589, "[man3] comes on Shabbat morning to shul and examines his talit. As far as he knew before Shabbat, it was kosher, but now one of the tzizit is evidently pasul. If there is no other talit that he can borrow, can he wear his talit with a pasul tzitzit?", 9, 20
 KSA009020260618590, "[man] gets to shul on Shabbos and finds that his talit has become pasul since the last time he examined it, and there are no others he can wear. Since he's embarrassed not to wear a talit, he decides to put it on anyway. What beracha does he make?", 9, 20
-KSA009020260618591, "On [day of the week], [person] discovers that the tzitzit on his talit have become pasul. On Shabbat, he still hasn't gotten around to fixing them. If there isn't another tallit for him to wear and he's embarrassed not to wear a tallit at shul on Shabbat, what beracha would he make on wearing his tallit?", 9, 20
+KSA009020260618591, "On [day of the week], [man1] discovers that the tzitzit on his talit have become pasul. On Shabbat, he still hasn't gotten around to fixing them. If there isn't another tallit for him to wear and he's embarrassed not to wear a tallit at shul on Shabbat, what beracha would he make on wearing his tallit?", 9, 20
 KSA009021260618592, "[man5] wears a garment that is obligated in tzitzit without tzitzit on it. What is the technical classification of the nature of his sin?", 9, 21
 KSA009021260618593, "[man] has a rectangular plastic rain poncho that does not have tzitzit, and it is too challenging to try to attach tzitzit to the garment. What should he do instead?", 9, 21
 KSA009021260618594, "[man] has a rectangular [kind of rectangular garment] without tzitzit that he therefore cannot wear. He takes one of the corners and folds it and sews the corner back so it looks rounded off. Can [man] wear this garment now?", 9, 21
@@ -630,126 +630,126 @@ KSA010003260622628, "[man2] is putting on his tefillin shel yad. Which part of t
 KSA010003260622629, "[man3]'s tefillin sits on his bicep. Exactly where on the circumference of his arm should it sit?", 10, 3
 KSA010003260622630, "[man] is putting on his tefillin shel rosh. Where on his head does the bayis sit?", 10, 3
 KSA010003260622631, "[man] is putting on his tefillin shel rosh. Can the front of the tefillin rest on his forehead just in front of the base of his hairline?", 10, 3
-KSA010003260622632, "[man] is putting on his tefillin shel rosh. Can the tefillin box sit on top of his head with the back of the base sitting just up to the area where a baby's skull is soft?", 10, 3`;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+KSA010003260622632, "[man] is putting on his tefillin shel rosh. Can the tefillin box sit on top of his head with the back of the base sitting just up to the area where a baby's skull is soft?", 10, 3
+KSA010003260925633, "[man] just put on his tefillin shel rosh and the front is resting just forward of his hairline. Has he done the mitzvah of putting on the tefillin shel rosh?", 10, 3
+KSA010003260925634, "[man] just put on his tefillin shel rosh and the front is resting a little behind the edge where hairs start to grow. Has he done the mitzvah of putting on the tefillin shel rosh?", 10, 3
+KSA010003260925635, "[man1] puts on his tefillin shel rosh at the front of his head just behind the hairline but off-center to the [left or right]. Has he fulfilled the mitzvah of putting on the tefillin shel rosh?", 10, 3
+KSA010003260925636, "[man] puts on his tefillin shel rosh at the front of his head behind the hairline and off-center to the [right or left] and not in the middle. He made the beracha on putting it on. Is this a good beracha?", 10, 3
+KSA010003260925637, "[man] puts on his tefillin shel rosh. Where should the knot at the back of [man]'s head rest?", 10, 3
+KSA010003260925638, "The knot of [man]'s tefillin shel rosh is slightly off-center to the [right or left]. Is this proper?", 10, 3
+KSA010003260925639, "When [man] puts on his tefillin shel rosh, the strap is loose on his head. Does [man] need to tighten the strap?", 10, 3
+KSA010003260925640, "When [man] puts on his tefillin shel rosh, the strap is tight on his head. Does [man] need to loosen the strap?", 10, 3
+KSA010004260925641, "[man] stops [doing an activity] to put on tefillin. Will [man] sit, stand, or lie down to do so?", 10, 4
+KSA010004260925642, "[man] needs to get his tefillin out of their bag. Can [man] shake out the bag to remove them?", 10, 4
+KSA010004260925643, "[man] needs to get his tefillin out of their bag. How will he get them out of their bag?", 10, 4
+KSA010004260925644, "[man] is about to put on tefillin. Which will he put on first: the tefillin shel yad or the tefillin shel rosh?", 10, 4
+KSA010004260925645, "[man] is putting on his tefillin shel yad. Will he wait until he tightens the knot to bless lehaniach tefillin?", 10, 4
+KSA010004260925646, "[man] is putting on his tefillin shel yad. At what exact point in the coiurse of doing this does he make the beracha?", 10, 4
+KSA010004260925647, "When [man] makes the beracha on the tefillin shel yad, what vowel sound follows the hey of lehaniach?", 10, 4
+KSA010004260925648, "When [man] makes the beracha on tefillin, how does he pronounce the lamed of the word tefillin?", 10, 4
+KSA010004260925649, "Immediately after making the beracha [one of birchos hashachar], what does [man] do with his tefillin?", 10, 4
+KSA010004260925650, "Immediately after making the beracha on the tefillin shel yad, what does [man] do with his tefilin?", 10, 4
+KSA010004260925651, "When [man] puts on his tefillin shel yad, what does he need to do before he tightens the knot on the bicep?", 10, 4
+KSA010004260925652, "After tightening the tefillin shel yad on the upper arm, what does [man] do immediately next with the strap of the tefillin shel yad?", 10, 4
+KSA010004260925653, "When [man] puts on the tefillin shel yad, how many times does he wrap the strap around his arm?", 10, 4
+KSA010004260925654, "After winding the tefillin shel yad on the arm, wht does [man] need to do before putting on the tefillin shel rosh?", 10, 4
+KSA010004260925655, "What beracha does [man] make on wearing the tefillin shel rosh?", 10, 4
+KSA010004260925656, "At what point in the process of putting on the tefillin shel rosh will [man] make the beracha al mitzvat tefillin?", 10, 4
+KSA010004260925657, "When [man] makes the beracha al mitzvat tefillin on the tefillin shel rosh, what vowel does he say following the vav of mitzvat?", 10, 4
+KSA010004260925658, "What does [man] still need to do with the tefillin shel rosh after saying the beracha on it?", 10, 4
+KSA010004260925659, "What does [man] still need to say upon putting on the tefillin shel rosh after the beracha?", 10, 4
+KSA010004260925660, "At what point during putting on the tefillin shel rosh does [man] say baruch shem kevod...?", 10, 4
+KSA010004260925661, "[man] is putting on tefillin and says the beracha "al mitzvat tefilin." How loudly does he make the beracha?", 10, 4
+KSA010004260925662, "[man] is putting on tefillin. After putting on the tefilin shel rosh, how many times does he wrap the strap of the tefillin shel yad on the middle finger of the left arm?", 10, 4
+KSA010004260925663, "When [man] puts on tefillin, on which of his fingers does he wrap the strap of the tefillin shel yad?", 10, 4
+KSA010004260925664, "When [man] puts on tefillin, on which part of his middle finger does he wrap the strap of the tefillin shel yad?", 10, 4
+KSA010005260925665, "When [man] is about to put on tefillin, he takes the tefillin shel rosh out of his tefillin bag first. Does he put on the tefillin shel rosh first?", 10, 5
+KSA010005260925666, "When [man] is about to put on tefillin, he takes the tefillin shel yad out of his tefillin bag first. Does he put on the tefillin shel yad first?", 10, 5
+KSA010006260925667, "Can [man] wear his tefillin shel yad over a [something that goes on top of the skin of someone's arm] on his arm?", 10, 6
+KSA010006260925668, "Can [man] wear his tefillin shel rosh on his head over his [something that goes on the head right over the skin or hair]?", 10, 6
+KSA010006260925669, "[man2] just got a haircut and his hair is short. Can he wear his tefillin shel rosh properly?", 10, 6
+KSA010006260925670, "[man3] has been growing out his curly hair and it has gotten long. Can he wear his tefillin shel rosh properly?", 10, 6
+KSA010007260925671, "What is the knot of [man]'s tefillin shel yad supposed to touch on [man]'s body and tefillin?", 10, 7
+KSA010007260925672, "After [man] puts his tefillin away, how is the knot of the tefillin shel yad supposed to be positioned?", 10, 7
+KSA010007260925673, "Which side of [man]'s tefillin shel yad should the yud of the knot go on?", 10, 7
+KSA010007260925674, "The strap of [man]'s tefillin shel yad is attached to the tefillin bayis where it passes through part of the tefillin base that extends out from the bayis. When [man] is wearing the tefillin shel yad, on which side of the bayis is the hollow part of the base that the tefillin strap goes thru?", 10, 7
+KSA010007260925675, "[man] is [left or right]-handed. When [man] puts on [man2]'s tefillin shel yad on [man]'s arm that [man] usually wears tefillin on, the yud knot faces away from his body when he orients the tefillin so that the the extension of the base that holds the strap sits above the bayis closer to his shoulder. How should [man] orient the tefillin shel yad when he puts them on his arm?", 10, 7
+KSA010007260925676, "[man3] is right-handed. The only tefillin available were tied for [man] who is left-handed. When [man3] puts on [man]'s tefillin, does he need to put them on upside-down?", 10, 7
+KSA010007260925677, "[man] is left-handed. The only tefillin available were tied for [man2] who is right-handed. When [man] puts on [man2]'s tefillin, does he need to put them on upside-down?", 10, 7
+KSA010008260925678, "[man2] put on the tefillin shel yad. He is going to put on the tefillin shel rosh soon. Can he explain to [man] about the [conversation topic] while he puts them on?", 10, 8
+KSA010008260925679, "[man2] and [man] were arguing about the [controversial topic]. [man2] puts on his tefillin shel yad. Can [man2] continue the argument by making gestures with his eyes before he finishes putting on the tefillin shel rosh?", 10, 8
+KSA010008260925680, "[man1] and [man3] are putting on tefillin. After they put on the tefillin shel yad, can they snap their fingers at each other before putting on the tefillin shel rosh?", 10, 8
+KSA010008260925681, "After putting on the tefillin shel yad, can [man2] wait [a short amount of time] to rest before putting on the tefillin shel rosh?", 10, 8
+KSA010008260925682, "[man1] puts on the tefillin shel yad. Before he puts on the tefillin shel rosh, the congregation is called to respond [one of the responses of kaddish or kedusha]. What will [man1] do?", 10, 8
+KSA010008260925683, "[man2] puts on the tefillin shel yad. Before he puts on the tefillin shel rosh, he hears [man1] make the beracha of "lehaniach tefillin" on *his* tefillin shel yad. How will [man2] respond?", 10, 8
+KSA010008260925684, "[man2] puts on the Rabbenu Tam tefillin shel yad. Before he puts on the Rabbenu Tam tefillin shel rosh, the congregation is called to respond [one of the responses of kaddish or kedusha2]. What will [man2] do?", 10, 8
+KSA010008260925685, "[man2] puts on the Rabbenu Tam tefillin shel yad. Before he puts on the Rabbenu Tam tefillin shel rosh, he hears [man1] make the beracha [a beracha]. What will [man2] do?", 10, 8
+KSA010009260925686, "[man2] put on the tefillin shel yad. He was about to put on the tefillin shel rosh, but he got distracted by [something compelling that can feel like requires attention] and interrupted to get involved between putting on the tefillin shel yad and shel rosh. What will he do now?", 10, 9
+KSA010010260925687, "[man2] is putting on tefillin. Who should he have in mind wants him to put them on?", 10, 10
+KSA010010260925688, "[man] is putting on his tefillin. What will [man] have in mind is the number of parashiyot and the reason for that number as he puts on his tefillin?", 10, 10
+KSA010010260925689, "[man3] is putting on his tefillin. What will [man3] have in mind are the main concepts written in the tefillin? What will [man3] have in mind as the reason that he is putting on tefillin with these particular concepts written?", 10, 10
+KSA010010260925690, "[man4] is putting on tefillin at [a place where one puts on tefillin]. Why will he have in mind that he needs to put on the tefillin on the arm and head specifically?", 10, 10
+KSA010010260925691, "[man2] is putting on his tefillin. When he puts on the tefillin, what will he have in mind HKBH wants him to constantly remember, while wearing the tefillin, about what HKBH did with us?", 10, 10
+KSA010010260925692, "[man2] is putting on his tefillin because HKBH commanded him to put on tefillin. What does HKBH want [man2] to remember about HKBH's power by wearing tefillin? How often does HKBH want [man2] to remember this by wearing tefillin?", 10, 10
+KSA010010260925693, "[man] is putting on his tefillin. As he puts them on, how does he have in mind to change the way he relates to his neshamah and heart?", 10, 10
+KSA010010260925694, "When [man] thinks about his neshamah while he puts on his tefillin, where does he know his neshamah is located?", 10, 10
+KSA010010260925695, "When [man] thinks about his heart as he puts on his tefillin, what would he say is the function of his heart that connects it to tefillin?", 10, 10
+KSA010011260925696, "[man] is unable to put on a tefillin shel yad because [a reason a man cannot put on a tefillin shel yad]. Can he still put on the tefillin shel rosh?", 10, 11
+KSA010011260925697, "[man2] is unable to put on the tefillin shel rosh because [a reason a man cannot put on a tefillin shel rosh]. Can he still put on the tefillin shel yad?", 10, 11
+KSA010011260925698, "[man2] is putting on the tefillin shel yad and isn't planning to put on the tefillin shel rosh. What berachas will he make on the tefillin?", 10, 11
+KSA010011260925699, "[man] is putting on the tefillin shel rosh and isn't going to put on the tefillin shel yad. What berachas will he make on the tefillin?", 10, 11
+KSA010012260925700, "[man2] is left-handed. On which arm does he put on the tefillin shel yad?", 10, 12
+KSA010012260925701, "[man] [does an everyday chore] with his right arm, [does another everyday motion] with his right arm, and does [another everyday chore] with his right arm. However, he writes [thing that is handwritten]s with his left arm. Which arm does he wear tefillin on?", 10, 12
+KSA010012260925702, "[man1] [does an everyday chore1] with his left arm, [does an everyday motion1]  with his left arm, and holds [a tool used for something beside writing] in his left arm. However, he writes with his right arm. Which arm does he put on tefillin with?", 10, 12
+KSA010012260925703, "[man] is ambidextrous. Which arm does he put the tefillin on?", 10, 12
+KSA010012260925704, "[man] naturally would have written with his right hand. However, he trained himself to write with his left hand. Which arm does he put the tefillin on?", 10, 12
+KSA010013260925705, "The straps of [man]'s tefillin shel rosh and tefillin shel yad are both [number from two to fifty] millimeters wide. Are they kosher?", 10, 13
+KSA010013260925706, "When [man] puts on his tefillin shel rosh, the straps hang down to his [body part between the chest and knees]. Are the straps long enough?", 10, 13
+KSA010013260925707, "[man] is preparing tefillin straps for his tefillin shel rosh. How long should the tefillin shel rosh straps extend?", 10, 13
+KSA010013260925708, "How long should the strap of [man]'s tefillin shel yad be?", 10, 13
+KSA010013260925709, "The strap on [man]'s tefillin shel yad breaks. How does [man] know whether it is still koshre?", 10, 13
+KSA010014260925710, "When [man1] puts on his tefillin, does it matter which side of the strap faces outward?", 10, 14
+KSA010014260925711, "As [man] wears his tefillin during [an activity where someone can wear tefillin], the [a region of one of the tefillin straps] flips so that the light side faces outward. What does [man] need to do now?", 10, 14
+KSA011001260925712, "[person] buys a new house with [number from two to twenty] doorways. Is it a mitzvah to put a mezuzah in every doorway?", 11, 1
+KSA011001260925713, "In [person2]'s new [dwelling], there are [number from two to seven] rooms. Each room has [number from two to eight] doorways. [number from one to three] of the doorways are never used. Do all of the doorways require a mezuzah?", 11, 1
+KSA011001260925714, "[a building] has space for [number of people who live in the building] residents, but only [a second number smaller than the first number of people who live in the building] residents still live there. While the building has [number of entrances to the building] entrances, only [smaller number less than the number of entrances to the building] are still needed by the reduced current residents. How many of the entranceways actually need a mezuzah?", 11, 1
+KSA011001260925715, "The [kind of building] has a [kind of entranceway] used to load [a kind of delivered object] from [a person or thing that delivers deliveries], but not for the [kind of people who use the building] to actually enter and exit the [kind of building]. Does this [kind of entranceway] require a mezuzah?", 11, 1
+KSA011002260925716, "[a courtyard, alley, street, city, or sovereign territory] is surrounded by walls with [size adjective from small to enormous] gates. Do these gates require mezuzahs?", 11, 2
+KSA011003260925717, "[person] has a [kind of dwelling] with an entrance. Which side of the entrance does the mezuzah go on?", 11, 3
+KSA011003260925718, "[person] attached a mezuzah to a doorway in their [kind of dwelling]. The mezuzah is on the left side of the doorway when facing into the inner room. What will [person] do with this mezuzah? Do they need to make a new beracha?", 11, 3
+KSA011003260925719, "[person] is left-handed. They are going to attach a mezuzah to a doorway in their [kind of dwelling2]. Which side of the doorway will they attach the mezuzah?", 11, 3
+KSA011004260925720, "There are two [kinds of entranceways] that open into [person2]'s [kind of dwelling] from the outside, into two separate rooms that are used equally often. The two separate rooms are connected by a doorway. Where will [person2] put the mezuzah in the doorway between the two rooms?", 11, 4
+KSA011004260925721, "[person]'s [kind of room] and [kind of room2] are connected by a doorway. The [kind of room] and [kind of room2] also each have a [kind of entranceway] going outside. [person]'s [kind of room] is used much more often than his [kind of room2]. Where will [person] put the mezuzah in the doorway between the [kind of room] and [kind of room2]?", 11, 4
+KSA011005260925722, "[person] attaches a mezuzah in a doorway on the right doorpost, [a fraction more than two thirds and less than thirteen thirteenths] of the way up the height of the entrance, where it is [number from one to ten] tefachim from the lintel. Is [person]'s mezuzah kosher?", 11, 5
+KSA011005260925723, "[person4] attached a mezuzah in an entrance on the right side. The entrance is [number from fifteen to fifty] tefachim high and [person4] attached the mezuzah [number less than two thirds the first number] tefachim up from the ground. Is the mezuzah kosher? What will [person4] do with this mezuzah? Does [person4] need to say a new beracha?", 11, 5
+KSA011005260925724, "[person] attaches a mezuzah in the upper third of the right side of the entrance to his [kind of dwelling], where it is [number between zero and one] tefachim from the lintel. Is the mezuzah kosher? What will [person] do with this mezuzah? Does [person] need to make a new beracha?", 11, 5
+KSA011005260925725, "[person] has to put up a mezuzah in an entrance with the sideposts each [length more than one tefach and up to forty tefachim]. Where will [person] attach the mezuzah in the width of the doorpost?", 11, 5
+KSA011005260925726, "[person] has an entrance with the sideposts each [number from four to fifteen] inches wide. [person] attached a mezuzah on the right side, [number from one to three] inches from the inner side of the sidepost. Is the mezuzah kosher? What will [person] do with the mezuzah?", 11, 5
+KSA011006260925727, "[person1] has a mezuzah scroll. When they roll up the scroll, which edge of the scroll do they roll up first so that it ends up in the middle of the roll, and in which direction is the text rolled?", 11, 6
+KSA011006260925728, "[person1] is looking for the mezuzah scrolls in [person]'s [type of dwelling]. Where does [person1] need to look to retrieve the actual scrolls and look at them?", 11, 6
+KSA011006260925729, "[person] is putting up a mezuzah in their house in a doorway. What does [person] need to do with their mezuzah scroll after they roll it up to attach it to the doorway?", 11, 6
+KSA011006260925730, "[person1] has a mezuzah scroll in a [type of container] that they want to put up in the entrance of their [kind of room that needs a mezuzah]. What will they use to attach the [type of container] to the entrance sidepost?", 11, 6
+KSA011006260925731, "When [person1] inserts the mezuzah scroll into the [kind of container for a mezuzah] that will be attached to the doorpost, which side of the mezuzah scroll faces what direction in the container?", 11, 6
+KSA011006260925732, "[person] is putting up a mezuzah in an entrance of his/her [kind of dwelling]. When he/she attaches the container containing the mezuzah scroll, how will he/she orient the container on the doorpost?", 11, 6
+KSA011006260925733, "[person1] has a doorway in his/her apartment with a door in the doorway. The area of the doorpost in front of the door that isn't flush against the door is very narrow, but there's more space behind the door. Should [person1] attach the mezuzah in front of the door straight upright, or behind the door diagonally like normal?", 11, 6
+KSA011006260925734, "[person] puts a mezuzah scroll in a little [kind of small container] and attaches the [kind of small container] up on the doorpost in the right spot using a [thing that can be used to hang something], hanging but not fastened in place. Is this mezuzah kosher?", 11, 6
+KSA011006260925735, "[person] puts a mezuzah scroll in a [kind of mezuzah case] and attaches the case to the doorpost with nails on top and bottom. Is this mezuzah kosher?", 11, 6
+KSA011006260925736, "[person1] puts a mezuzah scroll in a [kind of mezuzah container[] and uses a nail to connect the container on top to the doorpost. Is this mezuzah kosher?", 11, 6
+KSA011007260925737, "[person1] puts a mezuzah up on his/her doorpost. What beracha does he/she need to make?", 11, 7
+KSA011007260925738, "[person] has [number from two to ten] doorways that require him/her to attach [number from two to ten] mezuzahs. How many berachas will he/she make?", 11, 7
+KSA011007260925739, "[man2] lives in a one-room [kind of dwelling] with one door. The mezuzah of the door falls off one day. Does [man2] need to make a new beracha to reattach it?", 11, 7
+KSA011007260925740, "[man2] has a mezuzah in the doorway of his [kind of dwelling or room], and he takes it down to check the text to ensure the writing is proper. When he puts it back up, what beracha does he make?", 11, 7
+KSA011008260925741, "[title like Mrs or Dr or prince] [random noun]'s [kind of dwelling place] is surrounded by a wall. At the entrance, there is a large gate for [kind of transportation vehicle] to enter, with a smaller gate next to it for individual people. Sometimes the large gate is closed and the small gate is open, and vice versa. The two gates are separated by a stretch of the wall [a distance between one tefach and four tefachim] in length. Which of the two gates requires a mezuzah? ", 11, 8
+KSA011009260925742, "[person2] lives in a [kind of place where things get stolen] and he/she's afraid that some of his/her "friends" might steal his/her mezuzah from the doorpost of his/her [kind of dwelling or kind of room]. How can he/she put up the mezuzah while still keeping it hidden?", 11, 9
+KSA011009260925743, "[person] wants to keep his/her mezuzah safe from being stolen, so he/she hide it in a groove [a distance less than a tefach] deep in the doorpost. Is the mezuzah kosher?", 11, 9
+KSA011009260925744, "[person] wants to keep his/her mezuzah safe from being stolen, so he/she hides it in a groove [a distance from one tefach to three tefachim] deep in his/her doorpost. Is the mezuzah kosher?", 11, 9
+KSA011009260925745, "[person2] hides his/her mezuzah in a groove in his/her doorpost [a distance less than a tefach2] deep to prevent it from being stolen, and then seals up the groove with [something that can be used to cover a groove] and paints over the whole doorpost so that the location of the mezuzah isn't visible. Is this okay?", 11, 9
+KSA011009260925746, "[person] hides his/her mezuzah in a groove in his/her doorpost [a distance less than a tefach1] deep and covers the groove with [something that can be used to cover a groove], painting over the whole doorpost with [a clear adhesive liquid] so that it looks nice. Is this okay?", 11, 9
+KSA011009260925747, "[person1] lives next door to [person2], who is a thief who steals mezuzahs. [person1] wants to protect his/her mezuzah from being stolen by [person2], but he/she can't hide it in a groove in his doorpost because [a reason that a groove cannot be made in a doorpost]. If [person1] hides the mezuzah from [person2] on the inside of the house on the wall right behind the door, is it kosher?", 11, 9
+KSA011009260925748, "[person3] is concerned his/her [kind of relationship role] [person4] will steal his/her mezuzah if s/he attaches it visibly outside her/his front door, even if the mezuzah is concealed in a groove and only the location of the groove is visible. If [person3] attaches the mezuzah behind the door on the part of the doorpost that faces the inner part of the doorway, is it kosher?", 11, 9
+KSA011010260925749, "The [kind of room] is a half-circle with radius 4 amot. Does it need a mezuzah?", 11, 10
+KSA011011260925750, "The doorway of [person]'s [kind of dwelling] has two doorposts each [length between ten tefachim and fifty tefachim] tall, with a beam lying over the top of the entrance. Does [person] put up a mezuzah?", 11, 11
+KSA011011260925751, "[person] attaches a mezuzah in a doorway on the right doorpost, three-quarters of the way up the height of the entrance, where it is [one or two] tefachim from the lintel. Is the mezuzah kosher?", 11, 11`;
 
 
 
