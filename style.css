@@ -123,8 +123,8 @@
 .chapter-picker-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
 .chapter-picker-row #chapterFilter { min-width: 0; }
 .chapter-picker-row > .dropdown { flex-shrink: 0; width: auto; margin-left: auto; }
-.chapter-picker-row .info-toggle { flex-shrink: 0; height: 30px; display: flex; align-items: center; justify-content: center; }
-.study-profile-controls { position: relative; text-align: left; }
+.chapter-picker-row .info-toggle { flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+.study-profile-controls { position: relative; display: flex; align-items: center; gap: 8px; text-align: left; }
 .profile-section .toolbar-label { display: block; font-size: 12px; line-height: 18px; font-weight: 600; color: #59666b; margin: 0 0 6px; }
 .study-profile-controls .toolbar-label { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); margin: 0; font-size: 11px; font-weight: normal; color: #667078; pointer-events: none; }
 
@@ -220,7 +220,7 @@
 .info-toggle {
     background: none;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.7rem;
     cursor: pointer;
     color: #3498db;
     padding: 5px;
@@ -230,6 +230,7 @@
 }
 
 .profile-section #profileSelect { min-width: 180px; height: 30px; padding: 4px 8px 4px 52px; line-height: 20px; }
+.profile-section #nameGuestProfile { height: 30px; padding: 4px 10px; line-height: 20px; white-space: nowrap; }
 .profile-section .dropdown > button { height: 30px; padding: 4px 16px; line-height: 20px; }
 
 .info-toggle:hover {

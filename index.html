@@ -26,6 +26,7 @@
     <div class="study-profile-controls">
         <label class="toolbar-label" for="profileSelect">Profile:</label>
         <select id="profileSelect"></select>
+        <button id="nameGuestProfile" class="btn-outline hidden" onclick="renameCurrentProfile()">Name Profile</button>
     </div>
 
     <div class="chapter-controls">
@@ -41,6 +42,7 @@
             <button onclick="exportWorksheet()">Export as Worksheet</button>
             <hr>
             <button onclick="createNewProfile()">New Profile</button>
+            <button onclick="renameCurrentProfile()">Rename Profile</button>
             <button onclick="exportProfile()">Export Profile</button>
             <button onclick="document.getElementById('importInput').click()">Load Profile</button>
             <hr>
@@ -54,6 +56,7 @@
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
 	<p id="scenarioInstructions" class="stats hidden-info" style="margin-top: 5px; line-height: 1.4; ">
             <span style="display: block; color: #7f8c8d; text-align: left;">
+                 Welcome to KS"A Study Tool, a scenario-based application for learning the Kitzur Shulchan Aruch.<br><br>
                  This tool isn't meant to replace opening up a Kitzur Shulchan Aruch sefer. Rather, this is
 		a good way to increase your grasp on the halachas by quizzing a friend once you've
 		learned the material at a basic level. <br><br>
@@ -129,7 +132,6 @@
         // State variables
 let questions = [];
 let currentFilter = "all"; // "all" or an array of chapter numbers as strings
-// Change: Initialize as an empty object instead of a hardcoded "Default User"
 let profiles = JSON.parse(localStorage.getItem('ksa_profiles')) || {}; 
 let currentProfile = localStorage.getItem('ksa_current_profile');
 let activeQuestion = null;
@@ -146,9 +148,10 @@ function init() {
     const profileNames = Object.keys(profiles);
 
     if (profileNames.length === 0) {
-        // Show the custom choice modal instead of a prompt
-        document.getElementById('welcomeModal').classList.remove('hidden');
-        return; // Stop until user clicks a button
+        profiles.Guest = {};
+        currentProfile = 'Guest';
+        saveToStorage();
+        localStorage.setItem('ksa_current_profile', currentProfile);
     } else if (!currentProfile || !profiles[currentProfile]) {
         currentProfile = profileNames[0];
         localStorage.setItem('ksa_current_profile', currentProfile);
@@ -330,30 +333,6 @@ function revisitMastered() {
     loadNextQuestion();
 }
 
-function handleInitialChoice(choice) {
-    if (choice === 'new') {
-        let name = prompt("Please enter a name for your session:");
-        if (!name || name.trim() === "") return; // Don't close if they didn't enter a name
-        
-        name = name.trim();
-        profiles[name] = {};
-        currentProfile = name;
-        saveToStorage();
-        localStorage.setItem('ksa_current_profile', name);
-        
-        document.getElementById('welcomeModal').classList.add('hidden');
-        updateProfileDropdown();
-        updateHistoryList();
-        loadNextQuestion();
-    } else {
-        // Trigger the file input and let importProfile handle the rest
-        document.getElementById('importInput').click();
-        // The modal will stay until importProfile confirms success
-    }
-}
-
-
-
         // Modified CSV Parser to use the ID from the dataset
         function parseCSV(str) {
             const rows = str.trim().split('\n').slice(1);
@@ -381,6 +360,7 @@ function updateProfileDropdown() {
         if(name === currentProfile) opt.selected = true;
         select.appendChild(opt);
     });
+    document.getElementById('nameGuestProfile').classList.toggle('hidden', currentProfile !== 'Guest');
 
     // Calculate Stats
     const profileData = profiles[currentProfile] || {};
@@ -421,9 +401,28 @@ function updateProfileDropdown() {
                 profiles[name] = {};
                 saveToStorage();
                 currentProfile = name;
+                localStorage.setItem('ksa_current_profile', currentProfile);
                 updateProfileDropdown();
                 loadNextQuestion();
             }
+        }
+
+        function renameCurrentProfile() {
+            const name = prompt("Enter a name for this profile:", currentProfile === 'Guest' ? '' : currentProfile);
+            if (name === null) return;
+            const newName = name.trim();
+            if (!newName || newName === currentProfile) return;
+            if (Object.hasOwn(profiles, newName)) {
+                alert(`A profile named "${newName}" already exists.`);
+                return;
+            }
+
+            profiles[newName] = profiles[currentProfile];
+            delete profiles[currentProfile];
+            currentProfile = newName;
+            saveToStorage();
+            localStorage.setItem('ksa_current_profile', currentProfile);
+            updateProfileDropdown();
         }
 
         function saveToStorage() {
@@ -657,8 +656,7 @@ function deleteCurrentProfile() {
             // If NO profiles are left, clear storage and restart the init process
             localStorage.removeItem('ksa_profiles');
             localStorage.removeItem('ksa_current_profile');
-            alert("Last profile deleted. The app will now restart.");
-            init(); // This re-triggers the name prompt logic
+            init(); // Start a new Guest profile when no profiles remain
         } else {
             // If other profiles still exist, switch to the first available one
             saveToStorage();
@@ -680,8 +678,6 @@ ignoreTimestamps = true;
 function importProfile(event) {
     const file = event.target.files[0];
     if (!file) {
-        // If they cancelled the file picker on the very first run, restart init
-        if (Object.keys(profiles).length === 0) init();
         return;
     }
 
@@ -701,12 +697,10 @@ function importProfile(event) {
             updateProfileDropdown();
             updateHistoryList();
             loadNextQuestion();
-		document.getElementById('welcomeModal').classList.add('hidden');
             alert(`Profile "${profileName}" loaded successfully!`);
         } catch (err) {
             alert("Error: Invalid profile file.");
             console.error(err);
-            if (Object.keys(profiles).length === 0) init();
         }
         event.target.value = '';
     };
@@ -909,18 +903,6 @@ function toggleScenarioInfo() {
 }
 
     </script>
-
-<div id="welcomeModal" class="modal-overlay hidden">
-    <div class="card modal-content">
-        <h2>Welcome to KS"A Study Tool</h2>
-	<p>A scenario-based application for mastering the Kitzur Shulchan Aruch.</p>
-        <p>How would you like to begin?</p>
-        <div class="modal-actions">
-            <button class="btn-primary" onclick="handleInitialChoice('new')">Create New Profile</button>
-            <button class="btn-outline" onclick="handleInitialChoice('load')">Load Existing Profile</button>
-        </div>
-    </div>
-</div>
 
 </body>
 
