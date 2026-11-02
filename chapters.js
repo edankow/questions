@@ -6,28 +6,28 @@ const chapterNames = {
 5: "Clean surroundings for a davar kedusha",
 6: "Saying and responding to berachos",
 7: "Birchot Hashachar",
-8: "Forbidden activities from dawn until tefillah",
+8: "Activities forbidden from dawn until tefillah",
 9: "Tzitzit",
 10: "Tefillin",
-11: "Mezuzah"
+11: "Mezuzah",
+12: "Getting ready for tefillah",
+13: "Kedusha of a shul and beis medrash",
+14: "Pesukei d'Zimrah",
+15: "Devarim shebikedusha and shaliach tzibur",
+16: "Interruptions in saying Shema and its berachos",
+17: "Saying Shema",
+18: "Davening Shemoneh Esreh",
+19: "Insertions in the Shemoneh Esreh",
+20: "The repetition of the Shemoneh Esreh",
+21: "Someone who has to make up a missed davening",
+22: "Tachanun",
+23: "Reading the sefer Torah",
+24: "When errors are found in a sefer Torah",
+25: "Ashrei, Uva l'Tzion, and the rest of Shacharit",
+26: "Mourner's Kaddish",
+27: "Torah study",
+28: "Sefer Torah and other books of kedusha"
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
