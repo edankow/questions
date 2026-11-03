@@ -28,26 +28,30 @@
 
 <div class="bsd">בס"ד</div>
     <h1>Kitzur Shulchan Aruch Study Tool</h1>
+    <p class="study-subtitle">Build a scenario, think it through, and check the source.</p>
 
 <div class="profile-section">
-    <div class="study-profile-controls">
-        <label class="toolbar-label" for="profileSelect">Profile:</label>
-        <select id="profileSelect"></select>
-        <button id="nameGuestProfile" class="btn-outline hidden" onclick="renameCurrentProfile()">Name Profile</button>
-    </div>
+    <div class="study-menu-bar">
+    <details id="chapterFilter">
+        <summary><span id="chapterFilterSummary">Shuffling all chapters</span><span id="chapterAvailableCount"></span></summary>
+        <div id="chapterOptions" role="group" aria-label="Chapters to study"></div>
+    </details>
 
     <div class="chapter-controls">
         <div class="chapter-picker-row">
-        <details id="chapterFilter">
-            <summary id="chapterFilterSummary">Shuffling all chapters</summary>
-            <div id="chapterOptions" role="group" aria-label="Chapters to study"></div>
-        </details>
     <div class="dropdown">
-        <button class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Tools ▾</button>
+        <button id="activeProfileLabel" class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Guest</button>
         <div id="menu-tools" class="dropdown-content">
+            <div id="progressContainer" class="progress-info" aria-live="polite"></div>
+            <hr>
             <button onclick="toggleHistory()">View History Table</button>
             <button onclick="exportWorksheet()">Export as Worksheet</button>
             <hr>
+            <details class="profile-switch-menu">
+                <summary onclick="populateProfileSwitch(this)">Switch profiles</summary>
+                <div class="profile-switch-options"></div>
+            </details>
+            <button id="nameGuestProfile" class="hidden" onclick="renameCurrentProfile()">Name Profile</button>
             <button onclick="createNewProfile()">New Profile</button>
             <button onclick="renameCurrentProfile()">Rename Profile</button>
             <button onclick="exportProfile()">Export Profile</button>
@@ -59,10 +63,11 @@
             <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions" aria-label="Show instructions">ⓘ</button>
         </div>
     </div>
-    <div id="progressContainer" class="progress-info" aria-live="polite"></div>
+    </div>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
-	<p id="scenarioInstructions" class="stats hidden-info" style="margin-top: 5px; line-height: 1.4; ">
-            <span style="display: block; color: #7f8c8d; text-align: left;">
+    <dialog id="scenarioInstructions" aria-labelledby="scenarioInfoTitle">
+        <h2 id="scenarioInfoTitle">About the study tool</h2>
+        <p>
                  Welcome to KS"A Study Tool, a scenario-based application for learning the Kitzur Shulchan Aruch.<br><br>
                  This site is a work in progress. The question bank currently covers the first few chapters of the KS"A.<br><br>
                  This tool isn't meant to replace opening up a Kitzur Shulchan Aruch sefer. Rather, this is
@@ -73,8 +78,11 @@
        			<br><br>
             Special thanks to my friend Yehoshua, who pushed me many years ago to start learning the KS"A. 
     
-            </span>
         </p>
+        <form method="dialog">
+            <button class="btn-outline" autofocus>Close</button>
+        </form>
+    </dialog>
 
 
 </div>
@@ -261,7 +269,7 @@ function initChapterFilters() {
     });
     document.getElementById('chapterFilterSummary').textContent = currentFilter === 'all'
         ? 'Shuffling all chapters'
-        : `Chapters ${currentFilter.join(', ')}`;
+        : `${currentFilter.length === 1 ? 'Chapter' : 'Chapters'} ${currentFilter.join(', ')}`;
     updateProgressStats();
 }
 
@@ -269,6 +277,18 @@ function updateProgressStats() {
     const selectedQuestions = questions.filter(q => currentFilter === 'all'
         || currentFilter.includes(String(Number(q.chapter))));
     renderProgressStats('progressContainer', selectedQuestions);
+    const now = Date.now();
+    const profileData = profiles[currentProfile] || {};
+    const available = selectedQuestions.filter(q => isQuestionAvailable(profileData[q.id], now)).length;
+    document.getElementById('chapterAvailableCount').textContent =
+        `– ${available} ${available === 1 ? 'question' : 'questions'}`;
+}
+
+function isQuestionAvailable(data, now) {
+    if (reviewMasteredMode) return data?.status === 'confident';
+    if (data?.status === 'confident') return false;
+    if (data?.status === 'review') return ignoreTimestamps || now - data.timestamp > 24 * 60 * 60 * 1000;
+    return true;
 }
 
 function renderProgressStats(containerId, questionPool) {
@@ -365,15 +385,7 @@ function revisitMastered() {
         }
 
 function updateProfileDropdown() {
-    const select = document.getElementById('profileSelect');
-    select.innerHTML = '';
-    Object.keys(profiles).forEach(name => {
-        const opt = document.createElement('option');
-        opt.value = name;
-        opt.innerText = name;
-        if(name === currentProfile) opt.selected = true;
-        select.appendChild(opt);
-    });
+    document.getElementById('activeProfileLabel').textContent = currentProfile;
     document.getElementById('nameGuestProfile').classList.toggle('hidden', currentProfile !== 'Guest');
 
     // Calculate Stats
@@ -397,16 +409,17 @@ function updateProfileDropdown() {
 
     updateProgressStats();
 
-    select.onchange = (e) => {
-        currentProfile = e.target.value;
-        localStorage.setItem('ksa_current_profile', currentProfile);
-	ignoreTimestamps = false
-	reviewMasteredMode = false;
-	initChapterFilters(); 
-        updateProfileDropdown(); // Refresh stats on change
-	updateHistoryList();
-        loadNextQuestion();
-    };
+}
+
+function switchProfile(name) {
+    currentProfile = name;
+    localStorage.setItem('ksa_current_profile', currentProfile);
+    ignoreTimestamps = false;
+    reviewMasteredMode = false;
+    initChapterFilters();
+    updateProfileDropdown();
+    updateHistoryList();
+    loadNextQuestion();
 }
 
         function createNewProfile() {
@@ -451,7 +464,6 @@ function updateProfileDropdown() {
         function loadNextQuestion() {
     initChapterFilters();
     const now = Date.now();
-    const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
     const profileData = profiles[currentProfile] || {};
     
     const availablePool = questions.filter(q => {
@@ -461,21 +473,7 @@ function updateProfileDropdown() {
         	return false; 
     	}
 
-        const data = profileData[q.id];
-        
-        // If we are in "Revisit Mastered" mode, only show mastered ones
-        if (reviewMasteredMode) {
-            return data && data.status === 'confident';
-        }
-
-        // Standard Logic
-        if (!data) return true;
-        if (data.status === 'confident') return false;
-        if (data.status === 'review') {
-            if (ignoreTimestamps) return true;
-            return (now - data.timestamp) > TWENTY_FOUR_HOURS;
-        }
-        return true;
+        return isQuestionAvailable(profileData[q.id], now);
     });
 
     if (availablePool.length === 0) {
@@ -522,7 +520,6 @@ function updateProfileDropdown() {
         function setupCreativity(text) {
             showPhase('setupPhase');
 
-		document.getElementById('scenarioInstructions').classList.add('hidden-info');
             const container = document.getElementById('inputContainer');
             container.innerHTML = '';
             
@@ -852,6 +849,22 @@ function importProfile(event) {
     reader.readAsText(file);
 }
 
+function populateProfileSwitch(summary) {
+    const options = summary.nextElementSibling;
+    options.replaceChildren();
+    for (const name of Object.keys(profiles)) {
+        const button = document.createElement('button');
+        button.textContent = name;
+        button.disabled = name === currentProfile;
+        button.addEventListener('click', () => {
+            summary.parentElement.open = false;
+            summary.closest('.dropdown-content').classList.remove('show-menu');
+            switchProfile(name);
+        });
+        options.append(button);
+    }
+}
+
 function toggleMenu(button, menuId) {
     // 1. Get the menu we want to open
     const targetMenu = document.getElementById(menuId);
@@ -873,6 +886,7 @@ function toggleMenu(button, menuId) {
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
+    if (event.target.closest('.profile-switch-menu')) return;
     if (!event.target.matches('.btn-outline')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         for (var i = 0; i < dropdowns.length; i++) {
@@ -1039,9 +1053,18 @@ function exportWorksheet() {
 
 
 function toggleScenarioInfo() {
-    const infoBox = document.getElementById('scenarioInstructions');
-    infoBox.classList.toggle('hidden-info');
+    document.getElementById('scenarioInstructions').showModal();
 }
+
+document.getElementById('scenarioInstructions').addEventListener('click', event => {
+    const dialog = event.currentTarget;
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) {
+        dialog.close();
+    }
+});
 
     </script>
 
