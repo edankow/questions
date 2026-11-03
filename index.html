@@ -2,6 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--
+    Saved profiles persist in browser localStorage across site updates.
+    Preserve existing storage keys, question IDs, and progress fields such as
+    status and timestamp. Give new settings defaults for profiles that predate
+    them. Keep settings separate from the question records in ksa_profiles
+    unless the profile format and its readers are updated together.
+    If a key, ID, or record shape must change, support the old format or
+    migrate it without losing progress. Verify changes with older saved
+    profiles as well as a fresh profile.
+    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KS"A Study Tool</title>
@@ -92,8 +102,10 @@
 	<p class="stats" style="margin-bottom: 15px; line-height: 1.4;">
             Think through the scenario on your own or with a <i>chevrusa</i>, and then select either 'mastered' or 'needs review' to continue. Smooth over grammatical issues and replace "they/their" with gender-specific pronouns as you read.
         </p>
-        <div id="finalQuestion" class="question-text"></div>
-	<div id="sourceCitation" style="text-align: right; margin-top: 10px;"></div>
+        <div class="question-text">
+            <div id="finalQuestion"></div>
+            <div id="sourceCitation" style="text-align: left; margin-top: 10px;"></div>
+        </div>
         <div class="actions">
 	    <div class="tooltip-wrapper">
 	        <button class="btn-success" onclick="handleResponse('confident')">Answered Confidently</button>
@@ -418,6 +430,11 @@ function updateProfileDropdown() {
             }
 
             profiles[newName] = profiles[currentProfile];
+            const sourceLanguages = localStorage.getItem(sourceLanguageKey(currentProfile));
+            if (sourceLanguages !== null) {
+                localStorage.setItem(sourceLanguageKey(newName), sourceLanguages);
+                localStorage.removeItem(sourceLanguageKey(currentProfile));
+            }
             delete profiles[currentProfile];
             currentProfile = newName;
             saveToStorage();
@@ -569,16 +586,142 @@ function updateProfileDropdown() {
     document.getElementById('finalQuestion').innerHTML = finalText;
 
     // 2. Set the Source Citation separately
-    const sefariaUrl = `https://www.sefaria.org/Kitzur_Shulchan_Arukh.${activeQuestion.chapter}.${activeQuestion.paragraph}`;
-    const linkText = `ⓘ KS"A ${parseInt(activeQuestion.chapter)}:${parseInt(activeQuestion.paragraph)}`;
-    
-    document.getElementById('sourceCitation').innerHTML = `
-        <a href="${sefariaUrl}" target="_blank" class="source-link" title="View Source on Sefaria">
-            ${linkText}
-        </a>
-    `;
+    renderSource(Number(activeQuestion.chapter), Number(activeQuestion.paragraph));
 
     showPhase('reviewPhase');
+}
+
+const sourceChapters = new Map();
+const sourceEditions = [
+    { language: 'hebrew', title: 'Torat Emet 357', license: 'publicdomain' },
+    { language: 'english', title: 'Kitzur Shulchan Aruch, trans. Rabbi Avrohom Davis, Metsudah Pub., 1996', license: 'ccby' }
+];
+
+function loadSourceChapter(chapter) {
+    if (!sourceChapters.has(chapter)) {
+        const params = new URLSearchParams();
+        for (const edition of sourceEditions) {
+            params.append('version', `${edition.language}|${edition.title}`);
+        }
+        const request = fetch(`https://www.sefaria.org/api/v3/texts/Kitzur_Shulchan_Arukh.${chapter}?${params}`)
+            .then(async response => {
+                if (!response.ok) throw new Error('Sefaria request failed');
+                const { versions } = await response.json();
+                const editions = sourceEditions.map(edition => versions.find(version =>
+                    version.versionTitle === edition.title &&
+                    version.license?.toLowerCase().replace(/[^a-z]/g, '') === edition.license &&
+                    Array.isArray(version.text)
+                ));
+                if (!editions.some(Boolean)) throw new Error('No licensed edition available');
+                return editions;
+            })
+            .catch(error => {
+                sourceChapters.delete(chapter);
+                throw error;
+            });
+        sourceChapters.set(chapter, request);
+    }
+    return sourceChapters.get(chapter);
+}
+
+function sourceLanguageKey(profile) {
+    return `ksa_source_languages:${profile}`;
+}
+
+function renderSource(chapter, paragraph) {
+    const source = document.getElementById('sourceCitation');
+    const preferenceKey = sourceLanguageKey(currentProfile);
+    let languages = localStorage.getItem(preferenceKey) || 'he,en';
+    source.innerHTML = `
+        <details>
+            <summary class="source-toggle"><span class="source-link">Show source · KS"A ${chapter}:${paragraph}</span>
+            <span class="source-languages" role="group" aria-label="Source languages">
+                <label><input type="checkbox" value="he"> Hebrew</label>
+                <label><input type="checkbox" value="en"> English</label>
+            </span></summary>
+            <div class="source-passage" aria-live="polite"></div>
+            <small class="source-credit"><span class="translation-credit" hidden></span><a href="https://www.sefaria.org/Kitzur_Shulchan_Arukh.${chapter}.${paragraph}"
+               target="_blank" rel="noopener">View on Sefaria</a></small>
+        </details>
+    `;
+    const details = source.firstElementChild;
+    const passage = details.querySelector('.source-passage');
+    const credit = details.querySelector('.translation-credit');
+    const languageInputs = Array.from(details.querySelectorAll('.source-languages input'));
+    const updateLanguages = () => {
+        for (const input of languageInputs) input.checked = languages.split(',').includes(input.value);
+        for (const line of passage.querySelectorAll('p[lang]')) {
+            line.hidden = !languages.split(',').includes(line.lang);
+        }
+        credit.hidden = !languages.split(',').includes('en') || !credit.hasChildNodes();
+    };
+    for (const input of languageInputs) {
+        input.addEventListener('change', () => {
+            const selection = languageInputs.filter(option => option.checked).map(option => option.value);
+            if (selection.length) {
+                languages = selection.join(',');
+                localStorage.setItem(preferenceKey, languages);
+            }
+            updateLanguages();
+        });
+    }
+    updateLanguages();
+    let loading = false;
+    let loaded = false;
+
+    const scrollToSource = () => {
+        const actions = source.closest('#reviewPhase').querySelector('.actions');
+        const sourceTop = details.getBoundingClientRect().top;
+        const buttons = actions.getBoundingClientRect();
+        const viewportHeight = document.documentElement.clientHeight;
+        if (buttons.bottom - sourceTop <= viewportHeight) {
+            const offset = Math.min(buttons.bottom + buttons.height - viewportHeight, sourceTop);
+            if (offset > 0) window.scrollBy(0, offset);
+        } else if (buttons.bottom > viewportHeight) {
+            window.scrollBy(0, sourceTop);
+        }
+    };
+
+    details.addEventListener('toggle', async () => {
+        details.querySelector('.source-link').textContent =
+            `${details.open ? 'Hide' : 'Show'} source · KS"A ${chapter}:${paragraph}`;
+        if (!details.open || loading) return;
+        if (loaded) {
+            scrollToSource();
+            return;
+        }
+        loading = true;
+        passage.textContent = 'Loading source…';
+        try {
+            const editions = await loadSourceChapter(chapter);
+            passage.replaceChildren();
+            for (const [index, edition] of editions.entries()) {
+                const text = edition?.text[paragraph - 1];
+                if (typeof text !== 'string' || !text.trim()) continue;
+                const line = document.createElement('p');
+                line.lang = index === 0 ? 'he' : 'en';
+                line.dir = index === 0 ? 'rtl' : 'ltr';
+                const parsed = new DOMParser().parseFromString(text, 'text/html');
+                parsed.body.querySelectorAll('sup.footnote-marker, i.footnote').forEach(note => note.remove());
+                line.textContent = parsed.body.textContent.trim();
+                passage.append(line);
+                if (index === 1) {
+                    const license = document.createElement('a');
+                    license.href = 'https://creativecommons.org/licenses/by/4.0/';
+                    license.textContent = 'CC BY';
+                    credit.prepend('Translated by Rabbi Avrohom Davis, Metsudah Pub., 1996. Via Sefaria. ', license, ' · ');
+                }
+            }
+            if (!passage.hasChildNodes()) passage.textContent = 'This paragraph is unavailable here.';
+            updateLanguages();
+            loaded = true;
+        } catch {
+            passage.textContent = 'Could not load the source. Reopen to retry or view it on Sefaria.';
+        } finally {
+            loading = false;
+            if (details.open && details.isConnected && source.getClientRects().length) scrollToSource();
+        }
+    });
 }
 
 function handleResponse(status) {
@@ -649,6 +792,7 @@ function deleteCurrentProfile() {
     if (confirm(`Are you sure you want to permanently delete "${currentProfile}" and all its progress?`)) {
         // Remove the profile from our object
         delete profiles[currentProfile];
+        localStorage.removeItem(sourceLanguageKey(currentProfile));
         
         const profileNames = Object.keys(profiles);
 

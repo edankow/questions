@@ -73,18 +73,77 @@
     position: relative;
 }
 
+.source-toggle {
+    cursor: pointer;
+    list-style: none;
+}
+
+.source-toggle::-webkit-details-marker {
+    display: none;
+}
+
+#sourceCitation details[open] > summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+#sourceCitation details:not([open]) .source-languages {
+    display: none;
+}
+
+.source-languages {
+    display: inline-flex;
+    gap: 8px;
+    flex-shrink: 0;
+    font-size: 12px;
+}
+
+.source-languages input {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.source-passage [dir="rtl"] {
+    text-align: right;
+}
+
+.source-passage p[lang="en"] {
+    font-size: 15px;
+}
+
+.source-passage p:not([hidden]) {
+    margin-top: 8px;
+}
+
+.source-passage p:last-child {
+    margin-bottom: 0;
+}
+
+.source-credit {
+    font-size: 12px;
+    color: #707070;
+}
+
+.source-credit a {
+    color: inherit;
+    text-decoration: underline;
+}
+
 .source-link {
     display: inline-block; 
     text-decoration: none;
     font-size: 18px;
     font-weight: 600;
     color: #3498db;
-    transition: color 0.2s;
+    transition: color 0.2s, transform 0.2s;
 }
 
 .source-link:hover {
     color: #2980b9;
-    transform: scale(1.2); /* Subtle grow effect on hover */
+    transform: scale(1.1);
 }
 
 .bsd {
