@@ -108,6 +108,11 @@
 
 .source-passage [dir="rtl"] {
     text-align: right;
+    margin-bottom: 0;
+    font-family: "SBL Hebrew", "Ezra SIL", "David", "Times New Roman", serif;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.4;
 }
 
 .source-passage p[lang="en"] {
