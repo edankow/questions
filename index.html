@@ -84,6 +84,7 @@
     <div class="creativity-box" >
         <div class="scenario-header">
             <h3 style="margin: 0;">Create the Scenario</h3>
+            <span class="study-step">Step 1 of 2</span>
         
 </div>
 <p class="stats scenario-instructions">
@@ -96,7 +97,10 @@
 </div>
 
     <div id="reviewPhase" class="card hidden">
-        <h3 style="margin: 0;">Consider the question</h3>
+        <div class="scenario-header">
+            <h3 style="margin: 0;">Consider the question</h3>
+            <span class="study-step">Step 2 of 2</span>
+        </div>
 	<p class="stats" style="margin-bottom: 15px; line-height: 1.4;">
             Think through the scenario on your own or with a <i>chevrusa</i>, and then select either 'mastered' or 'needs review' to continue. Smooth over grammatical issues and replace "they/their" with gender-specific pronouns as you read.
         </p>
@@ -519,7 +523,6 @@ function updateProfileDropdown() {
             showPhase('setupPhase');
 
 		document.getElementById('scenarioInstructions').classList.add('hidden-info');
-  	 	 document.querySelector('.info-toggle').style.color = '#3498db';
             const container = document.getElementById('inputContainer');
             container.innerHTML = '';
             
@@ -1037,11 +1040,7 @@ function exportWorksheet() {
 
 function toggleScenarioInfo() {
     const infoBox = document.getElementById('scenarioInstructions');
-    const isHidden = infoBox.classList.toggle('hidden-info');
-    
-    // Optional: Change icon color when active
-    const btn = document.querySelector('.info-toggle');
-    btn.style.color = isHidden ? '#3498db' : '#2c3e50';
+    infoBox.classList.toggle('hidden-info');
 }
 
     </script>

@@ -27,6 +27,13 @@
 
 #inputContainer input[type="text"] {
     height: 40px;
+    width: 60%;
+}
+
+@media (max-width: 600px) {
+    #inputContainer input[type="text"] {
+        width: 100%;
+    }
 }
 
 #setupPhase .scenario-instructions {
@@ -196,6 +203,7 @@
 }
 
 .scenario-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.study-step { align-self: center; font-size: 12px; color: #536574; white-space: nowrap; }
 .chapter-controls { display: flex; flex-direction: column; align-items: flex-start; max-width: 100%; text-align: left; }
 .profile-section > .progress-info { width: 100%; flex-wrap: wrap; gap: 4px 10px; margin-top: 0; font-size: 13px; }
 .profile-section > .progress-info > span { white-space: nowrap; }
@@ -205,7 +213,7 @@
 .chapter-picker-row .info-toggle { flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
 .study-profile-controls { position: relative; display: flex; align-items: center; gap: 8px; text-align: left; }
 .profile-section .toolbar-label { display: block; font-size: 12px; line-height: 18px; font-weight: 600; color: #59666b; margin: 0 0 6px; }
-.study-profile-controls .toolbar-label { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); margin: 0; font-size: 11px; color: #3498db; pointer-events: none; }
+.study-profile-controls .toolbar-label { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); margin: 0; font-size: 11px; color: #48535d; pointer-events: none; }
 
 .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
 .dot-done { background-color: #27ae60; }
@@ -313,16 +321,25 @@
 .profile-section .dropdown > button { height: 30px; padding: 4px 16px; line-height: 20px; }
 
 .profile-section #profileSelect,
+#chapterFilter summary,
+.profile-section .dropdown > button {
+    background: #fff;
+    border-color: #aab4bd;
+    color: #37434d;
+}
+
+.profile-section .info-toggle {
+    color: #37434d;
+}
+
+.profile-section #profileSelect,
 #chapterFilter summary {
     box-sizing: border-box;
     height: 30px;
-    background: transparent;
-    border: 1px solid #3498db;
-    color: #3498db;
     font: 600 14px/20px Arial, sans-serif;
 }
 
-.info-toggle:hover {
+.profile-section .info-toggle:hover {
     background: #f0f7ff;
 }
 
@@ -344,7 +361,7 @@
 }
 
 #chapterFilter { position: relative; width: 225px; max-width: 100%; text-align: left; font-size: 16px; line-height: 1.4; }
-#chapterFilter summary { position: relative; cursor: pointer; padding: 4px 28px 4px 12px; border-radius: 6px; list-style: none; }
+#chapterFilter summary { position: relative; cursor: pointer; padding: 4px 28px 4px 12px; border-width: 1px; border-style: solid; border-radius: 6px; list-style: none; }
 #chapterFilter summary::-webkit-details-marker { display: none; }
 #chapterFilter summary::after { content: ''; position: absolute; right: 9px; top: 50%; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-70%) rotate(45deg); }
 #chapterFilter summary:focus-visible { outline: 2px solid #555; outline-offset: 2px; }
