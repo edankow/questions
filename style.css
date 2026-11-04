@@ -492,5 +492,4 @@
 #chapterOptions label { cursor: pointer; }
 #chapterOptions label:hover, #chapterOptions label:focus-within { background: #d8d8d8; }
 #chapterOptions input { flex-shrink: 0; width: 14px; height: 14px; margin: 4px 0 0; accent-color: #555; }
-#chapterOptions .chapter-completed { cursor: default; }
-.chapter-completion-mark { flex-shrink: 0; width: 14px; color: #111; text-align: center; }
+#chapterOptions .chapter-completed { cursor: default; padding-inline-start: 26px; }

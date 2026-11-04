@@ -200,11 +200,7 @@ function initChapterFilters() {
             row.className = 'chapter-completed';
             row.setAttribute('aria-disabled', 'true');
             row.setAttribute('aria-label', `${text}: no questions currently available`);
-            const indicator = document.createElement('span');
-            indicator.className = 'chapter-completion-mark';
-            indicator.textContent = '✓';
-            indicator.setAttribute('aria-hidden', 'true');
-            row.append(indicator, document.createTextNode(text));
+            row.textContent = text;
             select.appendChild(row);
             return;
         }
@@ -281,8 +277,9 @@ function updateProgressStats() {
     const now = Date.now();
     const profileData = profiles[currentProfile] || {};
     const available = selectedQuestions.filter(q => isQuestionAvailable(profileData[q.id], now)).length;
+    const displayedCount = currentFilter === 'all' && available > 500 ? 'more than 500' : available;
     document.getElementById('chapterAvailableCount').textContent =
-        `– ${available} ${available === 1 ? 'question' : 'questions'}`;
+        `(${displayedCount} ${available === 1 ? 'question' : 'questions'})`;
 }
 
 function isQuestionAvailable(data, now) {
@@ -297,7 +294,7 @@ function renderProgressStats(containerId, questionPool) {
     const done = questionPool.filter(q => profileData[q.id]?.status === 'confident').length;
     const review = questionPool.filter(q => profileData[q.id]?.status === 'review').length;
     document.getElementById(containerId).innerHTML = `
-        <span><strong>Total questions:</strong></span>
+        <span><strong>Overall progress:</strong></span>
         <span><span class="dot dot-done"></span><strong>${done}</strong> Mastered</span>
         <span><span class="dot dot-review"></span><strong>${review}</strong> Needs Review</span>
     `;
