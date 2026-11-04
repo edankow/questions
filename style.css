@@ -491,6 +491,11 @@
 #chapterOptions label, #chapterOptions .chapter-completed { display: flex; align-items: flex-start; gap: 6px; padding: 6px; margin: 0; color: #111; font-size: 16px; font-weight: normal; line-height: 1.4; border-radius: 2px; }
 #chapterOptions label { cursor: pointer; }
 #chapterOptions label:hover, #chapterOptions label:focus-within { background: #d8d8d8; }
-#chapterOptions input { flex-shrink: 0; width: 14px; height: 14px; margin: 4px 0 0; accent-color: #555; }
+#chapterOptions input[type="checkbox"] { flex-shrink: 0; width: 14px; height: 14px; margin: 4px 0 0; accent-color: #555; }
+#chapterSearch { box-sizing: border-box; width: 100%; margin: 0 0 4px; }
+#chapterOptions [hidden] { display: none; }
+#unavailableChapters { margin-top: 4px; }
+#unavailableChapters[open] > summary { margin-bottom: 4px; }
+#chapterSearchEmpty { margin: 6px; }
 #chapterOptions .chapter-completed { cursor: default; }
-#chapterOptions .chapter-completed::before { content: ""; flex: 0 0 14px; }
+#chapterOptions .chapter-completion-mark { flex: 0 0 14px; text-align: center; }

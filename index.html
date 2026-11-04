@@ -33,7 +33,15 @@
     <div class="study-menu-bar">
     <details id="chapterFilter">
         <summary><span id="chapterFilterSummary">Shuffling all chapters</span><span id="chapterAvailableCount"></span></summary>
-        <div id="chapterOptions" role="group" aria-label="Chapters to study"></div>
+        <div id="chapterOptions" role="group" aria-label="Chapters to study">
+            <input id="chapterSearch" type="search" aria-label="Search for a chapter" placeholder="Search for a chapter">
+            <div id="availableChapters"></div>
+            <details id="unavailableChapters">
+                <summary>No questions available right now</summary>
+                <div id="unavailableChapterRows"></div>
+            </details>
+            <p id="chapterSearchEmpty" role="status" hidden>No matching chapters.</p>
+        </div>
     </details>
 
     <div class="chapter-controls">
@@ -190,18 +198,22 @@ function init() {
 
 function initChapterFilters() {
     const chapters = [...new Set(questions.map(q => q.chapter))].sort((a,b) => a - b);
-    const select = document.getElementById('chapterOptions');
-    
-
-    select.replaceChildren();
+    const availableRows = document.getElementById('availableChapters');
+    const unavailableRows = document.getElementById('unavailableChapterRows');
+    availableRows.replaceChildren();
+    unavailableRows.replaceChildren();
     function addChoice(value, text, completed = false) {
         if (completed) {
             const row = document.createElement('div');
             row.className = 'chapter-completed';
             row.setAttribute('aria-disabled', 'true');
             row.setAttribute('aria-label', `${text}: no questions currently available`);
-            row.textContent = text;
-            select.appendChild(row);
+            const indicator = document.createElement('span');
+            indicator.className = 'chapter-completion-mark';
+            indicator.textContent = '✓';
+            indicator.setAttribute('aria-hidden', 'true');
+            row.append(indicator, document.createTextNode(text));
+            unavailableRows.appendChild(row);
             return;
         }
         const label = document.createElement('label');
@@ -212,49 +224,17 @@ function initChapterFilters() {
             : currentFilter !== 'all' && currentFilter.includes(value);
         input.onchange = () => updateFilterMode(value, input.checked);
         label.append(input, document.createTextNode(text));
-        select.appendChild(label);
+        availableRows.appendChild(label);
     }
     addChoice('all', 'Shuffle all chapters');
 
     const now = Date.now();
-    const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
     const profileData = profiles[currentProfile] || {};
-
+    const availableChapters = new Set(questions
+        .filter(q => isQuestionAvailable(profileData[q.id], now))
+        .map(q => q.chapter));
 
     chapters.forEach(ch => {
-
-	// Does this chapter have any available questions?
-        let hasAvailable = false;
-
-        for (const q of questions) {
-            if (q.chapter != ch) continue;
-
-            const data = profileData[q.id];
-
-            if (reviewMasteredMode) {
-                if (data && data.status === 'confident') {
-                    hasAvailable = true;
-                    break;
-                }
-                continue;
-            }
-
-            if (!data) {
-                hasAvailable = true;
-                break;
-            }
-
-            if (
-                data.status === "review" &&
-                (ignoreTimestamps || (now - data.timestamp) > TWENTY_FOUR_HOURS)
-            ) {
-                hasAvailable = true;
-                break;
-            }
-        }
-
-
-
         const chapterNumber = parseInt(ch, 10); // Use parseInt to convert "01" to 1, "005" to 5, etc.
 	const chapterName = chapterNames[chapterNumber];
 
@@ -262,13 +242,37 @@ function initChapterFilters() {
             ? `Chapter ${chapterNumber} — ${chapterName}`
             : `Chapter ${chapterNumber}`;
 
-        addChoice(String(Number(ch)), label, !hasAvailable);
+        addChoice(String(Number(ch)), label, !availableChapters.has(ch));
     });
     document.getElementById('chapterFilterSummary').textContent = currentFilter === 'all'
         ? 'Shuffling all chapters'
         : `${currentFilter.length === 1 ? 'Chapter' : 'Chapters'} ${currentFilter.join(', ')}`;
+    filterChapterOptions();
     updateProgressStats();
 }
+
+const chapterSearch = document.getElementById('chapterSearch');
+const unavailableChapters = document.getElementById('unavailableChapters');
+
+function filterChapterOptions() {
+    const query = chapterSearch.value.trim().toLowerCase();
+    const rows = document.querySelectorAll('#availableChapters > label, #unavailableChapterRows > div');
+    let matches = 0;
+    for (const row of rows) {
+        const checkbox = row.querySelector('input');
+        const isShuffle = checkbox?.value === 'all';
+        const chapterNumber = checkbox?.value || row.textContent.match(/^Chapter (\d+)/)?.[1];
+        row.hidden = query && (isShuffle || (/^\d+$/.test(query)
+            ? chapterNumber !== String(Number(query))
+            : !row.textContent.toLowerCase().includes(query)));
+        if (!row.hidden && !isShuffle) matches++;
+    }
+    unavailableChapters.hidden = !unavailableChapters.querySelector('#unavailableChapterRows > div:not([hidden])');
+    unavailableChapters.open = Boolean(query) && !unavailableChapters.hidden;
+    document.getElementById('chapterSearchEmpty').hidden = !query || matches > 0;
+}
+
+chapterSearch.addEventListener('input', filterChapterOptions);
 
 function updateProgressStats() {
     const selectedQuestions = questions.filter(q => currentFilter === 'all'
@@ -351,7 +355,13 @@ function sizeChapterMenu() {
     const space = document.documentElement.clientWidth - picker.getBoundingClientRect().left - 12;
     picker.style.setProperty('--chapter-menu-space', `${Math.max(0, space)}px`);
 }
-document.getElementById('chapterFilter').addEventListener('toggle', sizeChapterMenu);
+document.getElementById('chapterFilter').addEventListener('toggle', event => {
+    sizeChapterMenu();
+    if (!event.currentTarget.open) {
+        chapterSearch.value = '';
+        filterChapterOptions();
+    }
+});
 window.addEventListener('resize', sizeChapterMenu);
 
 
