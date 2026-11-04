@@ -43,7 +43,6 @@
         <div id="menu-tools" class="dropdown-content">
             <div id="progressContainer" class="progress-info" aria-live="polite"></div>
             <hr>
-            <button onclick="toggleHistory()">View History Table</button>
             <button onclick="chooseWorksheetChapters()">Create Worksheet</button>
             <hr>
             <details class="profile-switch-menu">
@@ -70,6 +69,13 @@
             <button value="cancel" class="btn-outline" formnovalidate>Cancel</button>
             <button value="create" class="btn-primary">Create Worksheet</button>
         </form>
+    </dialog>
+    <dialog id="worksheetPreparation" aria-labelledby="worksheetPreparationTitle">
+        <div class="worksheet-preparation-content">
+            <h2 id="worksheetPreparationTitle"></h2>
+            <p id="worksheetPreparationMessage"></p>
+            <form id="worksheetPreparationForm"></form>
+        </div>
     </dialog>
     <dialog id="scenarioInstructions" aria-labelledby="scenarioInfoTitle">
         <h2 id="scenarioInfoTitle">About the study tool</h2>
@@ -145,14 +151,6 @@
         <button class="btn-primary" onclick="resetProgress()">Restart Questions</button>
     </div>
 
-<div id="historySection" class="card hidden">
-    <h3>Question History</h3>
-    <div id="historyList" style="max-height: 300px; overflow-y: auto;">
-        <p class="stats">No questions answered yet.</p>
-    </div>
-</div>
-
-
     <script>
 
         // State variables
@@ -186,7 +184,6 @@ function init() {
     initChapterFilters();
 
     updateProfileDropdown();
-    updateHistoryList();
     loadNextQuestion();
 	
 }
@@ -280,7 +277,7 @@ function initChapterFilters() {
 function updateProgressStats() {
     const selectedQuestions = questions.filter(q => currentFilter === 'all'
         || currentFilter.includes(String(Number(q.chapter))));
-    renderProgressStats('progressContainer', selectedQuestions);
+    renderProgressStats('progressContainer', questions);
     const now = Date.now();
     const profileData = profiles[currentProfile] || {};
     const available = selectedQuestions.filter(q => isQuestionAvailable(profileData[q.id], now)).length;
@@ -299,12 +296,10 @@ function renderProgressStats(containerId, questionPool) {
     const profileData = profiles[currentProfile] || {};
     const done = questionPool.filter(q => profileData[q.id]?.status === 'confident').length;
     const review = questionPool.filter(q => profileData[q.id]?.status === 'review').length;
-    const unasked = questionPool.length - done - review;
     document.getElementById(containerId).innerHTML = `
-        <span><strong>Questions:</strong></span>
+        <span><strong>Total questions:</strong></span>
         <span><span class="dot dot-done"></span><strong>${done}</strong> Mastered</span>
         <span><span class="dot dot-review"></span><strong>${review}</strong> Needs Review</span>
-        <span><span class="dot dot-new"></span><strong>${unasked}</strong> Not yet studied</span>
     `;
 }
 
@@ -421,7 +416,6 @@ function switchProfile(name) {
     reviewMasteredMode = false;
     initChapterFilters();
     updateProfileDropdown();
-    updateHistoryList();
     loadNextQuestion();
 }
 
@@ -736,7 +730,6 @@ function handleResponse(status) {
     
     saveToStorage();
     updateProfileDropdown();
-    updateHistoryList();
     loadNextQuestion();
 }
 
@@ -758,7 +751,6 @@ A backup of your current progress will be saved as "${currentProfile}_${new Date
         // 4. Save changes and refresh the UI
         saveToStorage();
         updateProfileDropdown();
-	updateHistoryList();
         loadNextQuestion();
         
         alert(`Progress cleared. Backup created: ${backupName}`);
@@ -840,7 +832,6 @@ function importProfile(event) {
             localStorage.setItem('ksa_current_profile', currentProfile);
             
             updateProfileDropdown();
-            updateHistoryList();
             loadNextQuestion();
             alert(`Profile "${profileName}" loaded successfully!`);
         } catch (err) {
@@ -909,74 +900,8 @@ function goBackToEdit() {
 }
 
 
-function updateHistoryList() {
-    const historyContainer = document.getElementById('historyList');
-    const profileData = profiles[currentProfile] || {};
-    
-    // Filter the master list for questions that have a record in the current profile
-    const askedQuestions = questions.filter(q => profileData[q.id]);
-
-    if (askedQuestions.length === 0) {
-        historyContainer.innerHTML = '<p class="stats">No questions answered yet.</p>';
-        return;
-    }
-
-    // Generate a table or list of the questions
-    let html = `<table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
-        <thead>
-            <tr style="text-align: left; border-bottom: 2px solid #eee;">
-                <th style="padding: 8px;">ID</th>
-                <th style="padding: 8px;">Question Text</th>
-                <th style="padding: 8px;">Source</th>
-            </tr>
-        </thead>
-        <tbody>`;
-
-	askedQuestions.forEach(q => {
-	    const record = profileData[q.id];
-	    const status = record.status;
-	    const statusColor = status === 'confident' ? '#27ae60' : '#d35400';
-	    
-	    // Use the saved scenario if it exists; otherwise, use the default template
-	    const displaySnippet = record.scenario || q.text;
-	    
-	    html += `
-	        <tr style="border-bottom: 1px solid #eee;">
-	            <td style="padding: 8px; color: #95a5a6;">${q.id}</td>
-	            <td style="padding: 8px;">
-	                <span class="dot" style="background-color: ${statusColor}"></span> 
-	                ${displaySnippet}
-	            </td>
-	            <td style="padding: 8px; white-space: nowrap;">Ch. ${q.chapter}, ¶ ${q.paragraph}</td>
-	        </tr>`;
-	});
-
-    html += `</tbody></table>`;
-    historyContainer.innerHTML = html;
-}
-
-
-function toggleHistory() {
-    const historySec = document.getElementById('historySection');
-    const isHidden = historySec.classList.toggle('hidden');
-    
-    // Optional: Update the button text inside the menu if you want it to be dynamic
-    const btn = event.target;
-    if (btn && btn.tagName === 'BUTTON') {
-        btn.innerText = isHidden ? "View History Table" : "Hide History Table";
-    }
-}
-
-
-
-
 function chooseWorksheetChapters() {
-    const profileData = profiles[currentProfile] || {};
-    const chapters = [...new Set(questions.filter(q => profileData[q.id]).map(q => Number(q.chapter)))];
-    if (!chapters.length) {
-        alert("No questions answered yet to generate a worksheet.");
-        return;
-    }
+    const chapters = [...new Set(questions.map(q => Number(q.chapter)))];
 
     const options = document.getElementById('worksheetChapterOptions');
     options.replaceChildren();
@@ -985,7 +910,6 @@ function chooseWorksheetChapters() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = chapter;
-        checkbox.checked = true;
         label.append(checkbox, ` Chapter ${chapter}`);
         options.append(label);
     }
@@ -1003,8 +927,107 @@ document.querySelector('#worksheetChapters form').addEventListener('submit', eve
         return;
     }
     event.currentTarget.closest('dialog').close();
-    exportWorksheet(selected);
+    reviewWorksheetChapters(selected, [...selected]);
 });
+
+const worksheetPreparation = document.getElementById('worksheetPreparation');
+const worksheetPreparationForm = document.getElementById('worksheetPreparationForm');
+
+function showWorksheetPreparation(chapter, message, batch = false) {
+    worksheetPreparation.classList.toggle('batch', batch);
+    document.getElementById('worksheetPreparationTitle').textContent = `Chapter ${chapter}`;
+    document.getElementById('worksheetPreparationMessage').textContent = message;
+    worksheetPreparationForm.replaceChildren();
+    worksheetPreparationForm.onsubmit = event => event.preventDefault();
+    if (!worksheetPreparation.open) worksheetPreparation.showModal();
+}
+
+function worksheetAction(label, action) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = label;
+    button.addEventListener('click', action);
+    worksheetPreparationForm.append(button);
+}
+
+function reviewWorksheetChapters(selected, pending) {
+    const profileData = profiles[currentProfile] || {};
+    for (const chapter of pending) {
+        const templates = questions.filter(q => Number(q.chapter) === chapter);
+        const remaining = templates.filter(q => !profileData[q.id]);
+        if (!remaining.length) continue;
+        const next = () => reviewWorksheetChapters(selected, pending.slice(pending.indexOf(chapter) + 1));
+        const empty = remaining.length === templates.length;
+        showWorksheetPreparation(chapter, empty
+            ? `Chapter ${chapter} has no saved questions yet.`
+            : `Do you want to create more questions for Chapter ${chapter}? Some prepared scenario templates have not been used yet.`);
+        worksheetAction(empty ? 'Create questions' : 'Yes, create more questions',
+            () => chooseWorksheetPreparation(chapter, remaining, next));
+        worksheetAction(empty ? 'Remove chapter from worksheet' : 'No, use saved questions only', () => {
+            if (empty) selected.delete(chapter);
+            next();
+        });
+        return;
+    }
+    worksheetPreparation.close();
+    if (selected.size) exportWorksheet(selected);
+    else alert('No chapters remain in this worksheet.');
+}
+
+function chooseWorksheetPreparation(chapter, remaining, next) {
+    showWorksheetPreparation(chapter, 'How would you like to prepare questions?');
+    worksheetAction('Return to the one-by-one question interface', () => {
+        worksheetPreparation.close();
+        reviewMasteredMode = false;
+        currentFilter = 'all';
+        updateFilterMode(String(chapter), true);
+    });
+    worksheetAction('Prepare all remaining question templates at once',
+        () => prepareWorksheetQuestions(chapter, remaining, next));
+    worksheetAction('Cancel worksheet', () => worksheetPreparation.close());
+}
+
+function prepareWorksheetQuestions(chapter, remaining, next) {
+    showWorksheetPreparation(chapter, 'Enter a value for each field. Questions that use the same field will share its value. Please use fictional names.', true);
+    const placeholders = new Set(remaining.flatMap(q => q.text.match(/\[(.*?)\]/g) || []));
+    const inputs = new Map();
+    for (const placeholder of placeholders) {
+        const label = document.createElement('label');
+        label.className = 'input-group';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.required = true;
+        input.pattern = '.*\\S.*';
+        label.append(placeholder.slice(1, -1), input);
+        worksheetPreparationForm.append(label);
+        inputs.set(placeholder, input);
+    }
+    const submit = document.createElement('button');
+    submit.className = 'btn-primary';
+    submit.textContent = 'Save questions and continue';
+    worksheetPreparationForm.append(submit);
+    worksheetAction('Cancel worksheet', () => worksheetPreparation.close());
+
+    worksheetPreparationForm.onsubmit = event => {
+        event.preventDefault();
+        const profileData = profiles[currentProfile];
+        for (const question of remaining) {
+            if (profileData[question.id]) continue;
+            profileData[question.id] = {
+                status: 'prepared',
+                scenario: question.text.replace(/\[(.*?)\]/g, placeholder => inputs.get(placeholder).value.trim())
+            };
+        }
+        saveToStorage();
+        next();
+    };
+}
+
+function scenarioHtml(scenario) {
+    const element = document.createElement('span');
+    element.textContent = scenario;
+    return element.innerHTML;
+}
 
 function exportWorksheet(selectedChapters) {
     const profileData = profiles[currentProfile] || {};
@@ -1014,7 +1037,7 @@ function exportWorksheet(selectedChapters) {
         .filter(q => profileData[q.id] && selectedChapters.has(Number(q.chapter)))
         .map(q => ({
             ...q,
-            scenario: profileData[q.id].scenario || q.text,
+            scenario: profileData[q.id].scenario ? scenarioHtml(profileData[q.id].scenario) : q.text,
             // Convert to numbers for proper numerical sorting (e.g., Ch 9 before Ch 10)
             sortCh: parseInt(q.chapter),
             sortPara: parseInt(q.paragraph)

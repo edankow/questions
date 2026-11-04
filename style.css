@@ -284,7 +284,6 @@
 .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
 .dot-done { background-color: #27ae60; }
 .dot-review { background-color: #d35400; }
-.dot-new { background-color: #95a5a6; }
  
 .hidden-button {
     display: none !important;
@@ -299,10 +298,6 @@
 }
 .modal-content { max-width: 400px; text-align: center; }
 .modal-actions { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-
-#historySection.hidden {
-    display: none;
-}
 
 .tooltip-wrapper {
     position: relative;
@@ -413,7 +408,8 @@
 }
 
 #scenarioInstructions,
-#worksheetChapters {
+#worksheetChapters,
+#worksheetPreparation {
     box-sizing: border-box;
     width: min(540px, calc(100% - 32px));
     max-height: calc(100% - 32px);
@@ -430,13 +426,48 @@
 }
 
 #scenarioInstructions h2,
-#worksheetChapters h2 {
+#worksheetChapters h2,
+#worksheetPreparation h2 {
     margin: 0;
 }
 
 #scenarioInstructions::backdrop,
-#worksheetChapters::backdrop {
+#worksheetChapters::backdrop,
+#worksheetPreparation::backdrop {
     background: rgb(0 0 0 / 30%);
+}
+
+#worksheetPreparation.batch {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    border-radius: 0;
+    background: #e9edf0;
+    overflow-y: auto;
+}
+
+#worksheetPreparation.batch .worksheet-preparation-content {
+    box-sizing: border-box;
+    max-width: 540px;
+    margin-inline: auto;
+    padding: 24px;
+    border: 1px solid #d5dee5;
+    border-radius: 12px;
+    background: white;
+}
+
+#worksheetPreparationForm {
+    display: grid;
+    gap: 8px;
+}
+
+#worksheetPreparationForm .input-group {
+    margin: 0;
 }
 
 /* code block below written by manus.im to fix iphone problem with drop-down menu for chapters.*/
