@@ -14,7 +14,7 @@
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KS"A Study Tool</title>
+    <title>Kitzur Shulchan Aruch – Review with Scenarios</title>
     
 
 <link rel="stylesheet" href="style.css">
@@ -27,8 +27,7 @@
 <body>
 
 <div class="bsd">בס"ד</div>
-    <h1>Kitzur Shulchan Aruch Study Tool</h1>
-    <p class="study-subtitle">Build a scenario, think it through, and check the source.</p>
+    <h1>Kitzur Shulchan Aruch – Review with Scenarios</h1>
 
 <div class="profile-section">
     <div class="study-menu-bar">
@@ -45,13 +44,12 @@
             <div id="progressContainer" class="progress-info" aria-live="polite"></div>
             <hr>
             <button onclick="toggleHistory()">View History Table</button>
-            <button onclick="exportWorksheet()">Export as Worksheet</button>
+            <button onclick="chooseWorksheetChapters()">Create Worksheet</button>
             <hr>
             <details class="profile-switch-menu">
                 <summary onclick="populateProfileSwitch(this)">Switch profiles</summary>
                 <div class="profile-switch-options"></div>
             </details>
-            <button id="nameGuestProfile" class="hidden" onclick="renameCurrentProfile()">Name Profile</button>
             <button onclick="createNewProfile()">New Profile</button>
             <button onclick="renameCurrentProfile()">Rename Profile</button>
             <button onclick="exportProfile()">Export Profile</button>
@@ -65,14 +63,20 @@
     </div>
     </div>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
+    <dialog id="worksheetChapters" aria-labelledby="worksheetChaptersTitle">
+        <form method="dialog">
+            <h2 id="worksheetChaptersTitle">Choose worksheet chapters</h2>
+            <div id="worksheetChapterOptions" role="group" aria-labelledby="worksheetChaptersTitle"></div>
+            <button value="cancel" class="btn-outline" formnovalidate>Cancel</button>
+            <button value="create" class="btn-primary">Create Worksheet</button>
+        </form>
+    </dialog>
     <dialog id="scenarioInstructions" aria-labelledby="scenarioInfoTitle">
         <h2 id="scenarioInfoTitle">About the study tool</h2>
         <p>
-                 Welcome to KS"A Study Tool, a scenario-based application for learning the Kitzur Shulchan Aruch.<br><br>
+                 Welcome! Use these scenarios to review what you’ve learned in the Kitzur Shulchan Aruch.<br><br>
                  This site is a work in progress. The question bank currently covers the first few chapters of the KS"A.<br><br>
-                 This tool isn't meant to replace opening up a Kitzur Shulchan Aruch sefer. Rather, this is
-		a good way to increase your grasp on the halachas by quizzing a friend once you've
-		learned the material at a basic level. <br><br>
+                 This tool isn't meant to replace opening up a sefer. Rather, once you have a basic grasp of the material, you can strengthen it by having a friend quiz you on what you remember.<br><br>
 
             This tool was last updated in 2026 and created by Even, who personally wrote all of the question and scenario text. AI was used to help create the web page and functionality, but none of the content.
        			<br><br>
@@ -386,7 +390,6 @@ function revisitMastered() {
 
 function updateProfileDropdown() {
     document.getElementById('activeProfileLabel').textContent = currentProfile;
-    document.getElementById('nameGuestProfile').classList.toggle('hidden', currentProfile !== 'Guest');
 
     // Calculate Stats
     const profileData = profiles[currentProfile] || {};
@@ -967,12 +970,48 @@ function toggleHistory() {
 
 
 
-function exportWorksheet() {
+function chooseWorksheetChapters() {
+    const profileData = profiles[currentProfile] || {};
+    const chapters = [...new Set(questions.filter(q => profileData[q.id]).map(q => Number(q.chapter)))];
+    if (!chapters.length) {
+        alert("No questions answered yet to generate a worksheet.");
+        return;
+    }
+
+    const options = document.getElementById('worksheetChapterOptions');
+    options.replaceChildren();
+    for (const chapter of chapters.sort((a, b) => a - b)) {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = chapter;
+        checkbox.checked = true;
+        label.append(checkbox, ` Chapter ${chapter}`);
+        options.append(label);
+    }
+    document.getElementById('worksheetChapters').showModal();
+}
+
+document.querySelector('#worksheetChapters form').addEventListener('submit', event => {
+    if (event.submitter?.value !== 'create') return;
+    event.preventDefault();
+    const selected = new Set(Array.from(
+        event.currentTarget.querySelectorAll('input:checked'), input => Number(input.value)
+    ));
+    if (!selected.size) {
+        alert('Select at least one chapter.');
+        return;
+    }
+    event.currentTarget.closest('dialog').close();
+    exportWorksheet(selected);
+});
+
+function exportWorksheet(selectedChapters) {
     const profileData = profiles[currentProfile] || {};
     
     // 1. Filter and Prepare Data
     const answeredQuestions = questions
-        .filter(q => profileData[q.id])
+        .filter(q => profileData[q.id] && selectedChapters.has(Number(q.chapter)))
         .map(q => ({
             ...q,
             scenario: profileData[q.id].scenario || q.text,
@@ -996,14 +1035,17 @@ function exportWorksheet() {
             <title>Worksheet - ${currentProfile}</title>
             <style>
                 body { font-family: 'SBL Hebrew', 'Times New Roman', serif; padding: 40px; line-height: 1.6; color: #333; }
-                .header { text-align: center; position: relative; border-bottom: 2px solid #333; margin-bottom: 30px; padding-bottom: 10px; }
+                .header { text-align: center; position: relative; border-bottom: 1px solid #aaa; margin-bottom: 8px; padding-bottom: 4px; }
+                .header h1 { font-size: 1.35em; line-height: 1.2; margin: 0; }
                 .bsd { position: absolute; top: 0; right: 0; font-size: 14px; }
-                h2.chapter-header { background: #f4f4f4; padding: 8px; border-left: 5px solid #2c3e50; margin-top: 30px; }
-                h3.para-header { border-bottom: 1px solid #ccc; margin-top: 20px; color: #7f8c8d; font-size: 1.1em; }
+                h2.chapter-header { font-size: 1.1em; margin-top: 24px; break-after: avoid; }
                 .q-item { margin-bottom: 25px; margin-left: 20px; page-break-inside: avoid; }
                 .q-text { font-size: 1.15em; margin-bottom: 8px; }
-                .answer-space { border-bottom: 1px dotted #ccc; height: 40px; margin-top: 10px; width: 95%; }
-                @media print { .no-print { display: none; } }
+                .answer-space { height: 50px; }
+                @media print {
+                    body { margin: 0; padding: 0; }
+                    .no-print { display: none; }
+                }
             </style>
         </head>
         <body>
@@ -1012,32 +1054,22 @@ function exportWorksheet() {
             </div>
             <div class="header">
                 <div class="bsd">בס"ד</div>
-                <h1>Kitzur Shulchan Aruch Study Worksheet</h1>
-                <p>Profile: ${currentProfile} | Questions: ${answeredQuestions.length}</p>
+                <h1>Kitzur Shulchan Aruch – ${selectedChapters.size === 1 ? 'Chapter' : 'Chapters'} ${[...selectedChapters].sort((a, b) => a - b).join(', ')}</h1>
             </div>
     `;
 
     let lastCh = null;
-    let lastPara = null;
-
-    answeredQuestions.forEach((q) => {
+    answeredQuestions.forEach((q, index) => {
         // Add Chapter Header
-        if (q.chapter !== lastCh) {
-            worksheetHtml += `<h2 class="chapter-header">Chapter ${parseInt(q.chapter)}</h2>`;
-            lastCh = q.chapter;
-            lastPara = null; // Reset para tracking for new chapter
-        }
-
-        // Add Paragraph Header
-        if (q.paragraph !== lastPara) {
-            worksheetHtml += `<h3 class="para-header">Paragraph ${parseInt(q.paragraph)}</h3>`;
-            lastPara = q.paragraph;
+        if (selectedChapters.size > 1 && q.sortCh !== lastCh) {
+            worksheetHtml += `<h2 class="chapter-header">Chapter ${q.sortCh}</h2>`;
+            lastCh = q.sortCh;
         }
 
         // Add Question
         worksheetHtml += `
             <div class="q-item">
-                <div class="q-text">${q.scenario}</div>
+                <div class="q-text">${index + 1}. ${q.scenario}</div>
                 <div class="answer-space"></div>
             </div>
         `;

@@ -42,11 +42,6 @@
         .btn-warning { background-color: #d35400; color: white; }
         .btn-outline { background: transparent; border: 1px solid #3498db; color: #3498db; }
         .hidden { display: none !important; }
-.study-subtitle {
-    margin: 0 0 8px;
-    color: #536574;
-}
-
 #setupPhase,
 #reviewPhase {
     border: 1px solid #d5dee5;
@@ -388,7 +383,6 @@
 }
 
 .profile-section #profileSelect { appearance: none; min-width: 180px; height: 30px; padding: 4px 28px 4px 52px; line-height: 20px; }
-.profile-section #nameGuestProfile { height: 30px; padding: 4px 10px; line-height: 20px; white-space: nowrap; }
 .profile-section .dropdown > button { height: 30px; padding: 4px 28px 4px 12px; line-height: 20px; }
 
 .profile-section #profileSelect,
@@ -418,7 +412,8 @@
     background: #f0f7ff;
 }
 
-#scenarioInstructions {
+#scenarioInstructions,
+#worksheetChapters {
     box-sizing: border-box;
     width: min(540px, calc(100% - 32px));
     max-height: calc(100% - 32px);
@@ -428,11 +423,19 @@
     color: #37434d;
 }
 
-#scenarioInstructions h2 {
+#worksheetChapterOptions {
+    max-height: 45vh;
+    overflow-y: auto;
+    margin: 12px 0;
+}
+
+#scenarioInstructions h2,
+#worksheetChapters h2 {
     margin: 0;
 }
 
-#scenarioInstructions::backdrop {
+#scenarioInstructions::backdrop,
+#worksheetChapters::backdrop {
     background: rgb(0 0 0 / 30%);
 }
 
