@@ -32,7 +32,7 @@
 <body>
 
 <div class="bsd">בס"ד</div>
-    <h1>Kitzur Shulchan Aruch – Review with Scenarios</h1>
+    <h1 class="site-title">Kitzur Shulchan Aruch <span>– Review with Scenarios</span></h1>
 
 <div class="profile-section">
     <div class="study-menu-bar">
@@ -59,9 +59,6 @@
             <hr>
             <button data-live-lock onclick="chooseWorksheetChapters()">Create Worksheet</button>
             <hr>
-            <div class="progress-info">Review with a Partner</div>
-            <button data-live-lock onclick="startLiveHost()">Create Invite Link</button>
-            <hr>
             <details class="profile-switch-menu">
                 <summary onclick="populateProfileSwitch(this)">Switch profiles</summary>
                 <div class="profile-switch-options"></div>
@@ -77,6 +74,7 @@
             <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions" aria-label="Show instructions">ⓘ</button>
         </div>
     </div>
+        <button class="btn-primary partner-review-button" data-live-lock onclick="startLiveHost()">Review with a Partner</button>
     </div>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
     <dialog id="worksheetChapters" aria-labelledby="worksheetChaptersTitle">
