@@ -225,7 +225,7 @@ function init() {
 
     updateProfileDropdown();
     loadNextQuestion();
-    openLiveInvite();
+    window.openLiveInvite?.();
 	
 }
 
@@ -263,7 +263,7 @@ function initChapterFilters() {
 
     const now = Date.now();
     const profileData = profiles[currentProfile] || {};
-    const shared = getLiveSharedQuestions();
+    const shared = window.getLiveSharedQuestions?.();
     const availableChapters = new Set((shared ?? questions
         .filter(q => isQuestionAvailable(profileData[q.id], now)))
         .map(q => q.chapter));
@@ -310,7 +310,7 @@ function filterChapterOptions() {
 chapterSearch.addEventListener('input', filterChapterOptions);
 
 function updateProgressStats() {
-    const shared = getLiveSharedQuestions();
+    const shared = window.getLiveSharedQuestions?.();
     const selectedQuestions = (shared ?? questions).filter(q => currentFilter === 'all'
         || currentFilter.includes(String(Number(q.chapter))));
     renderProgressStats('progressContainer', questions);
@@ -379,8 +379,12 @@ window.addEventListener('popstate', () => {
 
 function refreshChapterSelection() {
     initChapterFilters();
-    if (liveSession?.ready) updateLiveChapters();
+    if (getLiveSession()?.ready) updateLiveChapters();
     else if (profiles[currentProfile]) loadNextQuestion();
+}
+
+function getLiveSession() {
+    return typeof liveSession === 'undefined' ? null : liveSession;
 }
 
 document.addEventListener('click', event => {
@@ -618,7 +622,7 @@ function pickReviewQuestion(pool, order, singleChapter, preferred) {
         }
         return val;
     });
-    if (liveSession?.ready) shareLiveScenario(values);
+    if (getLiveSession()?.ready) shareLiveScenario(values);
     else renderQuestionScenario(activeQuestion, values);
 }
 
@@ -771,9 +775,10 @@ function renderSource(chapter, paragraph) {
 }
 
 function handleResponse(status) {
-    if (liveSession && (!liveSession.ready || !liveSession.shown || liveSession.rated || liveSession.editing)) return;
+    const session = getLiveSession();
+    if (session && (!session.ready || !session.shown || session.rated || session.editing)) return;
     saveResponse(status);
-    if (liveSession) {
+    if (session) {
         rateLiveQuestion();
         return;
     }
@@ -909,7 +914,7 @@ function populateProfileSwitch(summary) {
     for (const name of Object.keys(profiles)) {
         const button = document.createElement('button');
         button.textContent = name;
-        button.disabled = liveSession?.ready || name === currentProfile;
+        button.disabled = getLiveSession()?.ready || name === currentProfile;
         button.addEventListener('click', () => {
             summary.parentElement.open = false;
             summary.closest('.dropdown-content').classList.remove('show-menu');
@@ -954,7 +959,7 @@ window.onclick = function(event) {
 
 
 function goBackToEdit() {
-    if (liveSession?.ready) {
+    if (getLiveSession()?.ready) {
         editLiveScenario();
         return;
     }
@@ -1186,7 +1191,7 @@ document.getElementById('scenarioInstructions').addEventListener('click', event 
 });
 
     </script>
-    <script src="live-review.js"></script>
+    <script src="live-review.js?v=46da983"></script>
 
 </body>
 
