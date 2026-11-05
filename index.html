@@ -50,22 +50,23 @@
         <button id="activeProfileLabel" class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Guest</button>
         <div id="menu-tools" class="dropdown-content">
             <div id="progressContainer" class="progress-info" aria-live="polite"></div>
+            <p id="liveProfileNotice" class="stats" hidden>Leave the session to switch or change profiles.</p>
             <hr>
-            <button onclick="chooseWorksheetChapters()">Create Worksheet</button>
+            <button data-live-lock onclick="chooseWorksheetChapters()">Create Worksheet</button>
             <hr>
             <div class="progress-info">Review with a Partner</div>
-            <button onclick="startLiveHost()">Create Invite Link</button>
+            <button data-live-lock onclick="startLiveHost()">Create Invite Link</button>
             <hr>
             <details class="profile-switch-menu">
                 <summary onclick="populateProfileSwitch(this)">Switch profiles</summary>
                 <div class="profile-switch-options"></div>
             </details>
-            <button onclick="createNewProfile()">New Profile</button>
-            <button onclick="renameCurrentProfile()">Rename Profile</button>
+            <button data-live-lock onclick="createNewProfile()">New Profile</button>
+            <button data-live-lock onclick="renameCurrentProfile()">Rename Profile</button>
             <button onclick="exportProfile()">Export Profile</button>
-            <button onclick="document.getElementById('importInput').click()">Load Profile</button>
+            <button data-live-lock onclick="document.getElementById('importInput').click()">Load Profile</button>
             <hr>
-            <button class="btn-delete" onclick="deleteCurrentProfile()">Delete Profile</button>
+            <button data-live-lock class="btn-delete" onclick="deleteCurrentProfile()">Delete Profile</button>
         </div>
     </div>
             <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions" aria-label="Show instructions">ⓘ</button>
@@ -112,6 +113,15 @@
 <dialog id="liveDialog" aria-labelledby="liveTitle">
     <h2 id="liveTitle">Live Review</h2>
     <p id="livePairingStatus" role="status"></p>
+    <form id="liveInviteOptions" onsubmit="createLiveInvite(event)" hidden>
+        <fieldset>
+            <legend>Who fills in the scenario inputs?</legend>
+            <label><input type="radio" name="scenarioEditor" value="guest" checked> Guest</label>
+            <label><input type="radio" name="scenarioEditor" value="host"> Host</label>
+            <label><input type="radio" name="scenarioEditor" value="turns"> Take turns (guest first)</label>
+        </fieldset>
+        <button class="btn-primary">Create Invite Link</button>
+    </form>
     <div id="liveShareControls" hidden>
         <label for="liveShare">Private invite link</label>
         <textarea id="liveShare" rows="3" readonly></textarea>
@@ -139,6 +149,7 @@
 
         <div id="inputContainer"></div>
         <button class="btn-primary" style="margin-top: 20px;" onclick="generateQuestion()">Generate Question</button>
+        <button id="cancelLiveEdit" class="btn-outline" onclick="cancelLiveScenarioEdit()" hidden>Cancel Edit</button>
     </div>
 </div>
 
@@ -252,8 +263,9 @@ function initChapterFilters() {
 
     const now = Date.now();
     const profileData = profiles[currentProfile] || {};
-    const availableChapters = new Set(questions
-        .filter(q => isQuestionAvailable(profileData[q.id], now))
+    const shared = getLiveSharedQuestions();
+    const availableChapters = new Set((shared ?? questions
+        .filter(q => isQuestionAvailable(profileData[q.id], now)))
         .map(q => q.chapter));
 
     chapters.forEach(ch => {
@@ -264,7 +276,8 @@ function initChapterFilters() {
             ? `Chapter ${chapterNumber} — ${chapterName}`
             : `Chapter ${chapterNumber}`;
 
-        addChoice(String(Number(ch)), label, !availableChapters.has(ch));
+        const selected = currentFilter !== 'all' && currentFilter.includes(String(Number(ch)));
+        addChoice(String(Number(ch)), label, !availableChapters.has(ch) && !(shared && selected));
     });
     document.getElementById('chapterFilterSummary').textContent = currentFilter === 'all'
         ? 'Shuffling all chapters'
@@ -297,12 +310,14 @@ function filterChapterOptions() {
 chapterSearch.addEventListener('input', filterChapterOptions);
 
 function updateProgressStats() {
-    const selectedQuestions = questions.filter(q => currentFilter === 'all'
+    const shared = getLiveSharedQuestions();
+    const selectedQuestions = (shared ?? questions).filter(q => currentFilter === 'all'
         || currentFilter.includes(String(Number(q.chapter))));
     renderProgressStats('progressContainer', questions);
     const now = Date.now();
     const profileData = profiles[currentProfile] || {};
-    const available = selectedQuestions.filter(q => isQuestionAvailable(profileData[q.id], now)).length;
+    const available = shared ? selectedQuestions.length
+        : selectedQuestions.filter(q => isQuestionAvailable(profileData[q.id], now)).length;
     const displayedCount = currentFilter === 'all' && available > 500 ? 'more than 500' : available;
     document.getElementById('chapterAvailableCount').textContent =
         `(${displayedCount} ${available === 1 ? 'question' : 'questions'})`;
@@ -353,16 +368,20 @@ function updateFilterMode(value, checked) {
     window.history.pushState(null, '', url.href);
     soloQuestionOrder.count = 0;
     soloQuestionOrder.lastIndex = -1;
-    initChapterFilters();
-    if (profiles[currentProfile]) loadNextQuestion();
+    refreshChapterSelection();
     document.querySelector(`#chapterOptions input[value="${value}"]`)?.focus();
 }
 
 window.addEventListener('popstate', () => {
     readChapterFilterFromUrl();
-    initChapterFilters();
-    if (profiles[currentProfile]) loadNextQuestion();
+    refreshChapterSelection();
 });
+
+function refreshChapterSelection() {
+    initChapterFilters();
+    if (liveSession?.ready) updateLiveChapters();
+    else if (profiles[currentProfile]) loadNextQuestion();
+}
 
 document.addEventListener('click', event => {
     const picker = document.getElementById('chapterFilter');
@@ -599,8 +618,8 @@ function pickReviewQuestion(pool, order, singleChapter, preferred) {
         }
         return val;
     });
-    renderQuestionScenario(activeQuestion, values);
-    shareLiveScenario(values);
+    if (liveSession?.ready) shareLiveScenario(values);
+    else renderQuestionScenario(activeQuestion, values);
 }
 
 function renderQuestionScenario(question, values) {
@@ -752,7 +771,7 @@ function renderSource(chapter, paragraph) {
 }
 
 function handleResponse(status) {
-    if (liveSession && (!liveSession.ready || !liveSession.shown || liveSession.rated)) return;
+    if (liveSession && (!liveSession.ready || !liveSession.shown || liveSession.rated || liveSession.editing)) return;
     saveResponse(status);
     if (liveSession) {
         rateLiveQuestion();
@@ -890,7 +909,7 @@ function populateProfileSwitch(summary) {
     for (const name of Object.keys(profiles)) {
         const button = document.createElement('button');
         button.textContent = name;
-        button.disabled = name === currentProfile;
+        button.disabled = liveSession?.ready || name === currentProfile;
         button.addEventListener('click', () => {
             summary.parentElement.open = false;
             summary.closest('.dropdown-content').classList.remove('show-menu');
@@ -935,6 +954,10 @@ window.onclick = function(event) {
 
 
 function goBackToEdit() {
+    if (liveSession?.ready) {
+        editLiveScenario();
+        return;
+    }
     // Simply trigger the setup again for the current active question
     // This will pull the current values from sessionMemory automatically
     showPhase('setupPhase');
