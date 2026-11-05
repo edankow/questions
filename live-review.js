@@ -35,6 +35,8 @@ function startLiveSession(host, room) {
     const channel = new WebSocket(liveReviewEndpoint + '/live/' + room + '/' + (host ? 'host' : 'guest'));
     const session = {
         channel, host, ready: false, queue: new Set(liveQueue()),
+        singleChapter: currentFilter.length === 1,
+        questionOrder: { count: 0, lastIndex: -1 },
         preferred: activeQuestion?.id,
         initialValues: !liveElement('reviewPhase').classList.contains('hidden')
             ? currentScenarioValues : null
@@ -61,7 +63,9 @@ function startLiveSession(host, room) {
             document.querySelector('.profile-section').inert = true;
             document.querySelector('.btn-back').hidden = true;
             setLiveRatingEnabled(false);
-            waitForLiveQuestion('Connected. Finding questions due for both of you…');
+            waitForLiveQuestion(host
+                ? 'Connected. Finding questions due for both of you…'
+                : 'Connected. The question will appear when the host finishes preparing the scenario.');
             if (!host) sendLive({ type: 'queue', ids: [...session.queue] });
         } else if (session.ready) {
             receiveLiveMessage(session, message);
@@ -117,9 +121,10 @@ function waitForLiveQuestion(message) {
 }
 
 function setLiveRatingEnabled(enabled) {
-    document.querySelectorAll('#reviewPhase .tooltip-wrapper button').forEach(button => {
-        button.disabled = !enabled;
+    document.querySelectorAll('#reviewPhase .tooltip-wrapper').forEach(wrapper => {
+        wrapper.hidden = !enabled;
     });
+    liveElement('liveRatingWait').hidden = enabled;
 }
 
 function receiveLiveMessage(session, message) {
@@ -149,21 +154,20 @@ function receiveLiveMessage(session, message) {
 
 function nextLiveQuestion() {
     const session = liveSession;
-    const shared = [...session.queue].filter(id => session.partnerQueue.has(id));
-    const first = shared.includes(session.preferred);
-    const id = first ? session.preferred : shared[Math.floor(Math.random() * shared.length)];
-    if (!id) {
+    const shared = questions.filter(question => session.queue.has(question.id) && session.partnerQueue.has(question.id));
+    if (!shared.length) {
         waitForLiveQuestion('No more shared questions due.');
         sendLive({ type: 'done' });
         return;
     }
-    session.queue.delete(id);
+    const preferred = shared.find(question => question.id === session.preferred);
+    activeQuestion = pickReviewQuestion(shared, session.questionOrder, session.singleChapter, preferred);
+    session.queue.delete(activeQuestion.id);
     session.shown = false;
     session.rated = false;
     session.partnerRated = false;
-    activeQuestion = questions.find(question => question.id === id);
     setLiveStatus('Prepare the shared scenario for your partner.');
-    if (first && session.initialValues) {
+    if (preferred && session.initialValues) {
         if (session.initialValues.every(value => value.length <= liveValueLimit)) {
             renderQuestionScenario(activeQuestion, session.initialValues);
             shareLiveScenario(session.initialValues);
@@ -200,7 +204,7 @@ function rateLiveQuestion() {
     const session = liveSession;
     session.rated = true;
     setLiveRatingEnabled(false);
-    setLiveStatus('Rating saved. Waiting for your partner.');
+    setLiveStatus('');
     sendLive({ type: 'rated', id: activeQuestion.id });
     if (session.host && session.partnerRated) nextLiveQuestion();
 }

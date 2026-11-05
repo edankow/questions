@@ -163,6 +163,7 @@
 	        <button class="btn-warning" onclick="handleResponse('review')">Needs Review</button>
 	        <span class="tooltip-text">Reappears in <strong>24 hours</strong>.</span>
 	    </div>
+	  <p id="liveRatingWait" class="stats" role="status" hidden>Rating saved. Waiting for your partner…</p>
 	  <button class="btn-outline btn-back" onclick="goBackToEdit()">← Back to Inputs</button>
 
 	</div>
@@ -188,8 +189,7 @@ let currentProfile = localStorage.getItem('ksa_current_profile');
 let activeQuestion = null;
 let currentScenarioValues = [];
 let sessionMemory = {};
-let consecutiveCount = 0;
-let lastUsedIndex = -1;
+const soloQuestionOrder = { count: 0, lastIndex: -1 };
 let ignoreTimestamps = false;
 
 // Initialize App
@@ -334,8 +334,8 @@ function readChapterFilterFromUrl() {
         .map(ch => String(Number(ch)))
         .filter(ch => validChapters.has(ch)))].sort((a, b) => a - b);
     currentFilter = value === 'all' || !selected.length ? 'all' : selected;
-    consecutiveCount = 0;
-    lastUsedIndex = -1;
+    soloQuestionOrder.count = 0;
+    soloQuestionOrder.lastIndex = -1;
 }
 
 function updateFilterMode(value, checked) {
@@ -350,8 +350,8 @@ function updateFilterMode(value, checked) {
     const query = url.searchParams.toString();
     url.search = `${query ? query + '&' : ''}chapters=${currentFilter === 'all' ? 'all' : currentFilter.join(',')}`;
     window.history.pushState(null, '', url.href);
-    consecutiveCount = 0;
-    lastUsedIndex = -1;
+    soloQuestionOrder.count = 0;
+    soloQuestionOrder.lastIndex = -1;
     initChapterFilters();
     if (profiles[currentProfile]) loadNextQuestion();
     document.querySelector(`#chapterOptions input[value="${value}"]`)?.focus();
@@ -520,26 +520,23 @@ function switchProfile(name) {
         return;
     }
 
-    // Determine the next question index (Standard random/sequential logic)
-    let nextIndex;
-    if (currentFilter === "all" || currentFilter.length > 1 || consecutiveCount >= 5 || lastUsedIndex === -1) {
-        nextIndex = Math.floor(Math.random() * availablePool.length);
-        consecutiveCount = 1;
-    } else {
-        const nextAvailable = availablePool.find(q => questions.indexOf(q) > lastUsedIndex);
-        if (nextAvailable) {
-            nextIndex = availablePool.indexOf(nextAvailable);
-            consecutiveCount++;
-        } else {
-            nextIndex = 0; 
-            consecutiveCount = 1;
-        }
-    }
-
-    activeQuestion = availablePool[nextIndex];
-    lastUsedIndex = questions.indexOf(activeQuestion);
+    activeQuestion = pickReviewQuestion(availablePool, soloQuestionOrder, currentFilter.length === 1);
 	showPhase('setupPhase');
     setupCreativity(activeQuestion.text);
+}
+
+function pickReviewQuestion(pool, order, singleChapter, preferred) {
+    let question = preferred;
+    if (!question && singleChapter && order.count < 5 && order.lastIndex !== -1) {
+        question = pool.find(item => questions.indexOf(item) > order.lastIndex);
+        order.count = question ? order.count + 1 : 1;
+        question ||= pool[0];
+    } else {
+        order.count = 1;
+        question ||= pool[Math.floor(Math.random() * pool.length)];
+    }
+    order.lastIndex = questions.indexOf(question);
+    return question;
 }
 
         function setupCreativity(text) {

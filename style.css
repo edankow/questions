@@ -305,6 +305,10 @@
     flex: 1; /* Keeps your flex layout intact */
 }
 
+#reviewPhase .tooltip-wrapper[hidden] {
+    display: none;
+}
+
 /* The hidden tooltip box */
 .tooltip-text {
     visibility: hidden;
