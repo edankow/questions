@@ -53,6 +53,9 @@
             <hr>
             <button onclick="chooseWorksheetChapters()">Create Worksheet</button>
             <hr>
+            <div class="progress-info">Live Review</div>
+            <button onclick="startLiveHost()">Start Live Review</button>
+            <hr>
             <details class="profile-switch-menu">
                 <summary onclick="populateProfileSwitch(this)">Switch profiles</summary>
                 <div class="profile-switch-options"></div>
@@ -105,6 +108,22 @@
 
 </div>
 
+
+<dialog id="liveDialog" aria-labelledby="liveTitle">
+    <h2 id="liveTitle">Live Review</h2>
+    <p id="livePairingStatus" role="status"></p>
+    <div id="liveShareControls" hidden>
+        <label for="liveShare">Private invite link</label>
+        <textarea id="liveShare" rows="3" readonly></textarea>
+        <button class="btn-outline" onclick="copyLiveInvite()">Copy Invite Link</button>
+    </div>
+    <button class="btn-outline" onclick="endLiveReview()">Cancel</button>
+</dialog>
+
+<div id="liveBanner" class="card" hidden>
+    <p id="liveStatus" role="status"></p>
+    <button class="btn-outline" onclick="endLiveReview()">Leave Live Review</button>
+</div>
 
 <div id="setupPhase" class="card hidden">
     <div class="creativity-box" >
@@ -167,6 +186,7 @@ let currentFilter = "all"; // "all" or an array of chapter numbers as strings
 let profiles = JSON.parse(localStorage.getItem('ksa_profiles')) || {}; 
 let currentProfile = localStorage.getItem('ksa_current_profile');
 let activeQuestion = null;
+let currentScenarioValues = [];
 let sessionMemory = {};
 let consecutiveCount = 0;
 let lastUsedIndex = -1;
@@ -193,6 +213,7 @@ function init() {
 
     updateProfileDropdown();
     loadNextQuestion();
+    openLiveInvite();
 	
 }
 
@@ -286,10 +307,10 @@ function updateProgressStats() {
         `(${displayedCount} ${available === 1 ? 'question' : 'questions'})`;
 }
 
-function isQuestionAvailable(data, now) {
-    if (reviewMasteredMode) return data?.status === 'confident';
+function isQuestionAvailable(data, now, masteredMode = reviewMasteredMode, ignoreDelay = ignoreTimestamps) {
+    if (masteredMode) return data?.status === 'confident';
     if (data?.status === 'confident') return false;
-    if (data?.status === 'review') return ignoreTimestamps || now - data.timestamp > 24 * 60 * 60 * 1000;
+    if (data?.status === 'review') return ignoreDelay || now - data.timestamp > 24 * 60 * 60 * 1000;
     return true;
 }
 
@@ -555,9 +576,9 @@ function switchProfile(name) {
 	        <input type="text" 
 	               placeholder="Enter ${rawLabel}..." 
 	               data-placeholder="${match}"
-	               value="${rememberedValue}"
 	               onkeyup="if(event.key === 'Enter') { ${action} }">
 	    `;
+	    group.querySelector('input').value = rememberedValue;
 	    container.appendChild(group);
                 
                 if (index === 0) {
@@ -572,24 +593,30 @@ function switchProfile(name) {
         }
 
         function generateQuestion() {
-    let finalText = activeQuestion.text;
-    const inputs = document.querySelectorAll('#inputContainer input');
-    
-    inputs.forEach(input => {
+    const values = Array.from(document.querySelectorAll('#inputContainer input'), input => {
         const val = input.value || `(${input.getAttribute('data-placeholder')})`;
         const placeholder = input.getAttribute('data-placeholder');
         if (val) {
             sessionMemory[placeholder] = val;
         }
-        finalText = finalText.split(placeholder).join(`<strong>${val}</strong>`);
+        return val;
     });
+    renderQuestionScenario(activeQuestion, values);
+    shareLiveScenario(values);
+}
 
-    // 1. Set the Scenario Text
-    document.getElementById('finalQuestion').innerHTML = finalText;
-
-    // 2. Set the Source Citation separately
-    renderSource(Number(activeQuestion.chapter), Number(activeQuestion.paragraph));
-
+function renderQuestionScenario(question, values) {
+    currentScenarioValues = values;
+    const parts = question.text.split(/(\[[^\]]*\])/g);
+    const placeholders = [...new Set(parts.filter((_, index) => index % 2 === 1))];
+    const scenario = document.getElementById('finalQuestion');
+    scenario.replaceChildren(...parts.map((part, index) => {
+        if (index % 2 === 0) return document.createTextNode(part);
+        const value = document.createElement('strong');
+        value.textContent = values[placeholders.indexOf(part)];
+        return value;
+    }));
+    renderSource(Number(question.chapter), Number(question.paragraph));
     showPhase('reviewPhase');
 }
 
@@ -727,6 +754,16 @@ function renderSource(chapter, paragraph) {
 }
 
 function handleResponse(status) {
+    if (liveSession && (!liveSession.ready || !liveSession.shown || liveSession.rated)) return;
+    saveResponse(status);
+    if (liveSession) {
+        rateLiveQuestion();
+        return;
+    }
+    loadNextQuestion();
+}
+
+function saveResponse(status) {
     const generatedText = document.getElementById('finalQuestion').innerText.trim();
 
     profiles[currentProfile][activeQuestion.id] = {
@@ -737,7 +774,6 @@ function handleResponse(status) {
     
     saveToStorage();
     updateProfileDropdown();
-    loadNextQuestion();
 }
 
 function resetProgress() {
@@ -1129,6 +1165,7 @@ document.getElementById('scenarioInstructions').addEventListener('click', event 
 });
 
     </script>
+    <script src="live-review.js"></script>
 
 </body>
 

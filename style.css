@@ -494,6 +494,22 @@
 #chapterOptions input[type="checkbox"] { flex-shrink: 0; width: 14px; height: 14px; margin: 4px 0 0; accent-color: #555; }
 #chapterSearch { box-sizing: border-box; width: 100%; margin: 0 0 4px; }
 #chapterOptions [hidden] { display: none; }
+
+#liveDialog {
+    box-sizing: border-box;
+    width: min(32rem, 94vw);
+}
+
+#liveDialog textarea {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+#liveShareControls {
+    margin: 1rem 0;
+}
 #unavailableChapters { margin-top: 4px; }
 #unavailableChapters[open] > summary { margin-bottom: 4px; }
 #chapterSearchEmpty { margin: 6px; }
