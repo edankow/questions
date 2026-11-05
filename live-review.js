@@ -65,7 +65,8 @@ function startLiveSession(host, room) {
             setLiveRatingEnabled(false);
             waitForLiveQuestion(host
                 ? 'Connected. Finding questions due for both of you…'
-                : 'Connected. The question will appear when the host finishes preparing the scenario.');
+                : 'Connected. Suggest scenario details to your host as they fill in the inputs. The question will appear when they’re done.');
+            sendLive({ type: 'profile', name: currentProfile.trim().slice(0, 120) || 'Guest' });
             if (!host) sendLive({ type: 'queue', ids: [...session.queue] });
         } else if (session.ready) {
             receiveLiveMessage(session, message);
@@ -87,6 +88,8 @@ function endLiveReview() {
     session?.channel.close();
     liveElement('liveDialog').close();
     liveElement('liveBanner').hidden = true;
+    liveElement('livePartner').hidden = true;
+    liveElement('livePartnerName').textContent = '';
     document.querySelector('.profile-section').inert = false;
     document.querySelector('.btn-back').hidden = false;
     setLiveRatingEnabled(true);
@@ -128,7 +131,11 @@ function setLiveRatingEnabled(enabled) {
 }
 
 function receiveLiveMessage(session, message) {
-    if (message?.type === 'queue' && session.host && !session.partnerQueue) {
+    if (message?.type === 'profile' && typeof message.name === 'string' &&
+        message.name.trim() && message.name.length <= 120) {
+        liveElement('livePartnerName').textContent = message.name;
+        liveElement('livePartner').hidden = false;
+    } else if (message?.type === 'queue' && session.host && !session.partnerQueue) {
         if (!Array.isArray(message.ids) || message.ids.length > questions.length ||
             !message.ids.every(id => typeof id === 'string')) return;
         session.partnerQueue = new Set(message.ids);
@@ -143,9 +150,14 @@ function receiveLiveMessage(session, message) {
         activeQuestion = question;
         renderQuestionScenario(question, message.values);
         showLiveRating(session);
-    } else if (message?.type === 'rated' && session.host && session.shown && message.id === activeQuestion?.id) {
+    } else if (message?.type === 'rated' && session.shown && message.id === activeQuestion?.id) {
         session.partnerRated = true;
-        if (session.rated) nextLiveQuestion();
+        if (session.rated) {
+            if (session.host) nextLiveQuestion();
+            else showLiveRatingWait(session);
+        } else {
+            setLiveStatus('Your partner is waiting. Choose Answered Confidently or Needs Review when you’re ready.');
+        }
     } else if (message?.type === 'done' && !session.host && (!session.shown || session.rated)) {
         session.finished = true;
         waitForLiveQuestion('No more shared questions due.');
@@ -196,13 +208,23 @@ function shareLiveScenario(values) {
 function showLiveRating(session) {
     session.shown = true;
     session.rated = false;
+    if (!session.host) session.partnerRated = false;
     setLiveRatingEnabled(true);
     setLiveStatus('Choose your own rating when you are ready.');
+}
+
+function showLiveRatingWait(session) {
+    liveElement('liveRatingWait').textContent = session.host
+        ? 'Rating saved. Waiting for your partner…'
+        : session.partnerRated
+            ? 'Both ratings saved. Help your host prepare the next question by suggesting scenario details.'
+            : 'Rating saved. Once your host has rated, help them prepare the next question by suggesting scenario details.';
 }
 
 function rateLiveQuestion() {
     const session = liveSession;
     session.rated = true;
+    showLiveRatingWait(session);
     setLiveRatingEnabled(false);
     setLiveStatus('');
     sendLive({ type: 'rated', id: activeQuestion.id });
