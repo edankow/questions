@@ -11,6 +11,11 @@
     If a key, ID, or record shape must change, support the old format or
     migrate it without losing progress. Verify changes with older saved
     profiles as well as a fresh profile.
+
+    The question bank in questions.js is maintained manually. If it grows past
+    5,000 question records, flag the Live Review queue limit to the user. The
+    Worker rejects guest queues with more than 5,000 due question IDs, which
+    can leave the host waiting for the first question.
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
