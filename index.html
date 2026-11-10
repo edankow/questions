@@ -567,7 +567,7 @@ function pickReviewQuestion(pool, order, singleChapter, preferred) {
 }
 
         function setupCreativity(text) {
-            showPhase('setupPhase');
+            if (!showPhase('setupPhase')) return;
 
             const container = document.getElementById('inputContainer');
             container.innerHTML = '';
@@ -840,10 +840,15 @@ A backup of your current progress will be saved as "${currentProfile}_${new Date
 }
 
         function showPhase(phaseId) {
+            const session = getLiveSession();
+            // Keep the shared question visible unless this participant is editing it.
+            if (phaseId === 'setupPhase' && session?.ready && session.shown &&
+                !(session.host && session.editing)) return false;
             ['setupPhase', 'reviewPhase', 'completionState'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(phaseId).classList.remove('hidden');
+            return true;
         }
 
 window.onload = init;
@@ -1194,7 +1199,7 @@ document.getElementById('scenarioInstructions').addEventListener('click', event 
 });
 
     </script>
-    <script src="live-review.js?v=46da983"></script>
+    <script src="live-review.js?v=edit-input-guard"></script>
 
 </body>
 

@@ -332,11 +332,11 @@ function updateLiveEditButton(session) {
 function editLiveScenario() {
     const session = liveSession;
     if (!session?.host || !session.scenarioEdits || !session.shown || !currentScenarioValues.length) return;
+    session.editing = true;
     setupCreativity(activeQuestion.text);
     document.querySelectorAll('#inputContainer input').forEach((input, index) => {
         input.value = currentScenarioValues[index];
     });
-    session.editing = true;
     liveElement('cancelLiveEdit').hidden = false;
     setLiveStatus('Edit the inputs, then generate the question to share your changes.');
 }
