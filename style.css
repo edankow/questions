@@ -166,9 +166,16 @@
     font: 600 14px Arial, sans-serif;
 }
 
-.dropdown-content button:hover,
-.dropdown-content .profile-switch-menu summary:hover {
+.dropdown-content button:not(:disabled):hover,
+.dropdown-content .profile-switch-menu:not([inert]) summary:hover {
     background-color: #f1f1f1;
+}
+
+.dropdown-content button:disabled,
+.dropdown-content .profile-switch-menu[inert] summary {
+    color: #767676;
+    opacity: 0.6;
+    cursor: default;
 }
 
 #reviewPhase {
