@@ -136,7 +136,8 @@
 <div id="liveBanner" class="card" hidden>
     <p id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></p>
     <p id="liveStatus" role="status"></p>
-    <button class="btn-outline" onclick="endLiveReview()">Leave Live Review</button>
+    <button id="leaveLiveReview" class="btn-outline" onclick="endLiveReview()">Leave Live Review</button>
+    <button id="restartLiveReview" class="btn-primary" onclick="startLiveHost()" hidden>Start a New Review</button>
 </div>
 
 <div id="setupPhase" class="card hidden">
@@ -227,8 +228,8 @@ function init() {
     initChapterFilters();
 
     updateProfileDropdown();
-    loadNextQuestion();
     window.openLiveInvite?.();
+    if (!getLiveSession()) loadNextQuestion();
 	
 }
 
@@ -1199,7 +1200,7 @@ document.getElementById('scenarioInstructions').addEventListener('click', event 
 });
 
     </script>
-    <script src="live-review.js?v=edit-input-guard"></script>
+    <script src="live-review.js?v=empty-room-cleanup"></script>
 
 </body>
 

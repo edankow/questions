@@ -2,6 +2,34 @@ let liveSession = null;
 const liveElement = id => document.getElementById(id);
 const liveValueLimit = 500;
 const liveReviewEndpoint = 'wss://questions-live-review.edankowicz.workers.dev';
+const liveRoomLifetime = 2 * 60 * 60 * 1000;
+
+function liveStorageKey(room, host) {
+    return 'ksa_live_' + room + (host ? '_host' : '_guest');
+}
+
+function saveLiveSession() {
+    const session = liveSession;
+    if (!session || session.restoring) return;
+    const snapshot = {
+        ...session, channel: undefined, retryTimer: undefined,
+        queue: [...session.queue], partnerQueue: session.partnerQueue ? [...session.partnerQueue] : null,
+        pendingQuestion: session.pendingQuestion?.id, draftQuestion: session.draftQuestion?.id,
+        activeQuestion: activeQuestion?.id, values: currentScenarioValues,
+        inputs: Array.from(document.querySelectorAll('#inputContainer input'), input => input.value),
+        phase: ['setupPhase', 'reviewPhase', 'completionState'].find(id => !liveElement(id).classList.contains('hidden')),
+        profile: currentProfile, filter: currentFilter, memory: sessionMemory
+    };
+    try {
+        sessionStorage.setItem(liveStorageKey(session.room, session.host), JSON.stringify(snapshot));
+    } catch {
+        // Continue the current review if this browser cannot save tab state.
+    }
+}
+
+window.addEventListener('pagehide', saveLiveSession);
+document.addEventListener('input', saveLiveSession);
+document.addEventListener('change', saveLiveSession);
 
 function liveQueue() {
     const now = Date.now();
@@ -11,12 +39,15 @@ function liveQueue() {
 }
 
 function setLiveStatus(message) {
+    if (liveSession) liveSession.status = message;
     liveElement('livePairingStatus').textContent = message;
     liveElement('liveStatus').textContent = message;
 }
 
 function startLiveHost() {
     if (liveSession) return;
+    liveElement('liveBanner').hidden = true;
+    liveElement('restartLiveReview').hidden = true;
     const options = liveElement('liveInviteOptions');
     options.reset();
     options.hidden = false;
@@ -33,70 +64,198 @@ function createLiveInvite(event) {
 
 function openLiveInvite() {
     if (!location.hash.startsWith('#live=')) return;
-    const room = location.hash.slice(6);
-    history.replaceState(history.state, '', location.pathname + location.search);
-    if (/^[a-z0-9]+-[a-f0-9-]{36}$/.test(room)) startLiveSession(false, room);
+    const params = new URLSearchParams(location.hash.slice(1));
+    const room = params.get('live');
+    const host = params.get('role') === 'host';
+    if (!/^[a-z0-9]+-[a-f0-9-]{36}$/.test(room)) return;
+    let saved;
+    try {
+        saved = JSON.parse(sessionStorage.getItem(liveStorageKey(room, host)));
+    } catch { /* An invite can still be opened without saved tab state. */ }
+    if (saved?.room !== room || saved.host !== host || !saved.token ||
+        !profiles[saved.profile] || Date.now() - parseInt(room, 36) > liveRoomLifetime) saved = null;
+    startLiveSession(host, room, saved?.editor, saved);
 }
 
-function startLiveSession(host, room, editor) {
+function startLiveSession(host, room, editor, saved = null) {
     if (liveSession) return;
+    liveElement('leaveLiveReview').hidden = false;
+    liveElement('restartLiveReview').hidden = true;
     liveElement('liveShareControls').hidden = true;
     liveElement('liveInviteOptions').hidden = true;
     const dialog = liveElement('liveDialog');
     if (!dialog.open) dialog.showModal();
     setLiveStatus(host ? 'Creating your private room…' : 'Joining Live Review…');
-    const channel = new WebSocket(liveReviewEndpoint + '/live/' + room + '/' + (host ? 'host' : 'guest'));
     const session = {
-        channel, host, ready: false, queue: new Set(liveQueue()),
+        host, room, token: crypto.randomUUID(), ready: false, queue: new Set(liveQueue()),
+        outbox: [], nextClientSeq: 0, lastReceived: 0, retries: 0,
         editor, guestTurn: editor !== 'host',
         questionOrder: { count: 0, lastIndex: -1 },
         preferred: activeQuestion?.id,
         initialValues: !liveElement('reviewPhase').classList.contains('hidden')
             ? currentScenarioValues : null
     };
+    if (saved) {
+        Object.assign(session, saved, {
+            queue: new Set(saved.queue), partnerQueue: saved.partnerQueue ? new Set(saved.partnerQueue) : null,
+            pendingQuestion: questions.find(question => question.id === saved.pendingQuestion),
+            draftQuestion: questions.find(question => question.id === saved.draftQuestion), retries: 0
+        });
+        currentProfile = saved.profile;
+        localStorage.setItem('ksa_current_profile', currentProfile);
+        currentFilter = saved.filter;
+        sessionMemory = saved.memory || {};
+        activeQuestion = questions.find(question => question.id === saved.activeQuestion) || null;
+        currentScenarioValues = saved.values || [];
+        updateProfileDropdown();
+        initChapterFilters();
+    }
     liveSession = session;
+    const url = new URL(location.href);
+    url.hash = 'live=' + room + (host ? '&role=host' : '');
+    history.replaceState(history.state, '', url);
+    if (saved?.ready) restoreLiveView(session, saved);
+    saveLiveSession();
+    connectLiveSession(session);
+}
+
+function restoreLiveView(session, saved) {
+    session.restoring = true;
+    liveElement('liveDialog').close();
+    liveElement('liveBanner').hidden = false;
+    setLiveMenuState(session);
+    if (activeQuestion && session.shown) renderQuestionScenario(activeQuestion, saved.values);
+    if (activeQuestion && saved.phase === 'setupPhase') {
+        setupCreativity(activeQuestion.text);
+        document.querySelectorAll('#inputContainer input').forEach((input, index) => {
+            input.value = saved.inputs[index] || '';
+        });
+    } else if (saved.phase !== 'reviewPhase') {
+        waitForLiveQuestion(saved.status || 'Rejoining Live Review…');
+    }
+    liveElement('cancelLiveEdit').hidden = !session.editing;
+    setLiveRatingEnabled(Boolean(session.shown && !session.rated));
+    showLiveRatingWait(session);
+    updateLiveEditButton(session);
+    liveElement('livePartnerName').textContent = session.partnerName || '';
+    liveElement('livePartner').hidden = !session.partnerName;
+    setLiveStatus(saved.status || 'Rejoining Live Review…');
+    session.restoring = false;
+}
+
+function initializeLivePair(session) {
+    if (session.ready) return;
+    session.ready = true;
+    liveElement('liveDialog').close();
+    liveElement('liveBanner').hidden = false;
+    setLiveMenuState(session);
+    document.querySelector('.btn-back').hidden = true;
+    setLiveRatingEnabled(false);
+    waitForLiveQuestion(session.host
+        ? 'Connected. Finding questions due for both of you…'
+        : 'Connected. Waiting for the first shared question.');
+    sendLive({ type: 'profile', name: currentProfile.trim().slice(0, 120) || 'Guest', scenarioEdits: true, inputTurns: true });
+    if (!session.host) sendLive({ type: 'queue', ids: [...session.queue] });
+}
+
+function connectLiveSession(session) {
+    const { host, room } = session;
+    const channel = new WebSocket(liveReviewEndpoint + '/live/' + room + '/' + (host ? 'host' : 'guest') + '?token=' + session.token);
+    session.channel = channel;
+    channel.addEventListener('open', () => {
+        if (session !== liveSession || channel !== session.channel) return;
+        for (const message of session.outbox) channel.send(JSON.stringify(message));
+    });
     channel.addEventListener('message', event => {
-        if (session !== liveSession || typeof event.data !== 'string' || event.data.length > 128000) return;
+        if (session !== liveSession || channel !== session.channel || typeof event.data !== 'string' || event.data.length > 128000) return;
         let message;
         try {
             message = JSON.parse(event.data);
         } catch {
             return;
         }
+        if (message?.type === 'ended') {
+            showLiveEnded();
+            return;
+        }
+        if (message?.type === 'ack' && Number.isSafeInteger(message.clientSeq)) {
+            session.outbox = session.outbox.filter(item => item.clientSeq > message.clientSeq);
+            saveLiveSession();
+            return;
+        }
+        if (Number.isSafeInteger(message?.serverSeq)) {
+            if (message.serverSeq <= session.lastReceived) {
+                channel.send(JSON.stringify({ type: 'ack', serverSeq: message.serverSeq }));
+                return;
+            }
+            session.lastReceived = message.serverSeq;
+        }
         if (message?.type === 'inviting' && host && !session.ready) {
             const url = new URL(location.href);
             url.hash = 'live=' + room;
             liveElement('liveShare').value = url.href;
             liveElement('liveShareControls').hidden = false;
-            setLiveStatus('Share this private link and keep this tab open.');
-        } else if (message?.type === 'connected' && !session.ready) {
-            session.ready = true;
-            liveElement('liveDialog').close();
-            liveElement('liveBanner').hidden = false;
-            setLiveMenuState(session);
-            document.querySelector('.btn-back').hidden = true;
-            setLiveRatingEnabled(false);
-            waitForLiveQuestion(host
-                ? 'Connected. Finding questions due for both of you…'
-                : 'Connected. Waiting for the first shared question. When the host fills in the inputs, you can help by suggesting scenario details.');
-            sendLive({ type: 'profile', name: currentProfile.trim().slice(0, 120) || 'Guest', scenarioEdits: true, inputTurns: true });
-            if (!host) sendLive({ type: 'queue', ids: [...session.queue] });
+            setLiveStatus('Share this private link with your partner.');
+        } else if (message?.type === 'connected') {
+            session.retries = 0;
+            initializeLivePair(session);
+        } else if (message?.type === 'resumed') {
+            session.retries = 0;
+            if (message.paired) initializeLivePair(session);
+            else {
+                const url = new URL(location.href);
+                url.hash = 'live=' + room;
+                liveElement('liveShare').value = url.href;
+                liveElement('liveShareControls').hidden = false;
+            }
+            liveElement('liveStatus').textContent = message.partnerOnline ? session.status || 'Reconnected.'
+                : 'Waiting for your partner to reconnect. Your place is saved.';
+        } else if (message?.type === 'partner-disconnected') {
+            liveElement('liveStatus').textContent = 'Your partner disconnected. Waiting for them to reconnect…';
+        } else if (message?.type === 'partner-reconnected') {
+            initializeLivePair(session);
+            liveElement('liveStatus').textContent = session.status || 'Your partner reconnected.';
         } else if (session.ready) {
             receiveLiveMessage(session, message);
         }
+        saveLiveSession();
+        if (Number.isSafeInteger(message?.serverSeq)) channel.send(JSON.stringify({ type: 'ack', serverSeq: message.serverSeq }));
     });
-    channel.addEventListener('close', () => {
-        if (session !== liveSession) return;
-        const message = session.ready ? 'The Live Review session ended.'
-            : 'Could not join Live Review. The room may be closed or the invite expired.';
-        endLiveReview();
+    channel.addEventListener('close', event => {
+        if (session !== liveSession || channel !== session.channel) return;
+        if (event.code === 1000 || event.code === 4001 || Date.now() - parseInt(room, 36) > liveRoomLifetime) {
+            showLiveEnded(event.code === 4001 ? 'This session was opened in another connection.' : undefined);
+            return;
+        }
         liveElement('liveBanner').hidden = false;
-        setLiveStatus(message);
+        liveElement('liveStatus').textContent = session.retries < 6
+            ? 'Connection interrupted. Reconnecting…'
+            : 'Could not reconnect. Reload to try again, or leave Live Review.';
+        if (session.retries < 6) {
+            session.retryTimer = setTimeout(() => {
+                if (session === liveSession) connectLiveSession(session);
+            }, Math.min(1000 * 2 ** session.retries++, 10000));
+        }
+        saveLiveSession();
     });
 }
 
-function endLiveReview() {
+function showLiveEnded(message = 'This session has ended.') {
+    endLiveReview(false);
+    liveElement('liveBanner').hidden = false;
+    liveElement('leaveLiveReview').hidden = true;
+    liveElement('restartLiveReview').hidden = false;
+    setLiveStatus(message);
+}
+
+function endLiveReview(notify = true) {
     const session = liveSession;
+    if (notify && session?.channel.readyState === WebSocket.OPEN) session.channel.send(JSON.stringify({ type: 'leave' }));
+    clearTimeout(session?.retryTimer);
+    if (session) {
+        try { sessionStorage.removeItem(liveStorageKey(session.room, session.host)); } catch { /* Storage may be unavailable. */ }
+        history.replaceState(history.state, '', location.pathname + location.search);
+    }
     liveSession = null;
     session?.channel.close();
     liveElement('liveDialog').close();
@@ -109,7 +268,7 @@ function endLiveReview() {
     back.textContent = '← Back to Inputs';
     liveElement('cancelLiveEdit').hidden = true;
     setLiveRatingEnabled(true);
-    if (session?.ready) loadNextQuestion();
+    if (session) loadNextQuestion();
 }
 
 function setLiveMenuState(session) {
@@ -140,8 +299,11 @@ async function copyLiveInvite() {
 }
 
 function sendLive(message) {
-    const channel = liveSession.channel;
-    if (channel.readyState === WebSocket.OPEN) channel.send(JSON.stringify(message));
+    const session = liveSession;
+    const outgoing = { ...message, clientSeq: ++session.nextClientSeq };
+    session.outbox.push(outgoing);
+    saveLiveSession();
+    if (session.channel.readyState === WebSocket.OPEN) session.channel.send(JSON.stringify(outgoing));
 }
 
 
@@ -163,6 +325,7 @@ function receiveLiveMessage(session, message) {
     if (message?.type === 'profile' && typeof message.name === 'string' &&
         message.name.trim() && message.name.length <= 120) {
         liveElement('livePartnerName').textContent = message.name;
+        session.partnerName = message.name;
         liveElement('livePartner').hidden = false;
         session.scenarioEdits = message.scenarioEdits === true;
         session.inputTurns = message.inputTurns === true;
@@ -339,6 +502,7 @@ function editLiveScenario() {
     });
     liveElement('cancelLiveEdit').hidden = false;
     setLiveStatus('Edit the inputs, then generate the question to share your changes.');
+    saveLiveSession();
 }
 
 function cancelLiveScenarioEdit() {
@@ -354,6 +518,7 @@ function cancelLiveScenarioEdit() {
     setLiveStatus(session.rated ? '' : session.partnerRated
         ? 'Your partner is waiting for you to rate.'
         : 'Choose your own rating when you are ready.');
+    saveLiveSession();
 }
 
 function showLiveRating(session) {
