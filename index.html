@@ -145,10 +145,21 @@
 </dialog>
 
 <div id="liveBanner" class="card" hidden>
-    <p id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></p>
-    <p id="liveStatus" role="status"></p>
-    <div id="liveProgress"></div>
-    <button id="restartLiveReview" class="btn-primary" onclick="startLiveHost()" hidden>Start a New Review</button>
+    <div class="live-banner-layout">
+        <div>
+            <p id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></p>
+            <p id="liveStatus" role="status"></p>
+            <button id="restartLiveReview" class="btn-primary" onclick="startLiveHost()" hidden>Start a New Review</button>
+        </div>
+        <div id="liveProgressColumns" class="live-progress-columns" hidden>
+            <div id="liveProgress"></div>
+            <div class="progress-info" aria-live="polite">
+                <span><strong>Progress this session:</strong></span>
+                <span><span class="dot dot-done"></span><strong id="liveMasteredCount">0</strong> Mastered</span>
+                <span><span class="dot dot-review"></span><strong id="liveNeedsReviewCount">0</strong> Needs Review</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="setupPhase" class="card hidden">
@@ -794,7 +805,7 @@ function handleResponse(status) {
     if (session && (!session.ready || !session.shown || session.rated || session.editing)) return;
     saveResponse(status);
     if (session) {
-        rateLiveQuestion();
+        rateLiveQuestion(status);
         return;
     }
     loadNextQuestion();

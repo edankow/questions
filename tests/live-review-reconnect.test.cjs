@@ -101,10 +101,14 @@ test('live review closes the profile menu and moves progress until the session e
 
 test('host reload retains its role, question, rating, chapters, and queued sends', () => {
     const page = host();
-    page.run('rateLiveQuestion()');
+    assert.equal(page.node('liveMasteredCount').textContent, 0);
+    page.run("rateLiveQuestion('confident')");
+    assert.equal(page.node('liveMasteredCount').textContent, 1);
     const token = page.session.token;
     const reload = browser(page.storage, page.location.href);
     reload.run('openLiveInvite()');
+    assert.equal(reload.node('liveMasteredCount').textContent, 1);
+    assert.equal(reload.node('liveNeedsReviewCount').textContent, 0);
     assert.equal(reload.session.host, true);
     assert.equal(reload.session.token, token);
     assert.equal(reload.session.rated, true);

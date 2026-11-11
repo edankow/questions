@@ -287,8 +287,31 @@
     color: #555;
 }
 
-#liveProgress .progress-info {
+.live-banner-layout,
+.live-progress-columns {
+    display: flex;
     flex-wrap: wrap;
+    gap: 12px 24px;
+}
+
+.live-banner-layout > :first-child {
+    flex: 1 1 240px;
+}
+
+.live-progress-columns {
+    margin-inline-start: auto;
+}
+
+.live-progress-columns[hidden] {
+    display: none;
+}
+
+.live-progress-columns .progress-info {
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    font-size: 13px;
+    color: #536574;
 }
 
 .progress-info span {

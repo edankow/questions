@@ -91,6 +91,7 @@ function startLiveSession(host, room, editor, saved = null) {
         host, room, token: crypto.randomUUID(), ready: false, queue: new Set(liveQueue()),
         outbox: [], nextClientSeq: 0, lastReceived: 0, retries: 0,
         editor, guestTurn: editor === 'guest',
+        ratings: {},
         questionOrder: { count: 0, lastIndex: -1 },
         preferred: activeQuestion?.id,
         initialValues: !liveElement('reviewPhase').classList.contains('hidden')
@@ -113,6 +114,8 @@ function startLiveSession(host, room, editor, saved = null) {
     }
     liveSession = session;
     setLiveMenuState(session);
+    updateLiveSessionProgress(session);
+    liveElement('liveProgressColumns').hidden = false;
     const url = new URL(location.href);
     url.hash = 'live=' + room + (host ? '&role=host' : '');
     history.replaceState(history.state, '', url);
@@ -256,6 +259,7 @@ function endLiveReview(notify = true) {
         history.replaceState(history.state, '', location.pathname + location.search);
     }
     liveSession = null;
+    liveElement('liveProgressColumns').hidden = true;
     liveElement('startLiveReview').hidden = false;
     liveElement('leaveLiveReview').hidden = true;
     session?.channel.close();
@@ -544,8 +548,16 @@ function showLiveRatingWait(session) {
             : 'Rating saved. Waiting for your partner…';
 }
 
-function rateLiveQuestion() {
+function updateLiveSessionProgress(session) {
+    const ratings = Object.values(session.ratings);
+    liveElement('liveMasteredCount').textContent = ratings.filter(status => status === 'confident').length;
+    liveElement('liveNeedsReviewCount').textContent = ratings.filter(status => status === 'review').length;
+}
+
+function rateLiveQuestion(status) {
     const session = liveSession;
+    session.ratings[activeQuestion.id] = status;
+    updateLiveSessionProgress(session);
     session.rated = true;
     showLiveRatingWait(session);
     setLiveRatingEnabled(false);
