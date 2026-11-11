@@ -22,6 +22,8 @@ function browser(storage = new Map(), href = 'https://example.test/questions/?ch
                     contains: value => classes.has(value), toggle: (value, on) => on ? classes.add(value) : classes.delete(value) },
                 addEventListener() {}, close() { this.open = false; }, showModal() { this.open = true; },
                 reset() {},
+                append(child) { child.parentNode = this; },
+                prepend(child) { child.parentNode = this; },
                 querySelector: () => node(id + '-button')
             });
         }
@@ -82,6 +84,20 @@ function host() {
     page.run("shareLiveScenario(['Alice'])");
     return page;
 }
+
+test('live review closes the profile menu and moves progress until the session ends', () => {
+    const page = browser();
+    const menu = page.node('menu-tools');
+    const progress = page.node('progressContainer');
+    menu.classList.add('show-menu');
+    page.run(`startLiveSession(true, '${room}', 'turns')`);
+    assert.equal(menu.classList.contains('show-menu'), false);
+    assert.equal(page.node('activeProfileLabel').disabled, true);
+    assert.equal(progress.parentNode, page.node('liveProgress'));
+    page.run('endLiveReview()');
+    assert.equal(page.node('activeProfileLabel').disabled, false);
+    assert.equal(progress.parentNode, menu);
+});
 
 test('host reload retains its role, question, rating, chapters, and queued sends', () => {
     const page = host();

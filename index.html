@@ -55,7 +55,6 @@
         <button id="activeProfileLabel" class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Guest</button>
         <div id="menu-tools" class="dropdown-content">
             <div id="progressContainer" class="progress-info" aria-live="polite"></div>
-            <p id="liveProfileNotice" class="stats" hidden>Leave the session to switch or change profiles.</p>
             <hr>
             <button data-live-lock onclick="chooseWorksheetChapters()">Create Worksheet</button>
             <hr>
@@ -148,6 +147,7 @@
 <div id="liveBanner" class="card" hidden>
     <p id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></p>
     <p id="liveStatus" role="status"></p>
+    <div id="liveProgress"></div>
     <button id="restartLiveReview" class="btn-primary" onclick="startLiveHost()" hidden>Start a New Review</button>
 </div>
 

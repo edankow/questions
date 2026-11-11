@@ -40,6 +40,10 @@
     cursor: default;
 }
 
+#activeProfileLabel:disabled {
+    cursor: default;
+}
+
 .profile-section .study-menu-bar #profileSelect,
 .profile-section .study-menu-bar .dropdown > button {
     border-color: #aab4bd;
@@ -281,6 +285,10 @@
     display: flex;
     gap: 10px;
     color: #555;
+}
+
+#liveProgress .progress-info {
+    flex-wrap: wrap;
 }
 
 .progress-info span {

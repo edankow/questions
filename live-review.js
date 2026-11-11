@@ -112,6 +112,7 @@ function startLiveSession(host, room, editor, saved = null) {
         initChapterFilters();
     }
     liveSession = session;
+    setLiveMenuState(session);
     const url = new URL(location.href);
     url.hash = 'live=' + room + (host ? '&role=host' : '');
     history.replaceState(history.state, '', url);
@@ -124,7 +125,6 @@ function restoreLiveView(session, saved) {
     session.restoring = true;
     liveElement('liveDialog').close();
     liveElement('liveBanner').hidden = false;
-    setLiveMenuState(session);
     if (activeQuestion && session.shown) renderQuestionScenario(activeQuestion, saved.values);
     if (activeQuestion && saved.phase === 'setupPhase') {
         setupCreativity(activeQuestion.text);
@@ -149,7 +149,6 @@ function initializeLivePair(session) {
     session.ready = true;
     liveElement('liveDialog').close();
     liveElement('liveBanner').hidden = false;
-    setLiveMenuState(session);
     document.querySelector('.btn-back').hidden = true;
     setLiveRatingEnabled(false);
     waitForLiveQuestion(session.host
@@ -275,7 +274,12 @@ function endLiveReview(notify = true) {
 
 function setLiveMenuState(session) {
     liveElement('chapterFilter').inert = Boolean(session && !session.host);
-    liveElement('liveProfileNotice').hidden = !session;
+    const menu = liveElement('menu-tools');
+    const progress = liveElement('progressContainer');
+    menu.classList.remove('show-menu');
+    liveElement('activeProfileLabel').disabled = Boolean(session);
+    if (session) liveElement('liveProgress').append(progress);
+    else menu.prepend(progress);
     document.querySelectorAll('[data-live-lock], .profile-switch-options button').forEach(button => {
         button.disabled = Boolean(session);
     });
