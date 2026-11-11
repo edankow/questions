@@ -92,10 +92,13 @@ test('live review closes the profile menu and moves progress until the session e
     menu.classList.add('show-menu');
     page.run(`startLiveSession(true, '${room}', 'turns')`);
     assert.equal(menu.classList.contains('show-menu'), false);
-    assert.equal(page.node('activeProfileLabel').disabled, true);
+    assert.equal(page.node('profileMenu').hidden, true);
+    assert.equal(page.node('liveProfile').hidden, false);
+    assert.equal(page.node('liveProfileNameLabel').textContent, 'Guest');
     assert.equal(progress.parentNode, page.node('liveProgress'));
     page.run('endLiveReview()');
-    assert.equal(page.node('activeProfileLabel').disabled, false);
+    assert.equal(page.node('profileMenu').hidden, false);
+    assert.equal(page.node('liveProfile').hidden, true);
     assert.equal(progress.parentNode, menu);
 });
 
@@ -143,7 +146,9 @@ test('reload restores unfinished host edits without moving the guest into inputs
 test('first-time guest must name a profile before joining', () => {
     const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
     page.run("profiles = {}; currentProfile = null; openLiveInvite()");
-    assert.equal(page.node('liveUseProfile').hidden, true);
+    assert.equal(page.node('liveProfileChoices').hidden, true);
+    assert.equal(page.node('liveNewProfile').hidden, false);
+    assert.equal(page.node('liveProfileBack').hidden, true);
     assert.equal(page.sockets.length, 0);
     page.node('liveProfileName').value = '  Alice  ';
     page.run('createLiveGuestProfile({ preventDefault() {} })');
@@ -155,7 +160,13 @@ test('guest invite stays in URL and reload restores its draft inputs', () => {
     const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
     page.run('openLiveInvite()');
     assert.equal(page.sockets.length, 0);
-    assert.equal(page.node('liveUseProfile').textContent, 'Use profile: Guest');
+    assert.equal(page.node('liveUseProfile').textContent, 'Join as Guest');
+    assert.equal(page.node('liveNewProfile').hidden, true);
+    page.run('showLiveGuestProfileForm(true)');
+    assert.equal(page.node('liveNewProfile').hidden, false);
+    assert.equal(page.node('liveProfileBack').hidden, false);
+    page.run('showLiveGuestProfileForm(false)');
+    assert.equal(page.node('liveProfileChoices').hidden, false);
     page.run('joinLiveInvite()');
     const socket = page.sockets[0];
     socket.open();

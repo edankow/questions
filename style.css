@@ -40,8 +40,8 @@
     cursor: default;
 }
 
-#activeProfileLabel:disabled {
-    cursor: default;
+#profileMenu[hidden] {
+    display: none;
 }
 
 .profile-section .study-menu-bar #profileSelect,
@@ -580,6 +580,14 @@
     width: min(32rem, 94vw);
 }
 
+#liveDialog:has(#liveGuestProfile:not([hidden])) {
+    width: min(25rem, 94vw);
+}
+
+#livePairingStatus:empty {
+    display: none;
+}
+
 #liveDialog textarea {
     box-sizing: border-box;
     display: block;
@@ -593,8 +601,28 @@
     margin: 1rem 0;
 }
 
-#liveUseProfile:not([hidden]) {
-    margin-bottom: 1rem;
+.live-dialog-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.875rem;
+}
+
+.live-dialog-actions[hidden] {
+    display: none;
+}
+
+.live-text-button {
+    padding: 0.25rem 0;
+    background: transparent;
+    color: #176a9b;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.live-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
 }
 
 #liveProfileName {

@@ -51,7 +51,7 @@
 
     <div class="chapter-controls">
         <div class="chapter-picker-row">
-    <div class="dropdown">
+    <div id="profileMenu" class="dropdown">
         <button id="activeProfileLabel" class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Guest</button>
         <div id="menu-tools" class="dropdown-content">
             <div id="progressContainer" class="progress-info" aria-live="polite"></div>
@@ -136,12 +136,18 @@
         <button class="btn-primary">Create Invite Link</button>
     </form>
     <div id="liveGuestProfile" hidden>
-        <button id="liveUseProfile" class="btn-primary" onclick="joinLiveInvite()">Use current profile</button>
-        <form id="liveNewProfile" onsubmit="createLiveGuestProfile(event)">
-            <label for="liveProfileName">New profile name</label>
+        <div id="liveProfileChoices" class="live-dialog-actions" hidden>
+            <button id="liveUseProfile" class="btn-primary" onclick="joinLiveInvite()">Use current profile</button>
+            <button type="button" class="live-text-button" onclick="showLiveGuestProfileForm(true)">Create a new profile</button>
+        </div>
+        <form id="liveNewProfile" onsubmit="createLiveGuestProfile(event)" hidden>
+            <label for="liveProfileName">Profile name</label>
             <input id="liveProfileName" name="profileName" required>
             <p id="liveProfileError" role="alert" hidden></p>
-            <button class="btn-primary">Create Profile and Join</button>
+            <div class="live-dialog-actions">
+                <button class="btn-primary">Create and join</button>
+                <button id="liveProfileBack" type="button" class="live-text-button" onclick="showLiveGuestProfileForm(false)" hidden>Back</button>
+            </div>
         </form>
     </div>
     <div id="liveShareControls" hidden>
@@ -150,13 +156,16 @@
         <button class="btn-outline" onclick="copyLiveInvite()">Copy Invite Link</button>
         <p>Keep this tab open while your partner joins.</p>
     </div>
-    <button class="btn-outline" onclick="endLiveReview()">Cancel</button>
+    <footer class="live-dialog-footer">
+        <button class="btn-outline" onclick="endLiveReview()">Cancel</button>
+    </footer>
 </dialog>
 
 <div id="liveBanner" class="card" hidden>
     <div class="live-banner-layout">
         <div>
             <p id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></p>
+            <p id="liveProfile" hidden>Your profile: <bdi id="liveProfileNameLabel"></bdi></p>
             <p id="liveStatus" role="status"></p>
             <button id="restartLiveReview" class="btn-primary" onclick="startLiveHost()" hidden>Start a New Review</button>
         </div>

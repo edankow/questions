@@ -47,6 +47,7 @@ function setLiveStatus(message) {
 
 function startLiveHost() {
     if (liveSession) return;
+    liveElement('liveTitle').textContent = 'Live Review';
     liveElement('liveBanner').hidden = true;
     liveElement('restartLiveReview').hidden = true;
     const options = liveElement('liveInviteOptions');
@@ -81,16 +82,22 @@ function openLiveInvite() {
         return true;
     }
     pendingLiveInvite = room;
-    const useProfile = liveElement('liveUseProfile');
-    useProfile.hidden = !Object.hasOwn(profiles, currentProfile);
-    useProfile.textContent = `Use profile: ${currentProfile}`;
+    liveElement('liveTitle').textContent = 'Join Live Review';
+    liveElement('liveUseProfile').textContent = `Join as ${currentProfile}`;
     liveElement('liveNewProfile').reset();
     liveElement('liveProfileError').hidden = true;
     liveElement('liveGuestProfile').hidden = false;
-    setLiveStatus(useProfile.hidden ? 'Name your profile to join Live Review.' : 'Choose a profile to join Live Review.');
+    setLiveStatus('');
     liveElement('liveDialog').showModal();
-    if (useProfile.hidden) liveElement('liveProfileName').focus();
+    showLiveGuestProfileForm(!Object.hasOwn(profiles, currentProfile));
     return true;
+}
+
+function showLiveGuestProfileForm(showForm) {
+    liveElement('liveProfileChoices').hidden = showForm;
+    liveElement('liveNewProfile').hidden = !showForm;
+    liveElement('liveProfileBack').hidden = !Object.hasOwn(profiles, currentProfile);
+    liveElement(showForm ? 'liveProfileName' : 'liveUseProfile').focus();
 }
 
 function createLiveGuestProfile(event) {
@@ -122,6 +129,7 @@ function joinLiveInvite() {
 
 function startLiveSession(host, room, editor, saved = null) {
     if (liveSession) return;
+    liveElement('liveTitle').textContent = 'Live Review';
     liveElement('startLiveReview').hidden = true;
     liveElement('leaveLiveReview').hidden = false;
     liveElement('restartLiveReview').hidden = true;
@@ -333,7 +341,9 @@ function setLiveMenuState(session) {
     const menu = liveElement('menu-tools');
     const progress = liveElement('progressContainer');
     menu.classList.remove('show-menu');
-    liveElement('activeProfileLabel').disabled = Boolean(session);
+    liveElement('profileMenu').hidden = Boolean(session);
+    liveElement('liveProfile').hidden = !session;
+    liveElement('liveProfileNameLabel').textContent = session ? currentProfile : '';
     if (session) liveElement('liveProgress').append(progress);
     else menu.prepend(progress);
     document.querySelectorAll('[data-live-lock], .profile-switch-options button').forEach(button => {
