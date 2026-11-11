@@ -22,7 +22,7 @@ function browser(storage = new Map(), href = 'https://example.test/questions/?ch
                     contains: value => classes.has(value), toggle: (value, on) => on ? classes.add(value) : classes.delete(value) },
                 addEventListener() {}, close() { this.open = false; }, showModal() { this.open = true; },
                 reset() {}, focus() {},
-                append(child) { child.parentNode = this; },
+                append(...children) { children.forEach(child => { child.parentNode = this; }); },
                 prepend(child) { child.parentNode = this; },
                 querySelector: () => node(id + '-button')
             });
@@ -93,11 +93,17 @@ test('live review closes the profile menu and moves progress until the session e
     page.run(`startLiveSession(true, '${room}', 'turns')`);
     assert.equal(menu.classList.contains('show-menu'), false);
     assert.equal(page.node('profileMenu').hidden, true);
+    assert.equal(page.node('chapterFilter').parentNode, page.node('liveChapterControls'));
+    assert.equal(page.node('studyInfoButton').parentNode, page.node('liveChapterControls'));
+    assert.equal(page.node('liveBannerHeader').hidden, false);
     assert.equal(page.node('liveProfile').hidden, false);
     assert.equal(page.node('liveProfileNameLabel').textContent, 'Guest');
     assert.equal(progress.parentNode, page.node('liveProgress'));
     page.run('endLiveReview()');
     assert.equal(page.node('profileMenu').hidden, false);
+    assert.equal(page.node('chapterFilter').parentNode, page.node('studyMenuBar'));
+    assert.equal(page.node('studyInfoButton').parentNode, page.node('soloChapterControls'));
+    assert.equal(page.node('liveBannerHeader').hidden, true);
     assert.equal(page.node('liveProfile').hidden, true);
     assert.equal(progress.parentNode, menu);
 });

@@ -29,6 +29,11 @@
     width: 100%;
 }
 
+.study-menu-bar[hidden],
+.live-banner-header[hidden] {
+    display: none;
+}
+
 .study-menu-bar > .partner-review-button {
     margin-inline-start: auto;
     padding: 5px 12px;
@@ -287,11 +292,33 @@
     color: #555;
 }
 
+.live-banner-header,
+.live-banner-identity,
 .live-banner-layout,
 .live-progress-columns {
     display: flex;
     flex-wrap: wrap;
     gap: 12px 24px;
+}
+
+.live-banner-header {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.live-banner-header > button {
+    margin-inline-start: auto;
+}
+
+.live-banner-identity {
+    align-items: baseline;
+    gap: 4px 12px;
+}
+
+#liveProfile {
+    font-size: 0.875em;
+    color: #536574;
 }
 
 .live-banner-layout > :first-child {
@@ -457,7 +484,7 @@
     color: #37434d;
 }
 
-.profile-section .info-toggle {
+.chapter-picker-row .info-toggle {
     color: #37434d;
 }
 
@@ -468,7 +495,7 @@
     font: 600 14px/20px Arial, sans-serif;
 }
 
-.profile-section .info-toggle:hover {
+.chapter-picker-row .info-toggle:hover {
     background: #f0f7ff;
 }
 

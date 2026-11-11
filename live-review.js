@@ -340,7 +340,19 @@ function endLiveReview(notify = true) {
 }
 
 function setLiveMenuState(session) {
-    liveElement('chapterFilter').inert = Boolean(session && !session.host);
+    const chapterFilter = liveElement('chapterFilter');
+    const infoButton = liveElement('studyInfoButton');
+    const studyMenuBar = liveElement('studyMenuBar');
+    chapterFilter.open = false;
+    chapterFilter.inert = Boolean(session && !session.host);
+    if (session) {
+        liveElement('liveChapterControls').append(chapterFilter, infoButton);
+    } else {
+        studyMenuBar.prepend(chapterFilter);
+        liveElement('soloChapterControls').append(infoButton);
+    }
+    studyMenuBar.hidden = Boolean(session);
+    liveElement('liveBannerHeader').hidden = !session;
     const menu = liveElement('menu-tools');
     const progress = liveElement('progressContainer');
     menu.classList.remove('show-menu');

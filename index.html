@@ -35,7 +35,7 @@
     <h1 class="site-title">Kitzur Shulchan Aruch <span>– Review with Scenarios</span></h1>
 
 <div class="profile-section">
-    <div class="study-menu-bar">
+    <div id="studyMenuBar" class="study-menu-bar">
     <details id="chapterFilter">
         <summary><span id="chapterFilterSummary">Shuffling all chapters</span><span id="chapterAvailableCount"></span></summary>
         <div id="chapterOptions" role="group" aria-label="Chapters to study">
@@ -50,7 +50,7 @@
     </details>
 
     <div class="chapter-controls">
-        <div class="chapter-picker-row">
+        <div id="soloChapterControls" class="chapter-picker-row">
     <div id="profileMenu" class="dropdown">
         <button id="activeProfileLabel" class="btn-outline" onclick="toggleMenu(this, 'menu-tools')">Guest</button>
         <div id="menu-tools" class="dropdown-content">
@@ -70,11 +70,10 @@
             <button data-live-lock class="btn-delete" onclick="deleteCurrentProfile()">Delete Profile</button>
         </div>
     </div>
-            <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions" aria-label="Show instructions">ⓘ</button>
+            <button id="studyInfoButton" class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions" aria-label="Show instructions">ⓘ</button>
         </div>
     </div>
         <button id="startLiveReview" class="btn-primary partner-review-button" data-live-lock onclick="startLiveHost()">Review with a Partner</button>
-        <button id="leaveLiveReview" class="btn-outline partner-review-button" onclick="endLiveReview()" hidden>Leave Live Review</button>
     </div>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
     <dialog id="profileImportConflict" aria-labelledby="profileImportTitle" aria-describedby="profileImportWarning profileImportCopy">
@@ -162,10 +161,16 @@
 </dialog>
 
 <div id="liveBanner" class="card" hidden>
+    <div id="liveBannerHeader" class="live-banner-header" hidden>
+        <div class="live-banner-identity">
+            <strong id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></strong>
+            <span id="liveProfile" hidden>Your profile: <bdi id="liveProfileNameLabel"></bdi></span>
+        </div>
+        <button id="leaveLiveReview" class="btn-outline partner-review-button" onclick="endLiveReview()" hidden>Leave Live Review</button>
+    </div>
     <div class="live-banner-layout">
         <div>
-            <p id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></p>
-            <p id="liveProfile" hidden>Your profile: <bdi id="liveProfileNameLabel"></bdi></p>
+            <div id="liveChapterControls" class="chapter-picker-row"></div>
             <p id="liveStatus" role="status"></p>
             <button id="restartLiveReview" class="btn-primary" onclick="startLiveHost()" hidden>Start a New Review</button>
         </div>
