@@ -53,7 +53,7 @@ function browser(storage = new Map(), href = 'https://example.test/questions/?ch
                 : selector === '#reviewPhase .tooltip-wrapper' ? [node('rating-wrapper')] : [node('locked-button')] },
         setTimeout(callback) { timers.push(callback); return timers.length; }, clearTimeout() {},
         questions: [{ id: '1', chapter: 1, text: 'Hello [name]' }, { id: '2', chapter: 1, text: 'Visit [place]' }],
-        profiles: { Guest: {} }, currentProfile: 'Guest', currentFilter: ['1'], sessionMemory: {},
+        profiles: { Guest: { '1': { status: 'review' } } }, currentProfile: 'Guest', currentFilter: ['1'], sessionMemory: {},
         activeQuestion: null, currentScenarioValues: [], isQuestionAvailable: () => true,
         updateProfileDropdown() {}, initChapterFilters() {}, loadNextQuestion() {}, saveToStorage() {},
         pickReviewQuestion: (pool, order, single, preferred) => preferred || pool[0],
@@ -154,6 +154,15 @@ test('first-time guest must name a profile before joining', () => {
     page.run('createLiveGuestProfile({ preventDefault() {} })');
     assert.equal(page.run('currentProfile'), 'Alice');
     assert.equal(page.sockets.length, 1);
+});
+
+test('a lone empty Guest profile opens the name form directly', () => {
+    const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
+    page.run('profiles.Guest = {}; openLiveInvite()');
+    assert.equal(page.node('liveProfileChoices').hidden, true);
+    assert.equal(page.node('liveNewProfile').hidden, false);
+    assert.equal(page.node('liveProfileBack').hidden, true);
+    assert.equal(page.sockets.length, 0);
 });
 
 test('guest invite stays in URL and reload restores its draft inputs', () => {

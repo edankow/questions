@@ -89,14 +89,17 @@ function openLiveInvite() {
     liveElement('liveGuestProfile').hidden = false;
     setLiveStatus('');
     liveElement('liveDialog').showModal();
-    showLiveGuestProfileForm(!Object.hasOwn(profiles, currentProfile));
+    const emptyDefaultGuest = currentProfile === 'Guest' && Object.hasOwn(profiles, 'Guest') &&
+        Object.keys(profiles).length === 1 && Object.keys(profiles.Guest).length === 0;
+    const canUseCurrentProfile = Object.hasOwn(profiles, currentProfile) && !emptyDefaultGuest;
+    liveElement('liveProfileBack').hidden = !canUseCurrentProfile;
+    showLiveGuestProfileForm(!canUseCurrentProfile);
     return true;
 }
 
 function showLiveGuestProfileForm(showForm) {
     liveElement('liveProfileChoices').hidden = showForm;
     liveElement('liveNewProfile').hidden = !showForm;
-    liveElement('liveProfileBack').hidden = !Object.hasOwn(profiles, currentProfile);
     liveElement(showForm ? 'liveProfileName' : 'liveUseProfile').focus();
 }
 
