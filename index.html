@@ -74,7 +74,8 @@
             <button class="info-toggle" onclick="toggleScenarioInfo()" title="Show Instructions" aria-label="Show instructions">ⓘ</button>
         </div>
     </div>
-        <button class="btn-primary partner-review-button" data-live-lock onclick="startLiveHost()">Review with a Partner</button>
+        <button id="startLiveReview" class="btn-primary partner-review-button" data-live-lock onclick="startLiveHost()">Review with a Partner</button>
+        <button id="leaveLiveReview" class="btn-outline partner-review-button" onclick="endLiveReview()" hidden>Leave Live Review</button>
     </div>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
     <dialog id="profileImportConflict" aria-labelledby="profileImportTitle" aria-describedby="profileImportWarning profileImportCopy">
@@ -129,9 +130,9 @@
     <form id="liveInviteOptions" onsubmit="createLiveInvite(event)" hidden>
         <fieldset>
             <legend>Who fills in the scenario inputs?</legend>
-            <label><input type="radio" name="scenarioEditor" value="guest" checked> Guest</label>
+            <label><input type="radio" name="scenarioEditor" value="guest"> Guest</label>
             <label><input type="radio" name="scenarioEditor" value="host"> Host</label>
-            <label><input type="radio" name="scenarioEditor" value="turns"> Take turns (guest first)</label>
+            <label><input type="radio" name="scenarioEditor" value="turns" checked> Take turns (host first)</label>
         </fieldset>
         <button class="btn-primary">Create Invite Link</button>
     </form>
@@ -139,6 +140,7 @@
         <label for="liveShare">Private invite link</label>
         <textarea id="liveShare" rows="3" readonly></textarea>
         <button class="btn-outline" onclick="copyLiveInvite()">Copy Invite Link</button>
+        <p>Keep this tab open while your partner joins.</p>
     </div>
     <button class="btn-outline" onclick="endLiveReview()">Cancel</button>
 </dialog>
@@ -146,7 +148,6 @@
 <div id="liveBanner" class="card" hidden>
     <p id="livePartner" hidden>Studying with <bdi id="livePartnerName"></bdi></p>
     <p id="liveStatus" role="status"></p>
-    <button id="leaveLiveReview" class="btn-outline" onclick="endLiveReview()">Leave Live Review</button>
     <button id="restartLiveReview" class="btn-primary" onclick="startLiveHost()" hidden>Start a New Review</button>
 </div>
 

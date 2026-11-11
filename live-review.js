@@ -79,6 +79,7 @@ function openLiveInvite() {
 
 function startLiveSession(host, room, editor, saved = null) {
     if (liveSession) return;
+    liveElement('startLiveReview').hidden = true;
     liveElement('leaveLiveReview').hidden = false;
     liveElement('restartLiveReview').hidden = true;
     liveElement('liveShareControls').hidden = true;
@@ -89,7 +90,7 @@ function startLiveSession(host, room, editor, saved = null) {
     const session = {
         host, room, token: crypto.randomUUID(), ready: false, queue: new Set(liveQueue()),
         outbox: [], nextClientSeq: 0, lastReceived: 0, retries: 0,
-        editor, guestTurn: editor !== 'host',
+        editor, guestTurn: editor === 'guest',
         questionOrder: { count: 0, lastIndex: -1 },
         preferred: activeQuestion?.id,
         initialValues: !liveElement('reviewPhase').classList.contains('hidden')
@@ -243,7 +244,6 @@ function connectLiveSession(session) {
 function showLiveEnded(message = 'This session has ended.') {
     endLiveReview(false);
     liveElement('liveBanner').hidden = false;
-    liveElement('leaveLiveReview').hidden = true;
     liveElement('restartLiveReview').hidden = false;
     setLiveStatus(message);
 }
@@ -257,6 +257,8 @@ function endLiveReview(notify = true) {
         history.replaceState(history.state, '', location.pathname + location.search);
     }
     liveSession = null;
+    liveElement('startLiveReview').hidden = false;
+    liveElement('leaveLiveReview').hidden = true;
     session?.channel.close();
     liveElement('liveDialog').close();
     liveElement('liveBanner').hidden = true;
