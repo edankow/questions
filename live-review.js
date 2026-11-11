@@ -13,7 +13,7 @@ function saveLiveSession() {
     const session = liveSession;
     if (!session || session.restoring) return;
     const snapshot = {
-        ...session, channel: undefined, retryTimer: undefined,
+        ...session, channel: undefined, retryTimer: undefined, ratingRetryTimer: undefined,
         queue: [...session.queue], partnerQueue: session.partnerQueue ? [...session.partnerQueue] : null,
         pendingQuestion: session.pendingQuestion?.id, draftQuestion: session.draftQuestion?.id,
         activeQuestion: activeQuestion?.id, values: currentScenarioValues,
@@ -223,6 +223,7 @@ function connectLiveSession(session) {
     channel.addEventListener('open', () => {
         if (session !== liveSession || channel !== session.channel) return;
         for (const message of session.outbox) channel.send(JSON.stringify(message));
+        retryGuestRating(session);
     });
     channel.addEventListener('message', event => {
         if (session !== liveSession || channel !== session.channel || typeof event.data !== 'string' || event.data.length > 128000) return;
@@ -268,11 +269,17 @@ function connectLiveSession(session) {
             }
             liveElement('liveStatus').textContent = message.partnerOnline ? session.status || 'Reconnected.'
                 : `Waiting for ${session.partnerName || 'your partner'} to reconnect. Your place is saved.`;
+            if (message.paired && session.host && session.shown && session.rated && session.partnerRated && !session.editing) {
+                nextLiveQuestion();
+            } else if (message.paired && message.partnerOnline) {
+                resendLiveRevision(session);
+            }
         } else if (message?.type === 'partner-disconnected') {
             liveElement('liveStatus').textContent = `${session.partnerName || 'Your partner'} disconnected. Waiting for them to reconnect…`;
         } else if (message?.type === 'partner-reconnected') {
             initializeLivePair(session);
             liveElement('liveStatus').textContent = session.status || `${session.partnerName || 'Your partner'} reconnected.`;
+            resendLiveRevision(session);
         } else if (session.ready) {
             receiveLiveMessage(session, message);
         }
@@ -315,6 +322,7 @@ function endLiveReview(notify = true) {
     const session = liveSession;
     if (notify && session?.channel.readyState === WebSocket.OPEN) session.channel.send(JSON.stringify({ type: 'leave' }));
     clearTimeout(session?.retryTimer);
+    clearTimeout(session?.ratingRetryTimer);
     if (session) {
         try { sessionStorage.removeItem(liveStorageKey(session.room, session.host)); } catch { /* Storage may be unavailable. */ }
         history.replaceState(history.state, '', location.pathname + location.search);
@@ -436,8 +444,9 @@ function receiveLiveMessage(session, message) {
     } else if (message?.type === 'question' && !session.host && !session.finished) {
         const question = questions.find(item => item.id === message.id);
         const revision = message.revision ?? 0;
-        const revised = session.shown && message.id === activeQuestion?.id && revision === session.revision + 1;
-        const fresh = revision === 0 && session.queue.has(message.id) && (!session.shown || session.rated);
+        if (!Number.isSafeInteger(revision) || revision < 0) return;
+        const revised = session.shown && message.id === activeQuestion?.id && revision > session.revision;
+        const fresh = session.queue.has(message.id) && (!session.shown || session.rated);
         if (!question || (!fresh && !revised)) return;
         if (!validLiveValues(question, message.values)) return;
         session.draftQuestion = null;
@@ -446,9 +455,14 @@ function receiveLiveMessage(session, message) {
         session.revision = revision;
         renderQuestionScenario(question, message.values);
         showLiveRating(session);
-        if (revised) setLiveStatus('The host updated the scenario. Please rate the revised question.');
-    } else if (message?.type === 'rated' && session.shown && message.id === activeQuestion?.id &&
-               (message.revision ?? 0) === session.revision) {
+    } else if (message?.type === 'rated' && session.shown && message.id === activeQuestion?.id) {
+        const revision = message.revision ?? 0;
+        if (revision !== session.revision) {
+            if (Number.isSafeInteger(revision) && revision >= 0 && revision < session.revision) {
+                resendLiveRevision(session);
+            }
+            return;
+        }
         session.partnerRated = true;
         if (session.editing) return;
         if (session.rated) {
@@ -568,7 +582,14 @@ function shareLiveScenario(values) {
     renderQuestionScenario(activeQuestion, values);
     showLiveRating(session);
     sendLive({ type: 'question', id: activeQuestion.id, values, revision: session.revision });
-    if (revised) setLiveStatus('Revised scenario shared. Please rate the updated question.');
+}
+
+function resendLiveRevision(session) {
+    if (!session.host || !session.shown || session.revision === 0) return;
+    const id = activeQuestion.id;
+    const revision = session.revision;
+    sendLive({ type: 'question', id, values: currentScenarioValues, revision });
+    if (session.rated) sendLive({ type: 'rated', id, revision });
 }
 
 function updateLiveEditButton(session) {
@@ -617,8 +638,27 @@ function showLiveRating(session) {
 
 function showLiveRatingWait(session) {
     liveElement('liveRatingWait').textContent = !session.host && session.partnerRated
-        ? 'Both ratings saved. Waiting for the next question. If it’s the host’s turn, you can help by suggesting scenario details.'
+        ? 'Your rating is saved. Waiting for the host to open the next question.'
         : `Rating saved. Waiting for ${session.partnerName || 'your partner'}…`;
+}
+
+function retryGuestRating(session, attempts = 3) {
+    clearTimeout(session.ratingRetryTimer);
+    if (session.host || !session.shown || !session.rated || session.finished ||
+        !attempts || session.channel.readyState !== WebSocket.OPEN) return;
+    const id = activeQuestion.id;
+    const revision = session.revision;
+    const channel = session.channel;
+    session.ratingRetryTimer = setTimeout(() => {
+        if (liveSession !== session || session.channel !== channel || channel.readyState !== WebSocket.OPEN ||
+            !session.shown || !session.rated || session.finished ||
+            activeQuestion?.id !== id || session.revision !== revision) return;
+        const pending = session.outbox.find(message =>
+            message.type === 'rated' && message.id === id && message.revision === revision);
+        if (pending) channel.send(JSON.stringify(pending));
+        else sendLive({ type: 'rated', id, revision });
+        retryGuestRating(session, attempts - 1);
+    }, 3000);
 }
 
 function updateLiveSessionProgress(session) {
@@ -636,5 +676,6 @@ function rateLiveQuestion(status) {
     setLiveRatingEnabled(false);
     setLiveStatus('');
     sendLive({ type: 'rated', id: activeQuestion.id, revision: session.revision });
+    retryGuestRating(session);
     if (session.host && session.partnerRated) nextLiveQuestion();
 }

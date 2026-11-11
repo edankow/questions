@@ -211,6 +211,44 @@ test('replayed deliveries are acknowledged without applying a rating twice', () 
     assert.equal(page.session.outbox.length, 0);
 });
 
+test('guest retries a rating after the relay acknowledges it and stops on the next question', () => {
+    const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
+    page.run('openLiveInvite(); joinLiveInvite()');
+    const socket = page.sockets[0];
+    socket.open();
+    socket.receive({ type: 'connected' });
+    socket.receive({ type: 'question', id: '1', values: ['Alice'], revision: 0, serverSeq: 1 });
+    socket.receive({ type: 'rated', id: '1', revision: 0, serverSeq: 2 });
+    page.run("rateLiveQuestion('confident')");
+    const firstRating = socket.sent.find(message => message.type === 'rated');
+    socket.receive({ type: 'ack', clientSeq: firstRating.clientSeq });
+    assert.equal(page.node('liveRatingWait').textContent, 'Your rating is saved. Waiting for the host to open the next question.');
+    page.timers[0]();
+    const ratings = socket.sent.filter(message => message.type === 'rated');
+    assert.equal(ratings.length, 2);
+    assert.ok(ratings[1].clientSeq > firstRating.clientSeq);
+    assert.equal(ratings[1].id, firstRating.id);
+    assert.equal(ratings[1].revision, firstRating.revision);
+    socket.receive({ type: 'question', id: '2', values: ['Home'], revision: 0, serverSeq: 3 });
+    page.timers[1]();
+    assert.equal(socket.sent.filter(message => message.type === 'rated').length, 2);
+});
+
+test('host resends the current scenario and its rating when a guest rates an older revision', () => {
+    const page = host();
+    const socket = page.sockets[0];
+    page.run("editLiveScenario(); shareLiveScenario(['Bob']); rateLiveQuestion('confident')");
+    const before = socket.sent.length;
+    socket.receive({ type: 'rated', id: '1', revision: 0, serverSeq: 3 });
+    const replay = socket.sent.slice(before).filter(message => message.type !== 'ack');
+    assert.deepEqual(replay.map(message => [message.type, message.id, message.revision]), [
+        ['question', '1', 1], ['rated', '1', 1]
+    ]);
+    assert.equal(page.session.partnerRated, false);
+    socket.receive({ type: 'rated', id: '1', revision: 1, serverSeq: 4 });
+    assert.equal(page.run('activeQuestion.id'), '2');
+});
+
 test('guest reload keeps an unrated shared question visible and accepts a queued revision', () => {
     const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
     page.run('openLiveInvite()');
@@ -227,9 +265,10 @@ test('guest reload keeps an unrated shared question visible and accepts a queued
     const reconnected = reload.sockets[0];
     reconnected.open();
     reconnected.receive({ type: 'resumed', paired: true, partnerOnline: true });
-    reconnected.receive({ type: 'question', id: '1', values: ['Bob'], revision: 1, serverSeq: 2 });
+    reconnected.receive({ type: 'question', id: '1', values: ['Bob'], revision: 2, serverSeq: 2 });
     assert.equal(reload.run('currentScenarioValues[0]'), 'Bob');
-    assert.equal(reload.session.revision, 1);
+    assert.equal(reload.session.revision, 2);
+    assert.equal(reload.node('liveStatus').textContent, 'Choose Answered Confidently or Needs Review when you’re ready.');
     assert.equal(reload.node('setupPhase').classList.contains('hidden'), true);
 });
 
