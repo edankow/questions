@@ -292,6 +292,20 @@
     color: #555;
 }
 
+#liveEndedNotice {
+    margin: 0 0 12px;
+    padding: 8px 12px;
+    border-inline-start: 3px solid #aab4bd;
+    color: #37434d;
+    font-size: 0.875rem;
+}
+
+#liveEndedNotice:empty {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
 .live-banner-header,
 .live-banner-identity,
 .live-banner-layout,

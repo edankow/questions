@@ -273,11 +273,13 @@ test('ended-session link clears recovery state and offers a new review without r
     assert.equal(page.session, null);
     assert.equal(page.storage.size, 0);
     assert.equal(page.location.hash, '');
-    assert.equal(page.node('liveStatus').textContent, 'This session has ended.');
-    assert.equal(page.node('restartLiveReview').hidden, false);
+    assert.equal(page.node('liveEndedNotice').textContent, 'This session has ended.');
+    assert.equal(page.node('liveBanner').hidden, true);
+    assert.equal(page.node('startLiveReview').hidden, false);
     assert.equal(page.node('leaveLiveReview').hidden, true);
     assert.equal(page.timers.length, 0);
     page.run('startLiveHost()');
+    assert.equal(page.node('liveEndedNotice').textContent, '');
     assert.equal(page.node('liveDialog').open, true);
     assert.equal(page.node('liveInviteOptions').hidden, false);
     assert.equal(page.node('liveBanner').hidden, true);
@@ -292,5 +294,6 @@ test('ended-session message also clears a restored review and its private role l
     assert.equal(reload.session, null);
     assert.equal(reload.storage.size, 0);
     assert.equal(reload.location.hash, '');
-    assert.equal(reload.node('restartLiveReview').hidden, false);
+    assert.equal(reload.node('liveEndedNotice').textContent, 'Your partner ended the session.');
+    assert.equal(reload.node('liveBanner').hidden, true);
 });

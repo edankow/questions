@@ -49,7 +49,7 @@ function startLiveHost() {
     if (liveSession) return;
     liveElement('liveTitle').textContent = 'Live Review';
     liveElement('liveBanner').hidden = true;
-    liveElement('restartLiveReview').hidden = true;
+    liveElement('liveEndedNotice').textContent = '';
     const options = liveElement('liveInviteOptions');
     options.reset();
     options.hidden = false;
@@ -135,7 +135,7 @@ function startLiveSession(host, room, editor, saved = null) {
     liveElement('liveTitle').textContent = 'Live Review';
     liveElement('startLiveReview').hidden = true;
     liveElement('leaveLiveReview').hidden = false;
-    liveElement('restartLiveReview').hidden = true;
+    liveElement('liveEndedNotice').textContent = '';
     liveElement('liveShareControls').hidden = true;
     liveElement('liveInviteOptions').hidden = true;
     liveElement('liveGuestProfile').hidden = true;
@@ -233,7 +233,7 @@ function connectLiveSession(session) {
             return;
         }
         if (message?.type === 'ended') {
-            showLiveEnded();
+            showLiveEnded(session.ready ? 'Your partner ended the session.' : undefined);
             return;
         }
         if (message?.type === 'ack' && Number.isSafeInteger(message.clientSeq)) {
@@ -300,9 +300,7 @@ function connectLiveSession(session) {
 
 function showLiveEnded(message = 'This session has ended.') {
     endLiveReview(false);
-    liveElement('liveBanner').hidden = false;
-    liveElement('restartLiveReview').hidden = false;
-    setLiveStatus(message);
+    liveElement('liveEndedNotice').textContent = message;
 }
 
 function endLiveReview(notify = true) {
