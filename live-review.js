@@ -602,7 +602,7 @@ function cancelLiveScenarioEdit() {
     showPhase('reviewPhase');
     setLiveStatus(session.rated ? '' : session.partnerRated
         ? 'Your partner is waiting for you to rate.'
-        : 'Choose your own rating when you are ready.');
+        : 'Choose Answered Confidently or Needs Review when you’re ready.');
     saveLiveSession();
 }
 
@@ -612,7 +612,7 @@ function showLiveRating(session) {
     session.partnerRated = false;
     setLiveRatingEnabled(true);
     updateLiveEditButton(session);
-    setLiveStatus('Choose your own rating when you are ready.');
+    setLiveStatus('Choose Answered Confidently or Needs Review when you’re ready.');
 }
 
 function showLiveRatingWait(session) {
