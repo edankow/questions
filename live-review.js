@@ -265,7 +265,7 @@ function endLiveReview(notify = true) {
     setLiveMenuState(null);
     const back = document.querySelector('.btn-back');
     back.hidden = false;
-    back.textContent = '← Back to Inputs';
+    back.textContent = '← Edit inputs';
     liveElement('cancelLiveEdit').hidden = true;
     setLiveRatingEnabled(true);
     if (session) loadNextQuestion();
