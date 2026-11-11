@@ -21,7 +21,7 @@ function browser(storage = new Map(), href = 'https://example.test/questions/?ch
                 classList: { add: value => classes.add(value), remove: value => classes.delete(value),
                     contains: value => classes.has(value), toggle: (value, on) => on ? classes.add(value) : classes.delete(value) },
                 addEventListener() {}, close() { this.open = false; }, showModal() { this.open = true; },
-                reset() {},
+                reset() {}, focus() {},
                 append(child) { child.parentNode = this; },
                 prepend(child) { child.parentNode = this; },
                 querySelector: () => node(id + '-button')
@@ -55,7 +55,7 @@ function browser(storage = new Map(), href = 'https://example.test/questions/?ch
         questions: [{ id: '1', chapter: 1, text: 'Hello [name]' }, { id: '2', chapter: 1, text: 'Visit [place]' }],
         profiles: { Guest: {} }, currentProfile: 'Guest', currentFilter: ['1'], sessionMemory: {},
         activeQuestion: null, currentScenarioValues: [], isQuestionAvailable: () => true,
-        updateProfileDropdown() {}, initChapterFilters() {}, loadNextQuestion() {},
+        updateProfileDropdown() {}, initChapterFilters() {}, loadNextQuestion() {}, saveToStorage() {},
         pickReviewQuestion: (pool, order, single, preferred) => preferred || pool[0],
         setupCreativity(text) {
             if (!vm.runInContext("showPhase('setupPhase')", context)) return;
@@ -140,9 +140,23 @@ test('reload restores unfinished host edits without moving the guest into inputs
     assert.equal(reload.node('reviewPhase').classList.contains('hidden'), false);
 });
 
+test('first-time guest must name a profile before joining', () => {
+    const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
+    page.run("profiles = {}; currentProfile = null; openLiveInvite()");
+    assert.equal(page.node('liveUseProfile').hidden, true);
+    assert.equal(page.sockets.length, 0);
+    page.node('liveProfileName').value = '  Alice  ';
+    page.run('createLiveGuestProfile({ preventDefault() {} })');
+    assert.equal(page.run('currentProfile'), 'Alice');
+    assert.equal(page.sockets.length, 1);
+});
+
 test('guest invite stays in URL and reload restores its draft inputs', () => {
     const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
     page.run('openLiveInvite()');
+    assert.equal(page.sockets.length, 0);
+    assert.equal(page.node('liveUseProfile').textContent, 'Use profile: Guest');
+    page.run('joinLiveInvite()');
     const socket = page.sockets[0];
     socket.open();
     socket.receive({ type: 'connected' });
@@ -174,6 +188,7 @@ test('replayed deliveries are acknowledged without applying a rating twice', () 
 test('guest reload keeps an unrated shared question visible and accepts a queued revision', () => {
     const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
     page.run('openLiveInvite()');
+    page.run('joinLiveInvite()');
     const socket = page.sockets[0];
     socket.open();
     socket.receive({ type: 'connected' });
@@ -224,6 +239,7 @@ test('host can reload an unclaimed invitation and still share a guest-only link'
 test('ended-session link clears recovery state and offers a new review without retrying', () => {
     const page = browser(new Map(), `https://example.test/questions/#live=${room}`);
     page.run('openLiveInvite()');
+    page.run('joinLiveInvite()');
     const socket = page.sockets[0];
     socket.open();
     socket.receive({ type: 'ended' });

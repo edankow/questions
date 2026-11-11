@@ -135,6 +135,15 @@
         </fieldset>
         <button class="btn-primary">Create Invite Link</button>
     </form>
+    <div id="liveGuestProfile" hidden>
+        <button id="liveUseProfile" class="btn-primary" onclick="joinLiveInvite()">Use current profile</button>
+        <form id="liveNewProfile" onsubmit="createLiveGuestProfile(event)">
+            <label for="liveProfileName">New profile name</label>
+            <input id="liveProfileName" name="profileName" required>
+            <p id="liveProfileError" role="alert" hidden></p>
+            <button class="btn-primary">Create Profile and Join</button>
+        </form>
+    </div>
     <div id="liveShareControls" hidden>
         <label for="liveShare">Private invite link</label>
         <textarea id="liveShare" rows="3" readonly></textarea>
@@ -238,6 +247,7 @@ function init() {
     const profileNames = Object.keys(profiles);
 
     if (profileNames.length === 0) {
+        if (window.openLiveInvite?.()) return;
         profiles.Guest = {};
         currentProfile = 'Guest';
         saveToStorage();
@@ -250,8 +260,7 @@ function init() {
     initChapterFilters();
 
     updateProfileDropdown();
-    window.openLiveInvite?.();
-    if (!getLiveSession()) loadNextQuestion();
+    if (!window.openLiveInvite?.()) loadNextQuestion();
 	
 }
 

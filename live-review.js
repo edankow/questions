@@ -1,4 +1,5 @@
 let liveSession = null;
+let pendingLiveInvite = null;
 const liveElement = id => document.getElementById(id);
 const liveValueLimit = 500;
 const liveReviewEndpoint = 'wss://questions-live-review.edankowicz.workers.dev';
@@ -74,7 +75,49 @@ function openLiveInvite() {
     } catch { /* An invite can still be opened without saved tab state. */ }
     if (saved?.room !== room || saved.host !== host || !saved.token ||
         !profiles[saved.profile] || Date.now() - parseInt(room, 36) > liveRoomLifetime) saved = null;
-    startLiveSession(host, room, saved?.editor, saved);
+    if (host && !Object.hasOwn(profiles, currentProfile)) return;
+    if (host || saved) {
+        startLiveSession(host, room, saved?.editor, saved);
+        return true;
+    }
+    pendingLiveInvite = room;
+    const useProfile = liveElement('liveUseProfile');
+    useProfile.hidden = !Object.hasOwn(profiles, currentProfile);
+    useProfile.textContent = `Use profile: ${currentProfile}`;
+    liveElement('liveNewProfile').reset();
+    liveElement('liveProfileError').hidden = true;
+    liveElement('liveGuestProfile').hidden = false;
+    setLiveStatus(useProfile.hidden ? 'Name your profile to join Live Review.' : 'Choose a profile to join Live Review.');
+    liveElement('liveDialog').showModal();
+    if (useProfile.hidden) liveElement('liveProfileName').focus();
+    return true;
+}
+
+function createLiveGuestProfile(event) {
+    event.preventDefault();
+    if (!pendingLiveInvite) return;
+    const name = liveElement('liveProfileName').value.trim();
+    if (!name || name in profiles) {
+        const error = liveElement('liveProfileError');
+        error.textContent = name ? 'That profile name is already in use. Choose another name.' : 'Enter a profile name.';
+        error.hidden = false;
+        liveElement('liveProfileName').focus();
+        return;
+    }
+    profiles[name] = {};
+    saveToStorage();
+    currentProfile = name;
+    localStorage.setItem('ksa_current_profile', name);
+    updateProfileDropdown();
+    initChapterFilters();
+    joinLiveInvite();
+}
+
+function joinLiveInvite() {
+    if (!pendingLiveInvite || !Object.hasOwn(profiles, currentProfile)) return;
+    const room = pendingLiveInvite;
+    pendingLiveInvite = null;
+    startLiveSession(false, room);
 }
 
 function startLiveSession(host, room, editor, saved = null) {
@@ -84,6 +127,7 @@ function startLiveSession(host, room, editor, saved = null) {
     liveElement('restartLiveReview').hidden = true;
     liveElement('liveShareControls').hidden = true;
     liveElement('liveInviteOptions').hidden = true;
+    liveElement('liveGuestProfile').hidden = true;
     const dialog = liveElement('liveDialog');
     if (!dialog.open) dialog.showModal();
     setLiveStatus(host ? 'Creating your private room…' : 'Joining Live Review…');
@@ -251,6 +295,14 @@ function showLiveEnded(message = 'This session has ended.') {
 }
 
 function endLiveReview(notify = true) {
+    if (pendingLiveInvite) {
+        pendingLiveInvite = null;
+        history.replaceState(history.state, '', location.pathname + location.search);
+        liveElement('liveGuestProfile').hidden = true;
+        liveElement('liveDialog').close();
+        init();
+        return;
+    }
     const session = liveSession;
     if (notify && session?.channel.readyState === WebSocket.OPEN) session.channel.send(JSON.stringify({ type: 'leave' }));
     clearTimeout(session?.retryTimer);
@@ -424,7 +476,7 @@ function nextLiveQuestion() {
     initChapterFilters();
     if (session.inputTurns && session.guestTurn && scenarioInputCount(activeQuestion)) {
         session.waitingForDraft = true;
-        waitForLiveQuestion('Your partner is filling in the inputs. Suggest details to help them prepare the scenario.');
+        waitForLiveQuestion('Your partner is filling in the inputs.');
         sendLive({ type: 'draft', id: activeQuestion.id });
     } else if (preferred && session.initialValues) {
         if (session.initialValues.every(value => value.length <= liveValueLimit)) {

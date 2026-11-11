@@ -588,8 +588,20 @@
 }
 
 #liveShareControls,
-#liveInviteOptions {
+#liveInviteOptions,
+#liveGuestProfile {
     margin: 1rem 0;
+}
+
+#liveUseProfile:not([hidden]) {
+    margin-bottom: 1rem;
+}
+
+#liveProfileName {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    margin: 0.25rem 0 0.75rem;
 }
 
 #liveInviteOptions fieldset {
