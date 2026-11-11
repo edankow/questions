@@ -233,7 +233,7 @@ function connectLiveSession(session) {
             return;
         }
         if (message?.type === 'ended') {
-            showLiveEnded(session.ready ? 'Your partner ended the session.' : undefined);
+            showLiveEnded(session.ready ? `${session.partnerName || 'Your partner'} ended the session.` : undefined);
             return;
         }
         if (message?.type === 'ack' && Number.isSafeInteger(message.clientSeq)) {
@@ -267,12 +267,12 @@ function connectLiveSession(session) {
                 liveElement('liveShareControls').hidden = false;
             }
             liveElement('liveStatus').textContent = message.partnerOnline ? session.status || 'Reconnected.'
-                : 'Waiting for your partner to reconnect. Your place is saved.';
+                : `Waiting for ${session.partnerName || 'your partner'} to reconnect. Your place is saved.`;
         } else if (message?.type === 'partner-disconnected') {
-            liveElement('liveStatus').textContent = 'Your partner disconnected. Waiting for them to reconnect…';
+            liveElement('liveStatus').textContent = `${session.partnerName || 'Your partner'} disconnected. Waiting for them to reconnect…`;
         } else if (message?.type === 'partner-reconnected') {
             initializeLivePair(session);
-            liveElement('liveStatus').textContent = session.status || 'Your partner reconnected.';
+            liveElement('liveStatus').textContent = session.status || `${session.partnerName || 'Your partner'} reconnected.`;
         } else if (session.ready) {
             receiveLiveMessage(session, message);
         }
@@ -455,7 +455,7 @@ function receiveLiveMessage(session, message) {
             if (session.host) nextLiveQuestion();
             else showLiveRatingWait(session);
         } else {
-            setLiveStatus('Your partner is waiting. Choose Answered Confidently or Needs Review when you’re ready.');
+            setLiveStatus(`${session.partnerName || 'Your partner'} is waiting. Choose Answered Confidently or Needs Review when you’re ready.`);
         }
     } else if (message?.type === 'done' && !session.host && (!session.shown || session.rated)) {
         session.finished = true;
@@ -499,7 +499,7 @@ function nextLiveQuestion() {
     initChapterFilters();
     if (session.inputTurns && session.guestTurn && scenarioInputCount(activeQuestion)) {
         session.waitingForDraft = true;
-        waitForLiveQuestion('Your partner is filling in the inputs.');
+        waitForLiveQuestion(`${session.partnerName || 'Your partner'} is filling in the inputs.`);
         sendLive({ type: 'draft', id: activeQuestion.id });
     } else if (preferred && session.initialValues) {
         if (session.initialValues.every(value => value.length <= liveValueLimit)) {
@@ -601,7 +601,7 @@ function cancelLiveScenarioEdit() {
     }
     showPhase('reviewPhase');
     setLiveStatus(session.rated ? '' : session.partnerRated
-        ? 'Your partner is waiting for you to rate.'
+        ? `${session.partnerName || 'Your partner'} is waiting for your response.`
         : 'Choose Answered Confidently or Needs Review when you’re ready.');
     saveLiveSession();
 }
@@ -616,11 +616,9 @@ function showLiveRating(session) {
 }
 
 function showLiveRatingWait(session) {
-    liveElement('liveRatingWait').textContent = session.host
-        ? 'Rating saved. Waiting for your partner…'
-        : session.partnerRated
-            ? 'Both ratings saved. Waiting for the next question. If it’s the host’s turn, you can help by suggesting scenario details.'
-            : 'Rating saved. Waiting for your partner…';
+    liveElement('liveRatingWait').textContent = !session.host && session.partnerRated
+        ? 'Both ratings saved. Waiting for the next question. If it’s the host’s turn, you can help by suggesting scenario details.'
+        : `Rating saved. Waiting for ${session.partnerName || 'your partner'}…`;
 }
 
 function updateLiveSessionProgress(session) {

@@ -294,6 +294,6 @@ test('ended-session message also clears a restored review and its private role l
     assert.equal(reload.session, null);
     assert.equal(reload.storage.size, 0);
     assert.equal(reload.location.hash, '');
-    assert.equal(reload.node('liveEndedNotice').textContent, 'Your partner ended the session.');
+    assert.equal(reload.node('liveEndedNotice').textContent, 'Partner ended the session.');
     assert.equal(reload.node('liveBanner').hidden, true);
 });
