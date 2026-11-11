@@ -443,6 +443,7 @@
 
 #scenarioInstructions,
 #worksheetChapters,
+#profileImportConflict,
 #worksheetPreparation {
     box-sizing: border-box;
     width: min(540px, calc(100% - 32px));
@@ -461,14 +462,28 @@
 
 #scenarioInstructions h2,
 #worksheetChapters h2,
+#profileImportConflict h2,
 #worksheetPreparation h2 {
     margin: 0;
 }
 
 #scenarioInstructions::backdrop,
 #worksheetChapters::backdrop,
+#profileImportConflict::backdrop,
 #worksheetPreparation::backdrop {
     background: rgb(0 0 0 / 30%);
+}
+
+#profileImportConflict form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    overflow-wrap: anywhere;
+}
+
+#profileImportConflict p {
+    margin: 0 0 8px;
 }
 
 #worksheetPreparation.batch {

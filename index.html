@@ -77,6 +77,16 @@
         <button class="btn-primary partner-review-button" data-live-lock onclick="startLiveHost()">Review with a Partner</button>
     </div>
     <input type="file" id="importInput" class="hidden" accept=".json" onchange="importProfile(event)">
+    <dialog id="profileImportConflict" aria-labelledby="profileImportTitle" aria-describedby="profileImportWarning profileImportCopy">
+        <form method="dialog">
+            <h2 id="profileImportTitle">Profile name already exists</h2>
+            <p id="profileImportWarning"></p>
+            <p id="profileImportCopy"></p>
+            <button value="copy" class="btn-primary" autofocus>Save as a new profile</button>
+            <button value="replace" class="btn-warning">Replace existing progress</button>
+            <button value="cancel" class="btn-outline">Cancel</button>
+        </form>
+    </dialog>
     <dialog id="worksheetChapters" aria-labelledby="worksheetChaptersTitle">
         <form method="dialog">
             <h2 id="worksheetChaptersTitle">Choose worksheet chapters</h2>
@@ -886,20 +896,53 @@ ignoreTimestamps = true;
     loadNextQuestion();
 }
 
-function importProfile(event) {
-    const file = event.target.files[0];
-    if (!file) {
-        return;
+async function resolveProfileImportName(name) {
+    if (!Object.hasOwn(profiles, name)) return name;
+
+    let copyName = `${name} (copy)`;
+    for (let number = 2; Object.hasOwn(profiles, copyName); number++) {
+        copyName = `${name} (copy ${number})`;
     }
 
+    const dialog = document.getElementById('profileImportConflict');
+    document.getElementById('profileImportWarning').textContent =
+        `Replacing “${name}” will overwrite its saved question progress with the backup.`;
+    document.getElementById('profileImportCopy').textContent =
+        `Saving as a new profile will load the backup as “${copyName}”.`;
+    dialog.returnValue = '';
+    dialog.showModal();
+    await new Promise(resolve => dialog.addEventListener('close', resolve, { once: true }));
+
+    if (dialog.returnValue === 'copy') return copyName;
+    if (dialog.returnValue === 'replace') return name;
+    return null;
+}
+
+function importProfile(event) {
+    const input = event.target;
+    const file = input.files[0];
+    if (!file || input.disabled) return;
+
+    input.disabled = true;
+    const resetInput = () => {
+        input.value = '';
+        input.disabled = false;
+    };
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onerror = () => {
+        resetInput();
+        alert("Error: Could not read the profile file.");
+    };
+    reader.onload = async function(e) {
         try {
             const importedData = JSON.parse(e.target.result);
-            const profileName = file.name.replace('_ksa_progress.json', '').replace('.json', '');
+            const name = file.name.replace('_ksa_progress.json', '').replace('.json', '');
+            const profileName = await resolveProfileImportName(name);
+            if (profileName === null) return;
             
-            // Reduced the confirm requirement slightly for first-run for better UX
-            profiles[profileName] = importedData;
+            Object.defineProperty(profiles, profileName, {
+                value: importedData, enumerable: true, configurable: true, writable: true
+            });
             currentProfile = profileName;
             
             saveToStorage();
@@ -911,8 +954,9 @@ function importProfile(event) {
         } catch (err) {
             alert("Error: Invalid profile file.");
             console.error(err);
+        } finally {
+            resetInput();
         }
-        event.target.value = '';
     };
     reader.readAsText(file);
 }
